@@ -1,10 +1,12 @@
 {
-  "extends": ["next/core-web-vitals", "prettier", "airbnb", "airbnb/hooks"],
+  "extends": ["next/core-web-vitals", "prettier", "airbnb", "airbnb/hooks","airbnb-typescript"],
   "rules": {
       "semi": "off",
       "func-names": "off",
       "react/react-in-jsx-scope": "off",
       "react/jsx-props-no-spreading": "off",
+      "quotes":["warn", "double",{"avoidEscape":true, "allowTemplateLiterals": true }],
+    
       "react/jsx-filename-extension": [1, {
           "extensions": [
               ".tsx"
