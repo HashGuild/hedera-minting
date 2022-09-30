@@ -1,9 +1,11 @@
-import Link from "next/link";
-import React, { FC } from "react";
-import { HederaLogo } from "../../public/svg/HederaLogo";
-import Button from "../Button";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { FC } from 'react';
+import { HederaLogo } from '../../public/svg/HederaLogo';
+import Button from '../Button';
 
-export const Header: FC = function () {
+const Header: FC = function () {
+  const router = useRouter();
   return (
     <header className="flex items-center justify-between py-5 md:border-b md:border-accentGrey px-[5%] ">
       <Link href="/">
@@ -18,8 +20,9 @@ export const Header: FC = function () {
       <Button
         title="Help"
         className="border border-black dark:border-white rounded-md text-xs hover:bg-black hover:text-white hover:cursor-pointer dark:hover:bg-white dark:hover:border-black dark:hover:text-black"
-        onClick={() => alert("need hook")}
+        onClick={() => router.push('/help')}
       />
     </header>
   );
 };
+export default Header;

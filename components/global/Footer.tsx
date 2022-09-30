@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import { HederaLogo } from "../../public/svg/HederaLogo";
+import React, { FC } from 'react';
+import { HederaLogo } from '../../public/svg/HederaLogo';
 
-export const Footer: FC = function () {
+const Footer: FC = function () {
   return (
     <footer className="flex flex-col lg:flex-row justify-between lg:items-center py-5 md:border-b md:border-accentGrey px-[5%] dark:text-white ">
       <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-24">
@@ -13,21 +13,21 @@ export const Footer: FC = function () {
         </div>
         <div className="flex flex-col lg:flex-row lg:gap-8 pb-4 lg:pb-0">
           <div className="flex gap-8 pb-4 lg:pb-0 font-semibold text-base">
-            <a href="" target="_blank" rel="noreferrer">
+            <a href="/" target="_blank" rel="noreferrer">
               Hedera
             </a>
-            <a href="" target="_blank" rel="noreferrer">
+            <a href="/" target="_blank" rel="noreferrer">
               Blog
             </a>
-            <a href="" target="_blank" rel="noreferrer">
+            <a href="/" target="_blank" rel="noreferrer">
               Support
             </a>
-            <a href="" target="_blank" rel="noreferrer">
+            <a href="/" target="_blank" rel="noreferrer">
               Press
             </a>
           </div>
           <div className="flex gap-8">
-            <a href="" target="_blank" rel="noreferrer">
+            <a href="/" target="_blank" rel="noreferrer">
               <svg
                 width="24"
                 height="24"
@@ -44,7 +44,7 @@ export const Footer: FC = function () {
                 />
               </svg>
             </a>
-            <a href="" target="_blank" rel="noreferrer">
+            <a href="." target="_blank" rel="noreferrer">
               <svg
                 width="24"
                 height="24"
@@ -61,7 +61,7 @@ export const Footer: FC = function () {
                 />
               </svg>
             </a>
-            <a href="" target="_blank" rel="noreferrer">
+            <a href="/" target="_blank" rel="noreferrer">
               <svg
                 width="24"
                 height="24"
@@ -88,12 +88,15 @@ export const Footer: FC = function () {
       <div className="flex flex-col lg:flex-row lg:gap-8 lg:justify-between lg:items-center">
         <div className="text-xs text-gray-500  pb-2 lg:pb-0">© 2022</div>
         <div className="flex gap-8 text-xs  font-medium underline">
-          <a href="" target="_blank" rel="noreferrer">
+          <a href="/" target="_blank" rel="noreferrer">
             Terms of Service
           </a>
-          <a>Privacy Preferences</a>
+          <a href="/" target="_blank" rel="noreferrer">
+            Privacy Preferences
+          </a>
         </div>
       </div>
     </footer>
   );
 };
+export default Footer;
