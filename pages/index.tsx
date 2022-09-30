@@ -13,6 +13,7 @@ const Home: NextPage = function () {
   const navigateToPage = () => {
     router.push(currentFlowChoice!.href);
   };
+
   return (
     <div>
       <div className="flex flex-col items-center justify-center">
@@ -28,7 +29,7 @@ const Home: NextPage = function () {
               semper nisi quis dolor tincidunt, a venenatis libero bibendum
             </p>
             <div className="flex w-full justify-between md:justify-start md:gap-16">
-              {indexFlow.map((flowItem) => (
+              {indexFlow.map((flowItem: Flow) => (
                 <div
                   aria-hidden="true"
                   onClick={() => setCurrentFlowChoice(flowItem)}

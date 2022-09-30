@@ -1,4 +1,4 @@
-export const NFTSvg = function (props: React.SVGProps<SVGSVGElement>) {
+const NFTSvg = function (props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -10,3 +10,4 @@ export const NFTSvg = function (props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 };
+export default NFTSvg;
