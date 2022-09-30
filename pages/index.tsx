@@ -32,7 +32,8 @@ const Home: NextPage = function () {
             </p>
             <p className="text-sm mt-2 mb-10">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-              semper nisi quis dolor tincidunt, a venenatis libero bibendum.{" "}
+              semper nisi quis dolor tincidunt, a venenatis libero bibendum.
+              {' '}
             </p>
             <div className="flex w-full justify-between md:justify-start md:gap-16">
               {indexFlow.map((flowItem) => (

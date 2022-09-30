@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { CheckSolid } from "../../public/svg/CheckSolid";
 import { classNames } from "../../public/utils/classNames";
 import { Step } from "../../utils/Interfaces";
+
 interface StepsProps {
   steps: Step[];
   currentStepIndex: number;
@@ -29,7 +30,7 @@ export const Steps: FC<StepsProps> = function ({
             <span>{step.name}</span>
           </div>
           {step.index != maxSteps && (
-            <span className="bg-gray-300 mx-1 h-[1px] w-full hidden md:flex"></span>
+            <span className="bg-gray-300 mx-1 h-[1px] w-full hidden md:flex" />
           )}
         </div>
       ))}
