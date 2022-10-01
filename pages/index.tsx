@@ -21,12 +21,12 @@ const Home: NextPage = function () {
           <div className="flex flex-col py-12 max-w-screen-md ">
             <p className="text-3xl font-bold ">Welcome Creator!</p>
 
-            <p className="text-sm font-bold mt-11 ">
-              What would you like to create?
+            <p className="text-sm mt-3 mb-11 ">
+              Thank you for choosing HashGuild! We will guide you through the
+              minting process. To get started, select one of the options below!
             </p>
-            <p className="text-sm mt-2 mb-10">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-              semper nisi quis dolor tincidunt, a venenatis libero bibendum
+            <p className="text-sm font-bold  mb-9">
+              What would you like to create?
             </p>
             <div className="flex w-full justify-between md:justify-start md:gap-16">
               {indexFlow.map((flowItem: Flow) => (
