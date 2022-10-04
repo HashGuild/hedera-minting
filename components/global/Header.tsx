@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 import { HederaLogo } from '../../public/svg/HederaLogo';
-import Button from '../Button';
+import Button from './Button';
 
 const Header: FC = function () {
   const router = useRouter();

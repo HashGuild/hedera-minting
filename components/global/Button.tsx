@@ -1,5 +1,5 @@
 import React, { FC, MouseEventHandler } from 'react';
-import { classNames } from '../public/utils/classNames';
+import classNames from '../../utils/classNames';
 
 interface ButtonProps {
   className: string;

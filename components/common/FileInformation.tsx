@@ -6,7 +6,7 @@ interface FileInformationProps {
   fileName: string;
   fileType: string;
   fileSize: string;
-  number: string;
+  number: number;
   crossIconClick: () => void;
   viewIconClick: () => void;
 }
@@ -21,13 +21,19 @@ const FileInformation: FC<FileInformationProps> = function ({
 }) {
   return (
     <div className="flex items-center gap-x-2">
-      <p className="text-sm font-bold ">{number}</p>
+      <p className="text-sm font-bold ">{`${number + 1}.`}</p>
       <div className="flex shadow-lg items-center justify-between border p-2 rounded-md basis-full">
         <p className="text-sm font-bold basis-1/3 truncate">{fileName}</p>
         <p className="text-sm font-bold basis-1/3 text-center ">{fileType}</p>
         <div className="flex gap-x-2 items-center">
-          <EyeIcon onClick={viewIconClick} />
-          <CrossIcon onClick={crossIconClick} />
+          <EyeIcon
+            onClick={viewIconClick}
+            className="cursor-pointer hover:opacity-80"
+          />
+          <CrossIcon
+            onClick={crossIconClick}
+            className="cursor-pointer  hover:opacity-80"
+          />
           <p className="text-xs px-1 py-0.5 border rounded-sm">{fileSize}</p>
         </div>
       </div>

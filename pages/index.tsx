@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Button from '../components/Button';
-import { classNames } from '../public/utils/classNames';
+import Button from '../components/global/Button';
+import classNames from '../utils/classNames';
 import { indexFlow } from '../utils/Constants';
 import { Flow } from '../utils/Interfaces';
 
