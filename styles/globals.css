@@ -8,6 +8,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+
 }
 
 a {
@@ -17,6 +19,9 @@ a {
 
 * {
   box-sizing: border-box;
+}
+input{
+  @apply outline-none
 }
 
 @media (prefers-color-scheme: dark) {
