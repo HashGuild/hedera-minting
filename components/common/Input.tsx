@@ -14,7 +14,7 @@ const Input = function ({
   labelText,
   labelStyle = '',
   containerStyles = '',
-  toolTipContent,
+  toolTipContent = '',
   iconLeft,
   ...props
 }: InputProps) {

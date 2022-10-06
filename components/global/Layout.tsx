@@ -16,7 +16,13 @@ const Layout: FC<LayoutProps> = function ({ children }) {
       <div className="min-h-screen w-full  flex flex-col">
         <Header />
         <div className="max-w-[90%] min-w-[90%]  mx-auto flex-1">
-          {children}
+          <div className="flex flex-col items-center justify-center">
+            <div className="md:mt-6 md:border md:shadow-md px-0 md:px-32 w-full md:max-w-5xl ">
+              <div className="flex flex-col py-12 max-w-screen-md ">
+                {children}
+              </div>
+            </div>
+          </div>
         </div>
         <Footer />
       </div>
