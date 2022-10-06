@@ -45,11 +45,10 @@ const SellingOptionsSection = function ({
         ))}
       </div>
       <h5 className="text-sm font-bold my-6">Set Price</h5>
-      <p>as</p>
+
       {/* <HbarLogo /> */}
       <Input
         iconLeft={<HbarLogo className="h-5 w-5" />}
-        containerStyles="mt-4 "
         labelText="Listing Price"
         labelStyle="mb-2.5"
         type="text"

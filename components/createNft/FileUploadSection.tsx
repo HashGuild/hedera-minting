@@ -48,7 +48,7 @@ const FileUploadSection = function ({
     if (files && files[0]) {
       const filesArray = Array.from(files);
 
-      const uploaded = [...formData.nftFiles, filesArray];
+      const uploaded = [...formData.nftFiles, ...filesArray];
 
       setFormData({ ...formData, nftFiles: uploaded });
     }
@@ -68,12 +68,19 @@ const FileUploadSection = function ({
   };
 
   const deleteFile = (file: File) => {
+    const newFiles = new DataTransfer();
     const filteredNftFiles = formData.nftFiles.filter(
       (item: File) => item.name !== file.name,
     );
     if (inputFileRef.current !== null) {
-      inputFileRef.current.files = null;
+      const files = inputFileRef?.current?.files!;
+      for (let i = 0; i < files.length; i++) {
+        const storedFile = files[i];
+        if (file.name !== storedFile.name) newFiles.items.add(file); // here you exclude the file. thus removing it.
+      }
+      inputFileRef.current.files = newFiles.files;
     }
+
     setFormData({ ...formData, nftFiles: filteredNftFiles });
   };
   const viewFile = (file: File) => {

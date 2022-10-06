@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import TooltipSvg from '../../public/svg/TooltipSvg';
 import classNames from '../../utils/classNames';
 
@@ -19,36 +19,39 @@ const Tooltip: FC<TooltipProps> = function ({
   TooltipIcon,
   onOpen = () => {},
   onClose = () => {},
-  showContent = false,
+  showContent = true,
 }) {
-  const [showText, setShowText] = useState(showContent);
+  const [showText, setShowText] = useState(false);
 
-  const closeTooltip = useCallback(() => {
+  const closeTooltip = () => {
     setShowText(false);
     onClose();
-  }, [onClose]);
+  };
 
-  const openTooltip = useCallback(() => {
+  const openTooltip = () => {
     setShowText(true);
     onOpen();
-  }, [onOpen]);
-
-  useEffect(() => {
-    if (!showContent) closeTooltip();
-  }, [showContent, closeTooltip]);
+  };
+  const toggleTooltip = () => {
+    if (showText) {
+      closeTooltip();
+    } else {
+      openTooltip();
+    }
+  };
 
   return (
     <span
+      role="presentation"
       className={classNames('inline-block  relative', className)}
-      onMouseEnter={openTooltip}
-      onMouseLeave={closeTooltip}
+      onClick={toggleTooltip}
     >
       {TooltipIcon ? (
         <div className={iconStyle}>{TooltipIcon}</div>
       ) : (
         <TooltipSvg className={iconStyle} />
       )}
-      {showText && (
+      {showText && showContent && (
         <div className=" absolute  border h-fit  shadow-md mt-[1px] right-0 z-10 rounded-md overflow-hidden ">
           {children}
         </div>
