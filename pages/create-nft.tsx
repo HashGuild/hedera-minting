@@ -22,7 +22,7 @@ const CreateNft: NextPage = function () {
     nftThumbnail: null,
     nftPropertiesEnabled: true,
     spinPercent: 0,
-    nftProperties: [{ key: 'background', value: 'red' }],
+    nftProperties: [{ key: '', value: '' }],
     sellingOption: '',
     listingPrice: 0,
   });

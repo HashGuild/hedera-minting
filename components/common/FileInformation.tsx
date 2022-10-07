@@ -22,7 +22,7 @@ const FileInformation: FC<FileInformationProps> = function ({
 }) {
   const [showContent, setShowContent] = useState(false);
   return (
-    <div className="flex items-center shadow-lg">
+    <div className="flex items-center shadow-lg px-2 rounded-sm">
       <p className="text-sm font-bold w-3 ">{`${number + 1}.`}</p>
       <div className="flex items-center justify-between p-2 rounded-md min-w-full">
         <p className="text-sm font-bold w-1/3  truncate">{fileName}</p>
