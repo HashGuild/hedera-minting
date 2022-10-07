@@ -10,6 +10,7 @@ interface TooltipProps {
   TooltipIcon?: React.ReactNode;
   onOpen?: (prams?: any) => void;
   onClose?: (prams?: any) => void;
+  right?: boolean;
 }
 
 const Tooltip: FC<TooltipProps> = function ({
@@ -20,6 +21,7 @@ const Tooltip: FC<TooltipProps> = function ({
   onOpen = () => {},
   onClose = () => {},
   showContent = true,
+  right = true,
 }) {
   const [showText, setShowText] = useState(false);
 
@@ -52,7 +54,12 @@ const Tooltip: FC<TooltipProps> = function ({
         <TooltipSvg className={iconStyle} />
       )}
       {showText && showContent && (
-        <div className=" absolute  border h-fit  shadow-md mt-[1px] right-0 z-10 rounded-md overflow-hidden ">
+        <div
+          className={classNames(
+            ' absolute  border h-fit  shadow-md mt-[1px] z-10 rounded-md overflow-hidden ',
+            right ? ' right-0 ' : 'left-0',
+          )}
+        >
           {children}
         </div>
       )}

@@ -19,9 +19,9 @@ const VerifyAndMintSection = function ({
       <h1 className="font-bold text-3xl">Verify and Mint</h1>
       <h3 className="my-8">Your NFT</h3>
       <picture>
-        <source src={URL.createObjectURL(formData.nftFiles[0])} />
+        <source src={URL.createObjectURL(formData.nftThumbnail!)} />
         <img
-          src={URL.createObjectURL(formData.nftFiles[0])}
+          src={URL.createObjectURL(formData.nftThumbnail!)}
           alt="overlay"
           className="rounded-md w-full h-1/2 mb-8"
         />
@@ -32,15 +32,21 @@ const VerifyAndMintSection = function ({
         <p>{formData.displayName}</p>
       </section>
       <p className="text-sm ">
-        You are minting {formData.nftFiles.length}
-        {formData.nftFiles.length > 1 ? ' NFTs' : ' NFT'}
+        You are minting 1 NFT
         <br />
         <br />
         To proceed with your mint, please click on “Mint Now” below. This will
         open up your Hashpack Wallet to sign the transaction.
       </p>
       <p className="text-xs text-gray-500 mb-10 mt-5">
-        No Hashpack Wallet? Get it here -&gt;
+        No Hashpack Wallet? Get it
+        <a
+          href="https://www.hashpack.app/"
+          className="underline hover:text-slate-600"
+        >
+          {' '}
+          here -&gt;
+        </a>
       </p>
       <Button
         title="Mint Now"

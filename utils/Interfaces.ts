@@ -19,6 +19,7 @@ export type NftForm = {
   tokenName: string;
   creatorName: string;
   displayName: string;
+  nftThumbnail: File | null;
   nftFiles: File[];
   spinRoyaltiesEnabled: boolean;
   spinPercent: number;
@@ -26,5 +27,19 @@ export type NftForm = {
   nftPropertiesEnabled: boolean;
   nftProperties: NftProperty[];
   sellingOption: string;
-  listingPrice: string;
+  listingPrice: number;
+};
+export type NftFormErrors = {
+  tokenNameError: boolean;
+  creatorNameError: boolean;
+  displayNameError: boolean;
+  nftThumbnailError: boolean;
+  nftFilesError: boolean;
+  spinRoyaltiesEnabledError: boolean;
+  spinPercentError: boolean;
+  royaltyWalletsError: boolean;
+  nftPropertiesEnabledError: boolean;
+  nftPropertiesError: boolean;
+  sellingOptionError: boolean;
+  listingPriceError: boolean;
 };
