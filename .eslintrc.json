@@ -14,6 +14,7 @@
           "extensions": [
               ".tsx"
           ]
-      }]
+      }],
+      "import/no-extraneous-dependencies": "off"
   }
 }
