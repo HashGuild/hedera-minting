@@ -11,7 +11,12 @@ import classNames from '../../utils/classNames';
 import formatBytes from '../../utils/formatBytes';
 import getFileName from '../../utils/getFileName';
 import getFileType from '../../utils/getFileType';
-import { NftForm, NftFormErrors } from '../../utils/Interfaces';
+import {
+  NftForm,
+  NftFormErrors,
+  NftInCollection,
+  StepTwoErrors,
+} from '../../utils/Interfaces';
 import ErrorMessage from '../common/ErrorMessage';
 import FileInformation from '../common/FileInformation';
 import Modal from '../common/Modal';
@@ -19,10 +24,10 @@ import Tooltip from '../common/Tooltip';
 import Button from '../global/Button';
 
 interface FileUploadSectionProps {
-  formData: NftForm;
-  setFormData: Dispatch<SetStateAction<NftForm>>;
-  formDataErrors: NftFormErrors;
-  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors>>;
+  formData: NftForm | NftInCollection;
+  setFormData: Dispatch<SetStateAction<NftForm | NftInCollection>>;
+  formDataErrors: NftFormErrors | StepTwoErrors;
+  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors | StepTwoErrors>>;
 }
 
 const FileUploadSection = function ({
@@ -135,6 +140,7 @@ const FileUploadSection = function ({
   const viewFile = (file: File) => {
     setViewImage(true);
     setOverlayImageSrc(URL.createObjectURL(file));
+    window.scrollTo(0, 0);
   };
   return (
     <>
@@ -251,7 +257,7 @@ const FileUploadSection = function ({
           />
         ))}
 
-        {formData.nftFiles.length < 5 && (
+        {formData?.nftFiles?.length < 5 && (
           <Button
             onClick={() => setAddNormalFiles(true)}
             className="bg-black text-white rounded-md w-1/2"

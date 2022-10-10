@@ -1,26 +1,25 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
-import { NftForm, NftFormErrors } from '../../utils/Interfaces';
-import ErrorMessage from '../common/ErrorMessage';
+import { CollectionForm, StepOneErrors } from '../../utils/Interfaces';
 import Input from '../common/Input';
 import Switch from '../common/Switch';
 import Button from '../global/Button';
 
-interface RoyaltiesSectionProps {
-  formData: NftForm;
-  setFormData: Dispatch<SetStateAction<NftForm>>;
+interface CollectionRoyaltiesSectionProps {
+  formData: CollectionForm;
+  setFormData: Dispatch<SetStateAction<CollectionForm>>;
   handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  formDataErrors: NftFormErrors;
-  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors>>;
+  formDataErrors: StepOneErrors;
+  setFormDataErrors: Dispatch<SetStateAction<StepOneErrors>>;
 }
 
-const RoyaltiesSection = function ({
+const CollectionRoyaltiesSection = function ({
   formData,
   handleFormChange,
   setFormData,
   setFormDataErrors,
   formDataErrors,
-}: RoyaltiesSectionProps) {
+}: CollectionRoyaltiesSectionProps) {
   const { spinPercentError } = formDataErrors;
   const addInput = () => {
     const newWallet = '';
@@ -101,8 +100,6 @@ const RoyaltiesSection = function ({
         <div>
           {formData?.royaltyWallets.map((wallet, index: number) => (
             <Input
-              error={spinPercentError}
-              errorMessage="The distribution is not correct. Please revise the total royalty fee or change the allocation. "
               key={index.toFixed(1)}
               toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
               containerStyles="mt-4 "
@@ -134,11 +131,11 @@ const RoyaltiesSection = function ({
                   </section>
                 )
               }
+              error={spinPercentError}
+              errorMessage="The distribution is not correct. Please revise the total royalty fee or change the allocation. "
             />
           ))}
-          {spinPercentError && (
-            <ErrorMessage errorText="The distribution is not correct. Please revise the total royalty fee or change the allocation. " />
-          )}
+
           <Button
             title="Add Wallet"
             className=" w-1/2 bg-black text-white rounded-md mt-5 self-end "
@@ -150,4 +147,4 @@ const RoyaltiesSection = function ({
   );
 };
 
-export default RoyaltiesSection;
+export default CollectionRoyaltiesSection;

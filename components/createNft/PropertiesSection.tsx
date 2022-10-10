@@ -1,16 +1,22 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
-import { NftForm, NftFormErrors, NftProperty } from '../../utils/Interfaces';
+import {
+  NftForm,
+  NftFormErrors,
+  NftInCollection,
+  NftProperty,
+  StepTwoErrors,
+} from '../../utils/Interfaces';
 import Input from '../common/Input';
 import Switch from '../common/Switch';
 import Button from '../global/Button';
 
 interface PropertiesSectionProps {
-  formData: NftForm;
+  formData: NftForm | NftInCollection;
   handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  setFormData: Dispatch<SetStateAction<NftForm>>;
-  formDataErrors: NftFormErrors;
-  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors>>;
+  setFormData: Dispatch<SetStateAction<NftForm | NftInCollection>>;
+  formDataErrors: NftFormErrors | StepTwoErrors;
+  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors | StepTwoErrors>>;
 }
 
 const PropertiesSection = function ({
@@ -89,6 +95,8 @@ const PropertiesSection = function ({
                     ? 'border-red-400'
                     : ''
                 }
+                errorMessage=""
+                error={formDataErrors.nftPropertiesError}
                 placeholder="Key"
                 className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
                 onChange={(e) => {
@@ -109,6 +117,8 @@ const PropertiesSection = function ({
                     : ''
                 }
                 name="value"
+                errorMessage=""
+                error={formDataErrors.nftPropertiesError}
                 placeholder="Value"
                 className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
                 onChange={(e) => {

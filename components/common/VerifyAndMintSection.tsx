@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import { NftForm } from '../../utils/Interfaces';
+import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
 import Button from '../global/Button';
 
 interface VerifyAndMintSectionProps {
-  formData: NftForm;
+  formData: NftForm | NftInCollection;
   setRenderConfirmMint: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -11,9 +11,11 @@ const VerifyAndMintSection = function ({
   formData,
   setRenderConfirmMint,
 }: VerifyAndMintSectionProps) {
+  const isNftForm = nftFormType(formData);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   return (
     <div>
       <h1 className="font-bold text-3xl">Verify and Mint</h1>
@@ -29,7 +31,7 @@ const VerifyAndMintSection = function ({
       <section className="mb-16">
         <p className="text-xs text-gray-500">Creator: {formData.creatorName}</p>
         <p className="text-xl font-semibold">{formData.tokenName}</p>
-        <p>{formData.displayName}</p>
+        <p>{isNftForm ? formData.displayName : ''}</p>
       </section>
       <p className="text-sm ">
         You are minting 1 NFT

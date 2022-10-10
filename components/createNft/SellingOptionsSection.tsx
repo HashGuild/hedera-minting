@@ -2,16 +2,22 @@ import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import HbarLogo from '../../public/svg/HbarLogo';
 import classNames from '../../utils/classNames';
 import { sellingOptions } from '../../utils/Constants';
-import { NftForm, NftFormErrors, SellingOption } from '../../utils/Interfaces';
+import {
+  NftForm,
+  NftFormErrors,
+  NftInCollection,
+  SellingOption,
+  StepTwoErrors,
+} from '../../utils/Interfaces';
 import ErrorMessage from '../common/ErrorMessage';
 import Input from '../common/Input';
 
 interface SellingOptionsSectionProps {
-  formData: NftForm;
-  setFormData: Dispatch<SetStateAction<NftForm>>;
+  formData: NftForm | NftInCollection;
   handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  formDataErrors: NftFormErrors;
-  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors>>;
+  setFormData: Dispatch<SetStateAction<NftForm | NftInCollection>>;
+  formDataErrors: NftFormErrors | StepTwoErrors;
+  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors | StepTwoErrors>>;
 }
 
 const SellingOptionsSection = function ({
@@ -41,7 +47,7 @@ const SellingOptionsSection = function ({
                 ...formDataErrors,
                 sellingOptionError: false,
               });
-              setFormData({ ...formData, sellingOption: option.name });
+              setFormData({ ...formData, sellingOption: option.name! });
             }}
             className={classNames(
               'flex flex-col items-center justify-center gap-y-1 basis-1/2 py-6 border shadow-xl',
@@ -66,16 +72,15 @@ const SellingOptionsSection = function ({
             iconLeft={<HbarLogo className="h-5 w-5" />}
             labelText="Listing Price"
             labelStyle="my-2.5"
+            error={formDataErrors.listingPriceError}
             type="number"
             name="listingPrice"
+            errorMessage="Listing Price cannot be empty"
             placeholder="Listing Price"
             className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 appearance-none "
             onChange={handleFormChange}
             value={formData.listingPrice}
           />
-          {formDataErrors.listingPriceError && (
-            <ErrorMessage errorText="Listing Price cannot be empty" />
-          )}
         </>
       )}
     </section>
