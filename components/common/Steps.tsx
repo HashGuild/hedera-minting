@@ -1,30 +1,43 @@
 import React, { FC } from 'react';
-import { CheckSolid } from '../../public/svg/CheckSolid';
 import classNames from '../../utils/classNames';
-import { Step } from '../../utils/Interfaces';
 
 interface StepsProps {
-  steps: Step[];
+  steps: number[];
   currentStepIndex: number;
 }
 const Steps: FC<StepsProps> = function ({ currentStepIndex, steps }) {
+  const dividerSpan = function (step: number) {
+    if (currentStepIndex === step) {
+      return (
+        <span className=" h-1.5 w-8 md:w-12 rounded-lg last:hidden bg-split-black-white" />
+      );
+    }
+    return (
+      <span
+        className={classNames(
+          ' h-1.5 w-8 md:w-12 rounded-lg last:hidden',
+          currentStepIndex > step ? 'bg-black' : 'bg-gray-200',
+        )}
+      />
+    );
+  };
+
   return (
-    <nav className=" flex items-center flex-col md:flex-row gap-y-1 justify-between py-5 border-b border-accentGrey text-sm whitespace-nowrap">
+    <nav className=" flex items-center md:flex-row gap-y-1 justify-between text-sm whitespace-nowrap px-3">
       {steps?.map((step) => (
         <>
-          <div
+          <span
+            key={step}
             className={classNames(
-              'flex items-center w-full justify-center my-2 md:mt-0 ',
-              currentStepIndex === step.index ? 'text-black' : 'text-gray-400',
+              'my-2 md:mt-0 rounded-full h-8 w-8 flex items-center justify-center border',
+              currentStepIndex === step || currentStepIndex > step
+                ? 'bg-black text-white'
+                : 'bg-gray-200 text-black',
             )}
           >
-            {currentStepIndex > step.index && (
-              <CheckSolid className=" min-h-3 min-w-3 h-3 w-3 md:min-h-5 md:min-w-5 md:h-5 md:w-5 mr-1 md:mr-2 " />
-            )}
-
-            <span>{step.name}</span>
-          </div>
-          <span className="bg-gray-300 h-[1px] w-full  hidden md:flex last:hidden" />
+            {step}
+          </span>
+          {dividerSpan(step)}
         </>
       ))}
     </nav>

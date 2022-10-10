@@ -56,7 +56,7 @@ const Tooltip: FC<TooltipProps> = function ({
       {showText && showContent && (
         <div
           className={classNames(
-            ' absolute  border h-fit  shadow-md mt-[1px] z-10 rounded-md overflow-hidden ',
+            ' absolute  border h-fit  shadow-md mt-[1px] z-20 rounded-md overflow-hidden ',
             right ? ' right-0 ' : 'left-0',
           )}
         >
