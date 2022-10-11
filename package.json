@@ -12,11 +12,15 @@
   },
   "dependencies": {
     "@ganache/console.log": "^0.2.0",
+    "@hashgraph/sdk": "^2.18.3",
+    "axios": "^1.1.2",
+    "dotenv": "^16.0.3",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@truffle/hdwallet-provider": "^2.0.17",
     "@typechain/truffle-v5": "^8.0.1",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^10.0.0",

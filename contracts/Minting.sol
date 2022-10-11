@@ -6,8 +6,6 @@ import "../hedera-smart-contracts/contracts/hts-precompile/IHederaTokenService.s
 import "../hedera-smart-contracts/contracts/hts-precompile/HederaResponseCodes.sol";
 import "../hedera-smart-contracts/contracts/hts-precompile/ExpiryHelper.sol";
 
-import "@ganache/console.log/console.sol";
-
 contract Minting is ExpiryHelper {
     event Error(string message, int256 code);
 
@@ -21,10 +19,7 @@ contract Minting is ExpiryHelper {
         string memory memo,
         int64 maxSupply,
         uint32 autoRenewPeriod
-    ) external view returns (address) {
-        console.log(name);
-        console.log(symbol);
-        console.log(memo);
+    ) external returns (address) {
         IHederaTokenService.TokenKey[]
             memory keys = new IHederaTokenService.TokenKey[](1);
 
@@ -45,16 +40,12 @@ contract Minting is ExpiryHelper {
         token.freezeDefault = false;
         token.expiry = createAutoRenewExpiry(address(this), autoRenewPeriod);
 
-        console.log("LOGS RIGHT HERE YO!");
+        (int256 responseCode, address createdToken) = HederaTokenService.createNonFungibleToken(token);
 
-        // (int256 responseCode, address createdToken) = HederaTokenService
-        //     .createNonFungibleToken(token);
-
-        // if (responseCode != HederaResponseCodes.SUCCESS) {
-        //     // console.log("Code: ", responseCode);
-        //     revert("Failed to create non-fungible token.");
-        // }
-        return address(0x167);
+         if (responseCode != HederaResponseCodes.SUCCESS) {
+             revert("Failed to create non-fungible token.");
+         }
+        return createdToken;
     }
 
     function mintNft(address token, bytes[] memory metadata)

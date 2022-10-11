@@ -41,11 +41,17 @@
  * https://trufflesuite.com/docs/truffle/getting-started/using-the-truffle-dashboard/
  */
 
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+const dotenv = require("dotenv");
+dotenv.config();
+
 require("ts-node").register({
   files: true,
 });
 // require('dotenv').config();
 // const { MNEMONIC, PROJECT_ID } = process.env;
+
+const privKey = process.env.ETH_PRIVATE_KEY.replace("0x", "");
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 
@@ -68,9 +74,12 @@ module.exports = {
     // options below to some value.
     //
     development: {
-      host: "127.0.0.1", // Localhost (default: none)
-      port: 9545, // Standard Ethereum port (default: none)
-      network_id: "*", // Any network (default: none)
+      network_id: process.env.NETWORK_ID,
+      provider: () =>
+        new HDWalletProvider(privKey, process.env.JSON_RPC_RELAY_URL),
+      gas: 4_000_000,
+      gasPrice: 2_000_000_000_000,
+      networkCheckTimeout: 1000 * 60 * 10,
     },
     //
     // An additional network, but with some advanced options…
