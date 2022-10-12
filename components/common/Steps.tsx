@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { CheckSolid } from '../../public/svg/CheckSolid';
-import { classNames } from '../../public/utils/classNames';
+import classNames from '../../utils/classNames';
 import { Step } from '../../utils/Interfaces';
 
 interface StepsProps {
