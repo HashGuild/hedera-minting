@@ -5,34 +5,41 @@ import AddNftStep from '../components/createCollection/AddNftStep';
 import CollectionInfoStep from '../components/createCollection/CollectionInfoStep';
 import VerifyCollectionMint from '../components/createCollection/VerifyCollectionMint';
 import { CollectionForm, StepOneErrors } from '../utils/Interfaces';
+import useWarningOnExit from '../utils/useWarnIfUnsavedChanges';
 
 const CreateNft: NextPage = function () {
-  const [step, setStep] = useState(2);
+  useWarningOnExit(true);
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<CollectionForm>({
     tokenName: '',
     creatorName: '',
     displayName: '',
-    spinRoyaltiesEnabled: true,
+    splitRoyaltiesEnabled: false,
     royaltyWallets: [''],
-    spinPercent: 0,
+    splitPercent: 0,
     nfts: [],
   });
-
   const [stepOneErrors, setStepOneErrors] = useState<StepOneErrors>({
     tokenNameError: true,
     creatorNameError: true,
     displayNameError: true,
-    spinPercentError: false,
-    spinRoyaltiesEnabledError: true,
-    royaltyWalletsError: true,
+    splitPercentError: false,
   });
-
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.type === 'checkbox') {
       setFormData({
         ...formData,
         [event.currentTarget.name]: event.currentTarget.checked,
       });
+      if (
+        !event.currentTarget.checked &&
+        event.currentTarget.name === 'splitRoyaltiesEnabled'
+      ) {
+        setStepOneErrors({
+          ...stepOneErrors,
+          [`splitPercentError`]: false,
+        });
+      }
     } else {
       // form Validation for events.
       if (event.target.value.length === 0) {

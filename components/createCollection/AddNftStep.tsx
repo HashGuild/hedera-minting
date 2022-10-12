@@ -6,7 +6,6 @@ import {
   NftInCollection,
   StepTwoErrors,
 } from '../../utils/Interfaces';
-import Modal from '../common/Modal';
 import BasicNFTSection from '../createNft/BasicNFTSection';
 import FileUploadSection from '../createNft/FileUploadSection';
 import PropertiesSection from '../createNft/PropertiesSection';
@@ -27,7 +26,7 @@ const initialState = {
   nftThumbnail: null,
   nftPropertiesEnabled: false,
   nftProperties: [{ key: '', value: '' }],
-  sellingOption: '',
+  sellingOption: 'Mint Only',
   listingPrice: 0,
 };
 
@@ -38,7 +37,7 @@ const initialErrors = {
   nftFilesError: false,
   nftThumbnailError: false,
   nftPropertiesError: false,
-  sellingOptionError: true,
+  sellingOptionError: false,
   listingPriceError: false,
 };
 const AddNftStep = function ({
@@ -46,8 +45,6 @@ const AddNftStep = function ({
   setFormData,
   formData,
 }: AddNftStepProps) {
-  const [confirmMint, setConfirmMint] = useState(false);
-  const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
   const [addNft, setAddNft] = useState(false);
   const [editNft, setEditNft] = useState(false);
 
@@ -57,6 +54,7 @@ const AddNftStep = function ({
   const [formDataErrors, setFormDataErrors] = useState<
     StepTwoErrors | NftFormErrors
   >(initialErrors);
+
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.type === 'checkbox') {
       setNftFormData({
@@ -109,7 +107,6 @@ const AddNftStep = function ({
       nfts: updatedArray,
     });
   };
-
   const addNftConfirm = () => {
     setAddNft(false);
     setFormData((prev) => ({
@@ -131,6 +128,7 @@ const AddNftStep = function ({
     setFormDataErrors(initialErrors);
     setAddNft(true);
   };
+
   if (!addNft) {
     return (
       <>
@@ -141,7 +139,7 @@ const AddNftStep = function ({
           <div role="presentation" onClick={addNftInCollection}>
             <NFTCard emptyCard />
           </div>
-          {formData.nfts.map((nft) => (
+          {formData?.nfts?.map((nft) => (
             <NFTCard
               deleteNft={() => deleteNft(nft.tokenName)}
               editNft={() => editNftItem(nft)}
@@ -153,7 +151,7 @@ const AddNftStep = function ({
         </div>
         <Button
           onClick={() => {
-            setOpenConfirmMintModal(true);
+            setStep((prev) => prev + 1);
           }}
           title="Mint Collection"
           className="w-full bg-black mt-6 text-white rounded-md disabled:bg-black/40"
@@ -165,45 +163,6 @@ const AddNftStep = function ({
           title="Go Back and Change Data"
           className="w-full bg-white mt-2 text-black rounded-md border disabled:bg-black/40"
         />
-        <Modal
-          setShowModal={setOpenConfirmMintModal}
-          showModal={openConfirmMintModal}
-        >
-          <div className="flex flex-col p-3 z-20">
-            <h2 className="font-bold text-lg">Are you ready?</h2>
-            <p className="font-sm text-gray-400 mt-2">
-              By moving ahead, you will not be able to modify your NFTs or the
-              collection again. Please make sure that everything is setup
-              properly.
-            </p>
-            <div className="flex px-2 my-6 gap-2 items-center">
-              <input
-                type="checkBox"
-                onChange={(e) => setConfirmMint(e.currentTarget.checked)}
-                name="confirmMinting"
-                className=" h-6 w-6 bordera accent-black checked:rounded-md"
-              />
-              <p className="text-xs">
-                I’ve read and understood that there is no going back
-              </p>
-            </div>
-          </div>
-          <Button
-            onClick={() => {
-              setStep((prev) => prev + 1);
-            }}
-            disabled={!confirmMint && formData.nfts.length > 0}
-            title="Confirm"
-            className="w-full bg-black  text-white rounded-md  disabled:bg-black/40"
-          />
-          <Button
-            onClick={() => {
-              setOpenConfirmMintModal(false);
-            }}
-            title="Cancel"
-            className="w-full bg-white mt-4 border  text-black rounded-md"
-          />
-        </Modal>
       </>
     );
   }
@@ -233,11 +192,11 @@ const AddNftStep = function ({
       />
       <hr />
       <SellingOptionsSection
-        formDataErrors={formDataErrors}
-        setFormDataErrors={setFormDataErrors}
-        formData={nftFormData}
-        setFormData={setNftFormData}
-        handleFormChange={handleFormChange}
+      // formDataErrors={formDataErrors}
+      // setFormDataErrors={setFormDataErrors}
+      // formData={nftFormData}
+      // setFormData={setNftFormData}
+      // handleFormChange={handleFormChange}
       />
 
       <hr />

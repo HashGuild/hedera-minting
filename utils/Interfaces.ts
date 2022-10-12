@@ -21,8 +21,8 @@ export type NftForm = {
   displayName: string;
   nftThumbnail: File | null;
   nftFiles: File[];
-  spinRoyaltiesEnabled: boolean;
-  spinPercent: number;
+  splitRoyaltiesEnabled: boolean;
+  splitPercent: number;
   royaltyWallets: string[];
   nftPropertiesEnabled: boolean;
   nftProperties: NftProperty[];
@@ -35,9 +35,7 @@ export type NftFormErrors = {
   displayNameError: boolean;
   nftThumbnailError: boolean;
   nftFilesError: boolean;
-  spinRoyaltiesEnabledError: boolean;
-  spinPercentError: boolean;
-  royaltyWalletsError: boolean;
+  splitPercentError: boolean;
   nftPropertiesError: boolean;
   sellingOptionError: boolean;
   listingPriceError: boolean;
@@ -53,10 +51,7 @@ export type StepOneErrors = Omit<
 >;
 export type StepTwoErrors = Omit<
   NftFormErrors,
-  | 'spinPercentError'
-  | 'spinRoyaltiesEnabledError'
-  | 'royaltyWalletsError'
-  | 'displayNameError'
+  'splitPercentError' | 'displayNameError'
 > & {
   descriptionError: boolean;
 };

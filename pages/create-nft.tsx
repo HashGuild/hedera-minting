@@ -22,29 +22,27 @@ const CreateNft: NextPage = function () {
     creatorName: '',
     displayName: '',
     nftFiles: [],
-    spinRoyaltiesEnabled: true,
+    splitRoyaltiesEnabled: false,
     royaltyWallets: [''],
     nftThumbnail: null,
     nftPropertiesEnabled: true,
-    spinPercent: 0,
+    splitPercent: 0,
     nftProperties: [{ key: '', value: '' }],
-    sellingOption: '',
+    sellingOption: 'Mint Only',
     listingPrice: 0,
   });
   const [formDataErrors, setFormDataErrors] = useState<
     NftFormErrors | StepTwoErrors
   >({
-    tokenNameError: false,
-    creatorNameError: false,
-    displayNameError: false,
+    tokenNameError: true,
+    creatorNameError: true,
+    displayNameError: true,
     nftFilesError: false,
-    spinRoyaltiesEnabledError: false,
-    royaltyWalletsError: false,
     nftThumbnailError: false,
-    spinPercentError: false,
-    nftPropertiesError: false,
-    sellingOptionError: true,
-    listingPriceError: false,
+    splitPercentError: true,
+    nftPropertiesError: true,
+    sellingOptionError: false,
+    listingPriceError: true,
   });
 
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -119,13 +117,7 @@ const CreateNft: NextPage = function () {
             handleFormChange={handleFormChange}
           />
           <hr />
-          <SellingOptionsSection
-            formDataErrors={formDataErrors}
-            setFormDataErrors={setFormDataErrors}
-            formData={formData}
-            setFormData={setFormData}
-            handleFormChange={handleFormChange}
-          />
+          <SellingOptionsSection />
 
           <hr />
 

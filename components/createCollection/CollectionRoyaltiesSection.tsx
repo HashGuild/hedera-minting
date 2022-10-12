@@ -1,6 +1,7 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
 import { CollectionForm, StepOneErrors } from '../../utils/Interfaces';
+import ErrorMessage from '../common/ErrorMessage';
 import Input from '../common/Input';
 import Switch from '../common/Switch';
 import Button from '../global/Button';
@@ -20,7 +21,7 @@ const CollectionRoyaltiesSection = function ({
   setFormDataErrors,
   formDataErrors,
 }: CollectionRoyaltiesSectionProps) {
-  const { spinPercentError } = formDataErrors;
+  const { splitPercentError } = formDataErrors;
   const addInput = () => {
     const newWallet = '';
     setFormData({
@@ -28,9 +29,9 @@ const CollectionRoyaltiesSection = function ({
       royaltyWallets: [...formData.royaltyWallets, newWallet],
     });
   };
-  const deleteInput = (wallet: string) => {
+  const deleteInput = (index: number) => {
     const updatedArray = formData.royaltyWallets.filter(
-      (item) => item !== wallet,
+      (_, walletIndex) => walletIndex !== index,
     );
     setFormData({
       ...formData,
@@ -50,19 +51,35 @@ const CollectionRoyaltiesSection = function ({
     const newArr = formData.royaltyWallets;
     newArr[index] = e.target.value;
     setFormData({ ...formData, royaltyWallets: newArr });
-    if (royaltySum() > formData.spinPercent) {
+    if (royaltySum() > formData.splitPercent) {
       setFormDataErrors({
         ...formDataErrors,
-        spinPercentError: true,
+        splitPercentError: true,
       });
     } else {
       setFormDataErrors({
         ...formDataErrors,
-        spinPercentError: false,
+        splitPercentError: false,
       });
     }
   };
 
+  useEffect(() => {
+    function resetRoyalties() {
+      if (!formData.splitRoyaltiesEnabled) {
+        setFormData((prev) => ({
+          ...prev,
+          splitPercent: 0,
+          royaltyWallets: [''],
+        }));
+        setFormDataErrors((errors) => ({
+          ...errors,
+          [`splitPercentError`]: false,
+        }));
+      }
+    }
+    resetRoyalties();
+  }, [formData.splitRoyaltiesEnabled, setFormData, setFormDataErrors]);
   return (
     <section className="my-10 flex flex-col">
       <h4 className="text-lg font-bold">Royalties</h4>
@@ -73,7 +90,7 @@ const CollectionRoyaltiesSection = function ({
       </p>
       <span className="flex items-center justify-between text-sm font-bold my-6">
         <h5>Total Amount</h5>
-        <h5>{` ${formData?.spinPercent} %`}</h5>
+        <h5>{` ${formData?.splitPercent} %`}</h5>
       </span>
 
       <input
@@ -82,21 +99,24 @@ const CollectionRoyaltiesSection = function ({
         min={0}
         max={50}
         step={0.5}
-        defaultValue={formData?.spinPercent}
+        disabled={!formData.splitRoyaltiesEnabled}
+        value={formData?.splitPercent}
         onChange={handleFormChange}
-        name="spinPercent"
+        name="splitPercent"
       />
       <span className="flex items-center justify-between text-sm font-bold my-6">
         <h5>Spin Royalties</h5>
         <Switch
-          labelFor="spinRoyaltiesEnabled"
-          checked={formData.spinRoyaltiesEnabled}
-          name="spinRoyaltiesEnabled"
-          onChange={handleFormChange}
+          labelFor="splitRoyaltiesEnabled"
+          checked={formData.splitRoyaltiesEnabled}
+          name="splitRoyaltiesEnabled"
+          onChange={(e) => {
+            handleFormChange(e);
+          }}
         />
       </span>
 
-      {formData?.spinRoyaltiesEnabled && (
+      {formData?.splitRoyaltiesEnabled && (
         <div>
           {formData?.royaltyWallets.map((wallet, index: number) => (
             <Input
@@ -109,7 +129,7 @@ const CollectionRoyaltiesSection = function ({
               name="royaltyWallet"
               required
               inputContainerStyles={
-                spinPercentError && formData.royaltyWallets.at(-1) === wallet
+                splitPercentError && formData.royaltyWallets.at(-1) === wallet
                   ? 'border-red-400 stroke-red-400'
                   : ''
               }
@@ -125,24 +145,27 @@ const CollectionRoyaltiesSection = function ({
                   <section
                     role="presentation"
                     className="p-2  h-6 w-6 flex items-center bg-gray-300 rounded-full hover:bg-gray-300/80 "
-                    onClick={() => deleteInput(wallet)}
+                    onClick={() => deleteInput(index)}
                   >
                     <DeleteIcon />
                   </section>
                 )
               }
-              error={spinPercentError}
-              errorMessage="The distribution is not correct. Please revise the total royalty fee or change the allocation. "
+              error={splitPercentError}
+              errorMessage=""
             />
           ))}
-
-          <Button
-            title="Add Wallet"
-            className=" w-1/2 bg-black text-white rounded-md mt-5 self-end "
-            onClick={addInput}
-          />
+          {splitPercentError && (
+            <ErrorMessage errorText="The distribution is not correct. Please revise the total royalty fee or change the allocation. " />
+          )}
         </div>
       )}
+      <Button
+        title="Add Wallet"
+        disabled={!formData.splitRoyaltiesEnabled}
+        className=" w-1/2 bg-black text-white rounded-md mt-5 self-end disabled:bg-black/40 "
+        onClick={addInput}
+      />
     </section>
   );
 };

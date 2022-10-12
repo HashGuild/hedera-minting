@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CollectionForm } from '../../utils/Interfaces';
+import ErrorMessage from '../common/ErrorMessage';
+import Modal from '../common/Modal';
 import Button from '../global/Button';
 
 type VerifyCollectionMintProps = {
@@ -9,6 +11,8 @@ type VerifyCollectionMintProps = {
 const VerifyCollectionMint = function ({
   formData,
 }: VerifyCollectionMintProps) {
+  const [confirmMint, setConfirmMint] = useState(false);
+  const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
   return (
     <>
       <h1 className="text-3xl mt-16 font-bold">Verify and Mint</h1>
@@ -51,11 +55,55 @@ const VerifyCollectionMint = function ({
 
       <Button
         onClick={() => {
-          console.log('need hook');
+          setOpenConfirmMintModal(true);
         }}
         title="Mint Now"
         className="w-full bg-black mt-6 mb-20 text-white rounded-md disabled:bg-black/40"
       />
+      <Modal
+        setShowModal={setOpenConfirmMintModal}
+        showModal={openConfirmMintModal}
+      >
+        <div className="flex flex-col p-3 z-20">
+          <h2 className="font-bold text-lg">Are you ready?</h2>
+          <p className="font-sm text-gray-400 mt-2">
+            By moving ahead, you will not be able to modify your NFTs or the
+            collection again. Please make sure that everything is setup
+            properly.
+          </p>
+          <div className="flex px-2 my-6 gap-2 items-center">
+            <input
+              type="checkBox"
+              onChange={(e) => setConfirmMint(e.currentTarget.checked)}
+              name="confirmMinting"
+              className=" h-6 w-6 bordera accent-black checked:rounded-md"
+            />
+            <p className="text-xs">
+              I’ve read and understood that there is no going back
+            </p>
+          </div>
+          {formData.nfts.length === 0 && (
+            <ErrorMessage errorText="There should be at least one NFT." />
+          )}
+        </div>
+
+        <Button
+          onClick={() => {
+            console.log('need hook');
+          }}
+          disabled={!(formData.nfts.length > 0 && !confirmMint)}
+          title="Confirm"
+          className="w-full bg-black  text-white rounded-md  disabled:bg-black/40"
+        />
+
+        <Button
+          onClick={() => {
+            setOpenConfirmMintModal(false);
+          }}
+          title="Cancel"
+          className="w-full bg-white mt-4 border  text-black rounded-md"
+        />
+      </Modal>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
 import {
   NftForm,
@@ -61,6 +61,28 @@ const PropertiesSection = function ({
     }
     setFormData({ ...formData, nftProperties: newArr });
   };
+
+  useEffect(() => {
+    function resetProperties() {
+      if (!formData.nftPropertiesEnabled) {
+        setFormData((prev) => ({
+          ...prev,
+          nftProperties: [{ key: '', value: '' }],
+        }));
+        setFormDataErrors((errors) => ({
+          ...errors,
+          [`nftPropertiesError`]: false,
+        }));
+      } else {
+        setFormDataErrors((errors) => ({
+          ...errors,
+          [`nftPropertiesError`]: true,
+        }));
+      }
+    }
+    resetProperties();
+  }, [formData.nftPropertiesEnabled, setFormData, setFormDataErrors]);
+
   return (
     <section className="my-10 flex flex-col">
       <h4 className="text-lg font-bold">Properties</h4>
