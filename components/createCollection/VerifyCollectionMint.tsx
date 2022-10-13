@@ -91,7 +91,7 @@ const VerifyCollectionMint = function ({
           onClick={() => {
             console.log('need hook');
           }}
-          disabled={!(formData.nfts.length > 0 && !confirmMint)}
+          disabled={!confirmMint}
           title="Confirm"
           className="w-full bg-black  text-white rounded-md  disabled:bg-black/40"
         />
