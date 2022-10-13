@@ -45,7 +45,7 @@ const Tooltip: FC<TooltipProps> = function ({
   return (
     <span
       role="presentation"
-      className={classNames('inline-block  relative', className)}
+      className={classNames('inline-block  relative cursor-pointer', className)}
       onClick={toggleTooltip}
     >
       {TooltipIcon ? (
