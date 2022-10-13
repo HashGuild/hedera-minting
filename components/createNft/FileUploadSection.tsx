@@ -209,7 +209,7 @@ const FileUploadSection = function ({
             </p>
             <Button
               title="Add Files"
-              className="bg-black text-white w-full rounded-md"
+              className="bg-black text-white w-full rounded-md hover:bg-black/80 z-10"
               onClick={onButtonClickThumbnail}
             />
           </label>
@@ -302,7 +302,7 @@ const FileUploadSection = function ({
             </p>
             <Button
               title="Add Files"
-              className="bg-black text-white w-full rounded-md"
+              className="bg-black text-white w-full rounded-md hover:bg-black/80 z-10"
               onClick={onButtonClick}
             />
           </label>
