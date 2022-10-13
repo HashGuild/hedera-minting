@@ -25,7 +25,7 @@ const CreateNft: NextPage = function () {
     splitRoyaltiesEnabled: false,
     royaltyWallets: [''],
     nftThumbnail: null,
-    nftPropertiesEnabled: true,
+    nftPropertiesEnabled: false,
     splitPercent: 0,
     nftProperties: [{ key: '', value: '' }],
     sellingOption: 'Mint Only',
@@ -38,13 +38,12 @@ const CreateNft: NextPage = function () {
     creatorNameError: true,
     displayNameError: true,
     nftFilesError: false,
-    nftThumbnailError: false,
+    nftThumbnailError: true,
     splitPercentError: true,
     nftPropertiesError: true,
     sellingOptionError: false,
-    listingPriceError: true,
+    listingPriceError: false,
   });
-
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.type === 'checkbox') {
       setFormData({

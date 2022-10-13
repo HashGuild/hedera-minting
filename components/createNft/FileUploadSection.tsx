@@ -43,6 +43,7 @@ const FileUploadSection = function ({
   const [overlayImageSrc, setOverlayImageSrc] = useState('');
   const [addThumbnail, setAddThumbnail] = useState(false);
   const [addNormalFiles, setAddNormalFiles] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   const handleDrag = function (e: DragEvent<HTMLLabelElement>) {
     e.preventDefault();
@@ -77,6 +78,7 @@ const FileUploadSection = function ({
 
   const handleChange = function (e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
+    setFocus(true);
     const { files } = e.target;
     if (e.target.multiple) {
       if (files && files[0]) {
@@ -142,6 +144,7 @@ const FileUploadSection = function ({
     setOverlayImageSrc(URL.createObjectURL(file));
     window.scrollTo(0, 0);
   };
+
   return (
     <>
       <Modal
@@ -169,7 +172,7 @@ const FileUploadSection = function ({
       <section className=" space-y-3 text-xs mb-14 max-w-full ">
         <p className="font-bold  text-sm">Thumbnail</p>
         <p>The thumbnail needs to be an image.</p>
-        {formDataErrors.nftThumbnailError && (
+        {formDataErrors.nftThumbnailError && focus && (
           <ErrorMessage errorText="Thumbnail is required." />
         )}
         <Modal setShowModal={setAddThumbnail} showModal={addThumbnail}>
@@ -182,7 +185,7 @@ const FileUploadSection = function ({
             onDrop={handleDrop}
             htmlFor="input-file-upload"
             className={classNames(
-              'h-72 px-20 border-black border-dashed w-full rounded-xl border-2 flex flex-col cursor-pointer items-center justify-center',
+              'h-72 px-20 border-black border-dashed  w-full rounded-xl border-2 flex flex-col cursor-pointer items-center justify-center',
               dragActive ? 'bg-black/20' : '',
             )}
           >
@@ -193,6 +196,7 @@ const FileUploadSection = function ({
               name="nftThumbnail"
               id="input-file-upload"
               multiple={false}
+              required
               className="hidden"
               onChange={handleChange}
             />

@@ -35,7 +35,7 @@ const initialErrors = {
   creatorNameError: true,
   descriptionError: true,
   nftFilesError: false,
-  nftThumbnailError: false,
+  nftThumbnailError: true,
   nftPropertiesError: false,
   sellingOptionError: false,
   listingPriceError: false,
