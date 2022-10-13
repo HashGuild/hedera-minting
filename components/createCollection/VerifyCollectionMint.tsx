@@ -11,11 +11,34 @@ type VerifyCollectionMintProps = {
 const VerifyCollectionMint = function ({
   formData,
 }: VerifyCollectionMintProps) {
+  const [error] = useState(false);
+  const [success] = useState(false);
+  const [waiting] = useState(false);
   const [confirmMint, setConfirmMint] = useState(false);
   const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
   return (
     <>
-      <h1 className="text-3xl mt-16 font-bold">Verify and Mint</h1>
+      {waiting || error ? (
+        <div className="py-6 px-2 my-5 text-xs rounded-lg bg-black text-white">
+          {waiting && (
+            <p>
+              Waiting for you to sign the transaction.
+              <br />
+              Try Again -&gt;
+            </p>
+          )}
+
+          {error && (
+            <p>
+              Something went wrong while minting your collection. <br />
+              Please try again. Troubleshooting -&gt;
+            </p>
+          )}
+        </div>
+      ) : null}
+      <h1 className="text-3xl mt-16 font-bold">
+        {success ? 'Success!' : 'Verify and Mint'}
+      </h1>
       <h4 className="text-lg font-bold mt-8 ">Your Collection Details</h4>
       <div className="my-3 grid grid-cols-3 gap-2">
         {formData.nfts.slice(0, 6).map((nft) => (
@@ -34,32 +57,54 @@ const VerifyCollectionMint = function ({
       </p>
 
       <hr className="my-10" />
-      <p>
-        You are minting <strong>{formData?.nfts?.length} Nfts.</strong>
-      </p>
-      <p className="mt-3">
-        To proceed with your collection mint, please click on “Mint Now” below.
-        This will open up your Hashpack Wallet to sign the transaction.
-      </p>
-      <p className="text-xs text-gray-500 mb-10 mt-5">
-        No Hashpack Wallet? Get it
-        <a
-          href="https://www.hashpack.app/"
-          className="underline hover:text-slate-600"
-          target="_parent"
-        >
-          {' '}
-          here -&gt;
-        </a>
-      </p>
 
-      <Button
-        onClick={() => {
-          setOpenConfirmMintModal(true);
-        }}
-        title="Mint Now"
-        className="w-full bg-black mt-6 mb-20 text-white rounded-md disabled:bg-black/40"
-      />
+      {success ? (
+        <p>
+          You have just created your Collection {formData.displayName}.
+          Congratulations.
+        </p>
+      ) : (
+        <>
+          <p>
+            You are minting <strong>{formData?.nfts?.length} Nfts.</strong>
+          </p>
+          <p className="mt-3">
+            To proceed with your collection mint, please click on “Mint Now”
+            below. This will open up your Hashpack Wallet to sign the
+            transaction.
+          </p>
+          <p className="text-xs text-gray-500 mb-10 mt-5">
+            No Hashpack Wallet? Get it
+            <a
+              href="https://www.hashpack.app/"
+              className="underline hover:text-slate-600"
+              target="_parent"
+            >
+              {' '}
+              here -&gt;
+            </a>
+          </p>
+        </>
+      )}
+      <div className=" mt-6">
+        <Button
+          onClick={() => {
+            setOpenConfirmMintModal(true);
+          }}
+          title={success ? 'Mint More' : 'Mint Now'}
+          className="w-full bg-black text-white   mb-4 rounded-md disabled:bg-black/40"
+        />
+        {success && (
+          <Button
+            onClick={() => {
+              console.log('need hook');
+            }}
+            title="List your Collection on Hashguild."
+            className="w-full bg-white border mb-20 border-black text-black rounded-md"
+          />
+        )}
+      </div>
+
       <Modal
         setShowModal={setOpenConfirmMintModal}
         showModal={openConfirmMintModal}
