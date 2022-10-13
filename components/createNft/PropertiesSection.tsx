@@ -33,9 +33,9 @@ const PropertiesSection = function ({
       nftProperties: [...formData.nftProperties, { ...newProperty }],
     });
   };
-  const deleteInput = (property: NftProperty) => {
+  const deleteInput = (propertyIndex: number) => {
     const updatedArray = formData.nftProperties.filter(
-      (item) => item.key !== property.key,
+      (_, index) => index !== propertyIndex,
     );
     setFormData({
       ...formData,
@@ -151,7 +151,7 @@ const PropertiesSection = function ({
                     <section
                       role="presentation"
                       className="p-2  h-6 w-6 flex items-center bg-gray-300 rounded-full hover:bg-gray-300/80 "
-                      onClick={() => deleteInput(property)}
+                      onClick={() => deleteInput(index)}
                     >
                       <DeleteIcon />
                     </section>
