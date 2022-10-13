@@ -106,7 +106,7 @@ const RoyaltiesSection = function ({
         name="splitPercent"
       />
       <span className="flex items-center justify-between text-sm font-bold my-6">
-        <h5>Spin Royalties</h5>
+        <h5>Split Royalties</h5>
         <Switch
           labelFor="splitRoyaltiesEnabled"
           checked={formData.splitRoyaltiesEnabled}
