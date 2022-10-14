@@ -32,6 +32,11 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fontsource/inter@^4.5.13":
+  version "4.5.13"
+  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.13.tgz#db4b0177992091816962c4a4a24b1e060cc750bf"
+  integrity sha512-nABtF6jNZZHrotLRiGBByhG7NKJGJHgMbX5W8v6C/7nSdyiWtMRfZX7AMIECDLYGUOEArZDeVO/SbkgwKLrLJw==
+
 "@humanwhocodes/config-array@^0.10.5":
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.10.5.tgz#bb679745224745fff1e9a41961c1d45a49f81c04"
