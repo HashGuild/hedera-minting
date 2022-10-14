@@ -7,19 +7,13 @@ import "../hedera-smart-contracts/contracts/hts-precompile/HederaResponseCodes.s
 import "../hedera-smart-contracts/contracts/hts-precompile/ExpiryHelper.sol";
 
 contract Minting is ExpiryHelper {
-    event Error(string message, int256 code);
-
-    function hello() external pure returns (string memory) {
-        return "Hello, World";
-    }
-
     function createNft(
         string memory name,
         string memory symbol,
         string memory memo,
         int64 maxSupply,
         uint32 autoRenewPeriod
-    ) external returns (address) {
+    ) external payable returns (address) {
         IHederaTokenService.TokenKey[]
             memory keys = new IHederaTokenService.TokenKey[](1);
 
@@ -33,18 +27,19 @@ contract Minting is ExpiryHelper {
         token.name = name;
         token.symbol = symbol;
         token.memo = memo;
-        token.treasury = address(this);
+        token.treasury = msg.sender;
         token.tokenSupplyType = true;
         token.maxSupply = maxSupply;
         token.tokenKeys = keys;
         token.freezeDefault = false;
-        token.expiry = createAutoRenewExpiry(address(this), autoRenewPeriod);
+        token.expiry = createAutoRenewExpiry(msg.sender, autoRenewPeriod);
 
-        (int256 responseCode, address createdToken) = HederaTokenService.createNonFungibleToken(token);
+        (int256 responseCode, address createdToken) = HederaTokenService
+            .createNonFungibleToken(token);
 
-         if (responseCode != HederaResponseCodes.SUCCESS) {
-             revert("Failed to create non-fungible token.");
-         }
+        if (responseCode != HederaResponseCodes.SUCCESS) {
+            revert("Failed to create non-fungible token.");
+        }
         return createdToken;
     }
 
@@ -60,25 +55,5 @@ contract Minting is ExpiryHelper {
         }
 
         return serials[0];
-    }
-
-    function transferNft(
-        address token,
-        address receiver,
-        int64 serial
-    ) external returns (int256) {
-        HederaTokenService.associateToken(receiver, token);
-        int256 response = HederaTokenService.transferNFT(
-            token,
-            address(this),
-            receiver,
-            serial
-        );
-
-        if (response != HederaResponseCodes.SUCCESS) {
-            revert("Failed to transfer non-fungible token.");
-        }
-
-        return response;
     }
 }

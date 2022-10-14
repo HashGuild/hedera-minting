@@ -9,17 +9,17 @@ export interface MintingContract extends Truffle.Contract<MintingInstance> {
   "new"(meta?: Truffle.TransactionDetails): Promise<MintingInstance>;
 }
 
-export interface Error {
-  name: "Error";
+export interface Log {
+  name: "Log";
   args: {
-    message: string;
-    code: BN;
+    name: string;
+    msg: BN;
     0: string;
     1: BN;
   };
 }
 
-type AllEvents = Error;
+type AllEvents = Log;
 
 export interface MintingInstance extends Truffle.ContractInstance {
   /**
@@ -325,14 +325,44 @@ export interface MintingInstance extends Truffle.ContractInstance {
 
   hello(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-  createNft(
-    name: string,
-    symbol: string,
-    memo: string,
-    maxSupply: number | BN | string,
-    autoRenewPeriod: number | BN | string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<string>;
+  createNft: {
+    (
+      name: string,
+      symbol: string,
+      memo: string,
+      maxSupply: number | BN | string,
+      autoRenewPeriod: number | BN | string,
+      treasury: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      name: string,
+      symbol: string,
+      memo: string,
+      maxSupply: number | BN | string,
+      autoRenewPeriod: number | BN | string,
+      treasury: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    sendTransaction(
+      name: string,
+      symbol: string,
+      memo: string,
+      maxSupply: number | BN | string,
+      autoRenewPeriod: number | BN | string,
+      treasury: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      name: string,
+      symbol: string,
+      memo: string,
+      maxSupply: number | BN | string,
+      autoRenewPeriod: number | BN | string,
+      treasury: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
 
   mintNft: {
     (
@@ -688,14 +718,44 @@ export interface MintingInstance extends Truffle.ContractInstance {
 
     hello(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
-    createNft(
-      name: string,
-      symbol: string,
-      memo: string,
-      maxSupply: number | BN | string,
-      autoRenewPeriod: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
+    createNft: {
+      (
+        name: string,
+        symbol: string,
+        memo: string,
+        maxSupply: number | BN | string,
+        autoRenewPeriod: number | BN | string,
+        treasury: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        name: string,
+        symbol: string,
+        memo: string,
+        maxSupply: number | BN | string,
+        autoRenewPeriod: number | BN | string,
+        treasury: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      sendTransaction(
+        name: string,
+        symbol: string,
+        memo: string,
+        maxSupply: number | BN | string,
+        autoRenewPeriod: number | BN | string,
+        treasury: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        name: string,
+        symbol: string,
+        memo: string,
+        maxSupply: number | BN | string,
+        autoRenewPeriod: number | BN | string,
+        treasury: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
 
     mintNft: {
       (

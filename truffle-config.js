@@ -77,9 +77,9 @@ module.exports = {
       network_id: process.env.NETWORK_ID,
       provider: () =>
         new HDWalletProvider(privKey, process.env.JSON_RPC_RELAY_URL),
-      gas: 4_000_000,
-      gasPrice: 2_000_000_000_000,
-      networkCheckTimeout: 1000 * 60 * 10,
+      gas: 8500000,
+      // gasPrice: 200_000_000_000,
+      gasPrice: 200_000_000_0000,
     },
     //
     // An additional network, but with some advanced options…
