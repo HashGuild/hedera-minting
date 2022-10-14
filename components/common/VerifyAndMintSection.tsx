@@ -62,7 +62,7 @@ const VerifyAndMintSection = function ({
             Creator: {formData.creatorName}
           </p>
           <p className="text-xl font-semibold">{formData.tokenName}</p>
-          <p>{isNftForm ? formData.displayName : ''}</p>
+          <p className=" my-3">{isNftForm ? formData.description : ''}</p>
           <p className="text-sm ">
             You are minting 1 NFT
             <br />

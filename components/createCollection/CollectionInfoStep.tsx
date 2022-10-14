@@ -6,7 +6,9 @@ import CollectionRoyaltiesSection from './CollectionRoyaltiesSection';
 
 export interface CollectionInfoStepProps {
   setStep: Dispatch<SetStateAction<number>>;
-  handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleFormChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   formData: CollectionForm;
   setFormData: Dispatch<SetStateAction<CollectionForm>>;
   stepOneErrors: StepOneErrors;

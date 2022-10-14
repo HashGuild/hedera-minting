@@ -14,6 +14,7 @@ const CreateNft: NextPage = function () {
     tokenName: '',
     creatorName: '',
     displayName: '',
+    description: '',
     splitRoyaltiesEnabled: false,
     royaltyWallets: [''],
     splitPercent: 0,
@@ -24,15 +25,19 @@ const CreateNft: NextPage = function () {
     creatorNameError: true,
     displayNameError: true,
     splitPercentError: false,
+    descriptionError: true,
   });
-  const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFormChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     if (event.currentTarget.type === 'checkbox') {
       setFormData({
         ...formData,
-        [event.currentTarget.name]: event.currentTarget.checked,
+        [event.currentTarget.name]: (event.currentTarget as HTMLInputElement)
+          .checked,
       });
       if (
-        !event.currentTarget.checked &&
+        !(event.currentTarget as HTMLInputElement).checked &&
         event.currentTarget.name === 'splitRoyaltiesEnabled'
       ) {
         setStepOneErrors({

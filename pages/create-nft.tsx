@@ -22,6 +22,7 @@ const CreateNft: NextPage = function () {
     creatorName: '',
     displayName: '',
     nftFiles: [],
+    description: '',
     splitRoyaltiesEnabled: false,
     royaltyWallets: [''],
     nftThumbnail: null,
@@ -37,6 +38,7 @@ const CreateNft: NextPage = function () {
     tokenNameError: true,
     creatorNameError: true,
     displayNameError: true,
+    descriptionError: true,
     nftFilesError: false,
     nftThumbnailError: true,
     splitPercentError: true,
@@ -44,11 +46,15 @@ const CreateNft: NextPage = function () {
     sellingOptionError: false,
     listingPriceError: false,
   });
-  const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
+
+  const handleFormChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     if (event.currentTarget.type === 'checkbox') {
       setFormData({
         ...formData,
-        [event.currentTarget.name]: event.currentTarget.checked,
+        [event.currentTarget.name]: (event.currentTarget as HTMLInputElement)
+          .checked,
       });
     } else {
       // form Validation for events.

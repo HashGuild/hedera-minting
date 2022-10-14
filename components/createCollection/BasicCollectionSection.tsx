@@ -1,10 +1,13 @@
 import React, { ChangeEvent } from 'react';
 import { CollectionForm, StepOneErrors } from '../../utils/Interfaces';
 import Input from '../common/Input';
+import TextArea from '../common/TextArea';
 import Tooltip from '../common/Tooltip';
 
 interface BasicCollectionSectionProps {
-  handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleFormChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   formData: CollectionForm;
   formDataErrors: StepOneErrors;
 }
@@ -81,6 +84,21 @@ const BasicCollectionSection = function ({
         error={displayNameError}
         errorMessage="Display Name cannot be empty."
         className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+        onChange={handleFormChange}
+      />
+      <TextArea
+        toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
+        containerStyles="mt-4"
+        labelText="Description"
+        labelStyle="my-2.5"
+        required
+        type="text"
+        name="description"
+        error={formDataErrors.descriptionError}
+        errorMessage="Description cannot be empty."
+        value={formData.description}
+        placeholder="Description"
+        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 focus:ring-0 outline-none"
         onChange={handleFormChange}
       />
     </section>

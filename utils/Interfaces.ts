@@ -19,6 +19,7 @@ export type NftForm = {
   tokenName: string;
   creatorName: string;
   displayName: string;
+  description: string;
   nftThumbnail: File | null;
   nftFiles: File[];
   splitRoyaltiesEnabled: boolean;
@@ -33,6 +34,7 @@ export type NftFormErrors = {
   tokenNameError: boolean;
   creatorNameError: boolean;
   displayNameError: boolean;
+  descriptionError: boolean;
   nftThumbnailError: boolean;
   nftFilesError: boolean;
   splitPercentError: boolean;

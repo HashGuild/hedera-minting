@@ -8,10 +8,13 @@ import {
   StepTwoErrors,
 } from '../../utils/Interfaces';
 import Input from '../common/Input';
+import TextArea from '../common/TextArea';
 import Tooltip from '../common/Tooltip';
 
 interface BasicNFTSectionProps {
-  handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleFormChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   formData: NftForm | NftInCollection;
   formDataErrors: NftFormErrors | StepTwoErrors;
 }
@@ -77,27 +80,36 @@ const BasicNFTSection = function ({
         value={formData.creatorName}
       />
 
-      <Input
+      {isNftForm && (
+        <Input
+          toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
+          containerStyles="mt-4"
+          labelText="Display Name"
+          labelStyle="my-2.5"
+          required
+          type="textArea"
+          name="displayName"
+          error={isNftFormError && formDataErrors.displayNameError}
+          errorMessage="Display Name cannot be empty."
+          value={formData.displayName}
+          placeholder="Display Name"
+          className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5"
+          onChange={handleFormChange}
+        />
+      )}
+      <TextArea
         toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
         containerStyles="mt-4"
-        labelText={isNftForm ? 'Display Name' : 'Description'}
+        labelText="Description"
         labelStyle="my-2.5"
         required
         type="text"
-        name={isNftForm ? 'displayName' : 'description'}
-        error={
-          isNftFormError
-            ? formDataErrors.displayNameError
-            : formDataErrors.descriptionError
-        }
-        errorMessage={
-          isNftFormError
-            ? 'Display Name cannot be empty.'
-            : 'Description cannot be empty.'
-        }
-        value={isNftForm ? formData.displayName : formData.description}
-        placeholder={isNftForm ? 'Display Name' : 'Description'}
-        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5"
+        name="description"
+        error={formDataErrors.descriptionError}
+        errorMessage="Description cannot be empty."
+        value={formData.description}
+        placeholder="Description"
+        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 focus:ring-0 outline-none"
         onChange={handleFormChange}
       />
     </section>
