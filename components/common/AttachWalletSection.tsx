@@ -22,7 +22,7 @@ const AttachWalletSection = function () {
   };
 
   function connectToWallet() {
-    hashconnect?.connectToLocalWallet();
+    // hashconnect?.connectToLocalWallet();
   }
 
   return (
