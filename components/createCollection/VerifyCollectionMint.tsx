@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CollectionForm } from '../../utils/Interfaces';
+import AttachWalletSection from '../common/AttachWalletSection';
 import ErrorMessage from '../common/ErrorMessage';
 import Modal from '../common/Modal';
 import Button from '../global/Button';
@@ -13,6 +14,7 @@ const VerifyCollectionMint = function ({
 }: VerifyCollectionMintProps) {
   const [error] = useState(false);
   const [success] = useState(false);
+  const [attachWallet, setAttachWallet] = useState(false);
   const [waiting] = useState(false);
   const [confirmMint, setConfirmMint] = useState(false);
   const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
@@ -89,7 +91,7 @@ const VerifyCollectionMint = function ({
       <div className=" mt-6">
         <Button
           onClick={() => {
-            setOpenConfirmMintModal(true);
+            setAttachWallet(true);
           }}
           title={success ? 'Mint More' : 'Mint Now'}
           className="w-full bg-black text-white   mb-4 rounded-md disabled:bg-black/40"
@@ -104,7 +106,9 @@ const VerifyCollectionMint = function ({
           />
         )}
       </div>
-
+      <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
+        <AttachWalletSection />
+      </Modal>
       <Modal
         setShowModal={setOpenConfirmMintModal}
         showModal={openConfirmMintModal}

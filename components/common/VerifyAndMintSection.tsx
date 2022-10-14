@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
 import Button from '../global/Button';
+import AttachWalletSection from './AttachWalletSection';
+import Modal from './Modal';
 
 interface VerifyAndMintSectionProps {
   formData: NftForm | NftInCollection;
@@ -12,9 +14,12 @@ const VerifyAndMintSection = function ({
   setRenderConfirmMint,
 }: VerifyAndMintSectionProps) {
   const [error] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [success] = useState(false);
   const [waiting] = useState(false);
+  const [attachWallet, setAttachWallet] = useState(false);
+
   const isNftForm = nftFormType(formData);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -85,9 +90,12 @@ const VerifyAndMintSection = function ({
 
       <Button
         title={success ? 'Mint More' : 'Mint Now'}
-        onClick={() => setSuccess(true)}
+        onClick={() => setAttachWallet(true)}
         className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80"
       />
+      <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
+        <AttachWalletSection />
+      </Modal>
       <Button
         title={
           success ? 'List your NFT on HashGuild' : 'Go Back and Change Data'
