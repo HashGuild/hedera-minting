@@ -18,9 +18,14 @@ dotenv.config();
 // eslint-disable-next-line
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-const operatorId = AccountId.fromString(process.env.OPERATOR_ID!);
-const operatorKey = PrivateKey.fromString(process.env.OPERATOR_PVKEY!);
-const client = Client.forTestnet().setOperator(operatorId, operatorKey);
+const operatorId = AccountId.fromString('0.0.2');
+const operatorKey = PrivateKey.fromString(
+  '302e020100300506032b65700422042091132178e72057a1d7528025956fe39b0b847f200ab59b2fdd367017f3087137',
+);
+// const client = Client.forTestnet().setOperator(operatorId, operatorKey);
+const node = { '127.0.0.1:50211': new AccountId(3) };
+const client = Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
+client.setOperator(operatorId, operatorKey);
 
 async function autoCreateAccountFcn(
   senderAccountId: AccountId,
@@ -32,8 +37,6 @@ async function autoCreateAccountFcn(
     .addHbarTransfer(senderAccountId, new Hbar(-hbarAmount))
     .addHbarTransfer(receiverAccountId, new Hbar(hbarAmount))
     .freezeWith(client);
-  console.log('KEY: ', operatorKey.toStringRaw());
-  console.log('CLIENT: ', client);
   const transferToAliasSign = await transferToAliasTx.sign(operatorKey);
   const transferToAliasSubmit = await transferToAliasSign.execute(client);
   const transferToAliasRx = await transferToAliasSubmit.getReceipt(client);
@@ -50,7 +53,7 @@ async function autoCreateAccountFcn(
 async function mirrorQueryFcn(publicKey: PublicKey) {
   // Query a mirror node for information about the account creation
   await delay(10000); // Wait for 10 seconds before querying account id
-  const mirrorNodeUrl = 'https://testnet.mirrornode.hedera.com/api/v1/';
+  const mirrorNodeUrl = 'http://127.0.0.1:5551/api/v1/';
   const mQuery = await axios.get(
     `${mirrorNodeUrl}accounts?account.publickey=${publicKey.toStringRaw()}`,
   );
