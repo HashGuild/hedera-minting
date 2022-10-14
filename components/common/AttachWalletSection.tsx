@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { HashConnectContext } from '../../context/HashConnectWrapper';
 import CopyIcon from '../../public/svg/CopyIcon';
 import classNames from '../../utils/classNames';
 import Button from '../global/Button';
@@ -6,12 +7,24 @@ import Button from '../global/Button';
 const AttachWalletSection = function () {
   const [currentOption, setCurrentOption] = useState(1);
   const [copied, setCopied] = useState(false);
+  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
   const pairingString = 'eyJtZXRhZGF0YSI6eyJuYW1lIjoiSGFAW2....';
+
+  useEffect(() => {
+    if (!hashconnect && initHashConnect) {
+      initHashConnect();
+    }
+  }, [hashconnect, initHashConnect]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(pairingString);
     setCopied(true);
   };
+
+  function connectToWallet() {
+    hashconnect?.connectToLocalWallet();
+  }
+
   return (
     <>
       <h1 className="text-lg font-semibold text-center">Connect your Wallet</h1>
@@ -24,7 +37,7 @@ const AttachWalletSection = function () {
           onClick={() => setCurrentOption(1)}
           className={classNames(
             '!p-0 !text-left !px-0',
-            currentOption === 1 ? 'border-b border-black' : '',
+            currentOption === 1 ? 'border-b border-black' : ''
           )}
         />
         <Button
@@ -32,7 +45,7 @@ const AttachWalletSection = function () {
           onClick={() => setCurrentOption(2)}
           className={classNames(
             '!p-0 !text-left !px-0',
-            currentOption === 2 ? 'border-b border-black' : '',
+            currentOption === 2 ? 'border-b border-black' : ''
           )}
         />
       </div>
@@ -46,14 +59,12 @@ const AttachWalletSection = function () {
           </p>
           <Button
             title="Signup/ Login with HashPack"
-            onClick={() => console.log('hook')}
+            onClick={() => connectToWallet()}
             className="w-full bg-black text-white rounded-lg"
           />
           <p>
             3. Step:{' '}
-            <strong>
-              Select your wallet and click &quot;Approve&quot;
-            </strong>
+            <strong>Select your wallet and click &quot;Approve&quot;</strong>
           </p>
         </div>
       )}
@@ -65,7 +76,7 @@ const AttachWalletSection = function () {
           <div
             className={classNames(
               'flex gap-x-2 w-full py-2 px-3 border rounded-md items-center',
-              copied ? 'bg-slate-200' : '',
+              copied ? 'bg-slate-200' : ''
             )}
           >
             <p className="w-8/10 truncate">{pairingString}</p>
@@ -80,14 +91,12 @@ const AttachWalletSection = function () {
           </p>
           <Button
             title="Signup/ Login with HashPack"
-            onClick={() => console.log('hook')}
+            onClick={() => connectToWallet}
             className="w-full bg-black text-white rounded-lg"
           />
           <p>
             3. Step:{' '}
-            <strong>
-              Select your wallet and click &quot;Approve&quot;
-            </strong>
+            <strong>Select your wallet and click &quot;Approve&quot;</strong>
           </p>
         </div>
       )}
