@@ -15,6 +15,10 @@ export interface NftProperty {
   key: string;
   value: string;
 }
+export interface UserWalletRoyalty {
+  fee: number;
+  accountId: string;
+}
 export type NftForm = {
   tokenName: string;
   creatorName: string;
@@ -24,7 +28,7 @@ export type NftForm = {
   nftFiles: File[];
   splitRoyaltiesEnabled: boolean;
   splitPercent: number;
-  royaltyWallets: string[];
+  royaltyWallets: UserWalletRoyalty[];
   nftPropertiesEnabled: boolean;
   nftProperties: NftProperty[];
   sellingOption: string;

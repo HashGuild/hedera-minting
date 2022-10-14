@@ -1,6 +1,10 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
-import { NftForm, NftFormErrors } from '../../utils/Interfaces';
+import {
+  NftForm,
+  NftFormErrors,
+  UserWalletRoyalty,
+} from '../../utils/Interfaces';
 import ErrorMessage from '../common/ErrorMessage';
 import Input from '../common/Input';
 import Switch from '../common/Switch';
@@ -22,46 +26,49 @@ const RoyaltiesSection = function ({
   formDataErrors,
 }: RoyaltiesSectionProps) {
   const { splitPercentError } = formDataErrors;
+
   const addInput = () => {
-    const newWallet = '';
+    const newWallet: UserWalletRoyalty = { fee: 0, accountId: '' };
     setFormData({
       ...formData,
-      royaltyWallets: [...formData.royaltyWallets, newWallet],
+      royaltyWallets: [...formData.royaltyWallets, { ...newWallet }],
     });
   };
-  const deleteInput = (index: number) => {
+  const deleteInput = (walletIndex: number) => {
     const updatedArray = formData.royaltyWallets.filter(
-      (_, walletIndex) => walletIndex !== index,
+      (_, index) => index !== walletIndex,
     );
     setFormData({
       ...formData,
       royaltyWallets: updatedArray,
     });
   };
-  const royaltySum = (): number => {
+  const royaltySum = (newArr: UserWalletRoyalty[]): number => {
     let sum: number = 0;
-    const numberArray = formData.royaltyWallets.map(Number);
-    numberArray.forEach((item) => {
-      sum += item;
+    newArr.forEach((item) => {
+      sum += item.fee;
     });
     return sum;
   };
-
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const newArr = formData.royaltyWallets;
-    newArr[index] = e.target.value;
-    setFormData({ ...formData, royaltyWallets: newArr });
-    if (royaltySum() > formData.splitPercent) {
-      setFormDataErrors({
-        ...formDataErrors,
-        splitPercentError: true,
-      });
-    } else {
-      setFormDataErrors({
-        ...formDataErrors,
-        splitPercentError: false,
-      });
+    if (e.target.name === 'fee') {
+      newArr[index].fee = +e.target.value;
+      if (royaltySum(newArr) > 100) {
+        setFormDataErrors({
+          ...formDataErrors,
+          splitPercentError: true,
+        });
+      } else {
+        setFormDataErrors({
+          ...formDataErrors,
+          splitPercentError: false,
+        });
+      }
+    } else if (e.target.name === 'accountId') {
+      newArr[index].accountId = e.target.value;
     }
+    setFormData({ ...formData, royaltyWallets: newArr });
   };
 
   useEffect(() => {
@@ -69,8 +76,7 @@ const RoyaltiesSection = function ({
       if (!formData.splitRoyaltiesEnabled) {
         setFormData((prev) => ({
           ...prev,
-          splitPercent: 0,
-          royaltyWallets: [''],
+          royaltyWallets: [{ fee: 0, accountId: '' }],
         }));
         setFormDataErrors((errors) => ({
           ...errors,
@@ -91,20 +97,15 @@ const RoyaltiesSection = function ({
       </p>
       <span className="flex items-center justify-between text-sm font-bold my-6">
         <h5>Total Amount</h5>
-        <h5>{` ${formData?.splitPercent} %`}</h5>
+        <h5>{`${royaltySum(formData.royaltyWallets)}%`}</h5>
       </span>
+      <div className="w-full h-3 border rounded-lg overflow-hidden">
+        <div
+          className="h-full bg-black"
+          style={{ width: `${royaltySum(formData.royaltyWallets)}%` }}
+        />
+      </div>
 
-      <input
-        type="range"
-        className="w-full  h-2 touch-pan-y accent-black"
-        min={0}
-        max={50}
-        step={0.5}
-        disabled={!formData.splitRoyaltiesEnabled}
-        value={formData?.splitPercent}
-        onChange={handleFormChange}
-        name="splitPercent"
-      />
       <span className="flex items-center justify-between text-sm font-bold my-6">
         <h5>Split Royalties</h5>
         <Switch
@@ -115,32 +116,43 @@ const RoyaltiesSection = function ({
         />
       </span>
 
-      {formData?.splitRoyaltiesEnabled && (
-        <div>
-          {formData?.royaltyWallets.map((wallet, index: number) => (
+      <div>
+        {formData?.royaltyWallets.map((wallet, index: number) => (
+          <div className="flex gap-2" key={index.toFixed(1)}>
             <Input
-              error={splitPercentError}
-              errorMessage=""
-              key={index.toFixed(1)}
-              toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
-              containerStyles="mt-4 "
-              labelText={`Royalty Wallet ${index + 1}`}
-              labelStyle="my-2.5"
-              type="text"
-              name="royaltyWallet"
+              containerStyles="mt-4 basis-1/4"
               required
-              inputContainerStyles={
-                splitPercentError && formData.royaltyWallets.at(-1) === wallet
-                  ? 'border-red-400 stroke-red-400'
-                  : ''
-              }
+              labelText={index === 0 ? 'Fee' : ''}
+              labelStyle="my-2.5"
+              type="number"
+              name="fee"
+              inputContainerStyles={wallet.fee === 0 ? 'border-red-400' : ''}
+              errorMessage=""
+              error={formDataErrors.splitPercentError}
+              placeholder="Fee in %"
+              className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
                 handleChange(index, e);
               }}
-              placeholder={`${(100 / formData.royaltyWallets.length).toFixed(
-                0,
-              )}%`}
+            />
+            <Input
+              containerStyles="mt-4 basis-3/4"
+              labelText={index === 0 ? 'Account id' : ''}
+              labelStyle="my-2.5"
+              type="text"
+              required
+              inputContainerStyles={
+                wallet.accountId.length === 0 ? 'border-red-400' : ''
+              }
+              value={wallet.accountId}
+              name="accountId"
+              errorMessage=""
+              error={false}
+              placeholder="Account id"
               className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+              onChange={(e) => {
+                handleChange(index, e);
+              }}
               iconRight={
                 index > 0 && (
                   <section
@@ -153,18 +165,20 @@ const RoyaltiesSection = function ({
                 )
               }
             />
-          ))}
-          {splitPercentError && (
-            <ErrorMessage errorText="The distribution is not correct. Please revise the total royalty fee or change the allocation. " />
-          )}
-        </div>
+          </div>
+        ))}
+        {splitPercentError && (
+          <ErrorMessage errorText="The distribution should not exceed 100%. Please revise the total royalty fee or change the allocation. " />
+        )}
+      </div>
+      {formData.splitRoyaltiesEnabled && (
+        <Button
+          title="Add Wallet"
+          disabled={!formData.splitRoyaltiesEnabled}
+          className=" w-1/2 bg-black text-white rounded-md mt-5 self-end disabled:bg-black/40 "
+          onClick={addInput}
+        />
       )}
-      <Button
-        title="Add Wallet"
-        disabled={!formData.splitRoyaltiesEnabled}
-        className=" w-1/2 bg-black text-white rounded-md mt-5 self-end disabled:bg-black/40 "
-        onClick={addInput}
-      />
     </section>
   );
 };

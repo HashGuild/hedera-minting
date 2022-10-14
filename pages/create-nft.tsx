@@ -24,7 +24,7 @@ const CreateNft: NextPage = function () {
     nftFiles: [],
     description: '',
     splitRoyaltiesEnabled: false,
-    royaltyWallets: [''],
+    royaltyWallets: [{ fee: 0, accountId: '' }],
     nftThumbnail: null,
     nftPropertiesEnabled: false,
     splitPercent: 0,
