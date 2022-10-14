@@ -8,12 +8,16 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors:{
-        accentGrey:"#ECECEC"
+      colors: {
+        accentGrey: '#ECECEC',
+      },
+      backgroundImage: {
+        'split-black-white':
+          'linear-gradient(to right, black 50% , #e5e7eb 50%);',
       },
       fontSize: {
         tiny: '0.5rem',
-        xxs: '0.625rem'
+        xxs: '0.625rem',
       },
     },
   },

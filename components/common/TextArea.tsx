@@ -3,7 +3,7 @@ import classNames from '../../utils/classNames';
 import ErrorMessage from './ErrorMessage';
 import Tooltip from './Tooltip';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   labelText?: string;
   labelStyle?: string;
   containerStyles?: string;
@@ -15,7 +15,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage: string;
 }
 
-const Input = function ({
+const TextArea = function ({
   labelText = '',
   labelStyle = '',
   containerStyles = '',
@@ -26,7 +26,7 @@ const Input = function ({
   error,
   errorMessage,
   ...props
-}: InputProps) {
+}: TextAreaProps) {
   const [focus, setFocus] = useState(false);
   return (
     <div className={classNames('flex flex-col', containerStyles)}>
@@ -39,7 +39,7 @@ const Input = function ({
           )}
         >
           {iconLeft && <div className="mr-1 ">{iconLeft}</div>}
-          <input onFocus={() => setFocus(true)} {...props} />
+          <textarea onFocus={() => setFocus(true)} {...props} />
           {toolTipContent && (
             <Tooltip iconStyle="stroke-gray-400">{toolTipContent}</Tooltip>
           )}
@@ -51,4 +51,4 @@ const Input = function ({
   );
 };
 
-export default Input;
+export default TextArea;

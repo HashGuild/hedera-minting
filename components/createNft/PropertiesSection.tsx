@@ -1,16 +1,22 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
-import { NftForm, NftFormErrors, NftProperty } from '../../utils/Interfaces';
+import {
+  NftForm,
+  NftFormErrors,
+  NftInCollection,
+  NftProperty,
+  StepTwoErrors,
+} from '../../utils/Interfaces';
 import Input from '../common/Input';
 import Switch from '../common/Switch';
 import Button from '../global/Button';
 
 interface PropertiesSectionProps {
-  formData: NftForm;
+  formData: NftForm | NftInCollection;
   handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  setFormData: Dispatch<SetStateAction<NftForm>>;
-  formDataErrors: NftFormErrors;
-  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors>>;
+  setFormData: Dispatch<SetStateAction<NftForm | NftInCollection>>;
+  formDataErrors: NftFormErrors | StepTwoErrors;
+  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors | StepTwoErrors>>;
 }
 
 const PropertiesSection = function ({
@@ -27,9 +33,9 @@ const PropertiesSection = function ({
       nftProperties: [...formData.nftProperties, { ...newProperty }],
     });
   };
-  const deleteInput = (property: NftProperty) => {
+  const deleteInput = (propertyIndex: number) => {
     const updatedArray = formData.nftProperties.filter(
-      (item) => item.key !== property.key,
+      (_, index) => index !== propertyIndex,
     );
     setFormData({
       ...formData,
@@ -55,6 +61,28 @@ const PropertiesSection = function ({
     }
     setFormData({ ...formData, nftProperties: newArr });
   };
+
+  useEffect(() => {
+    function resetProperties() {
+      if (!formData.nftPropertiesEnabled) {
+        setFormData((prev) => ({
+          ...prev,
+          nftProperties: [{ key: '', value: '' }],
+        }));
+        setFormDataErrors((errors) => ({
+          ...errors,
+          [`nftPropertiesError`]: false,
+        }));
+      } else {
+        setFormDataErrors((errors) => ({
+          ...errors,
+          [`nftPropertiesError`]: true,
+        }));
+      }
+    }
+    resetProperties();
+  }, [formData.nftPropertiesEnabled, setFormData, setFormDataErrors]);
+
   return (
     <section className="my-10 flex flex-col">
       <h4 className="text-lg font-bold">Properties</h4>
@@ -89,6 +117,8 @@ const PropertiesSection = function ({
                     ? 'border-red-400'
                     : ''
                 }
+                errorMessage=""
+                error={formDataErrors.nftPropertiesError}
                 placeholder="Key"
                 className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
                 onChange={(e) => {
@@ -109,6 +139,8 @@ const PropertiesSection = function ({
                     : ''
                 }
                 name="value"
+                errorMessage=""
+                error={formDataErrors.nftPropertiesError}
                 placeholder="Value"
                 className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
                 onChange={(e) => {
@@ -119,7 +151,7 @@ const PropertiesSection = function ({
                     <section
                       role="presentation"
                       className="p-2  h-6 w-6 flex items-center bg-gray-300 rounded-full hover:bg-gray-300/80 "
-                      onClick={() => deleteInput(property)}
+                      onClick={() => deleteInput(index)}
                     >
                       <DeleteIcon />
                     </section>
