@@ -1,36 +1,27 @@
 import React, { ChangeEvent } from 'react';
-import {
-  nftErrorType,
-  NftForm,
-  NftFormErrors,
-  nftFormType,
-  NftInCollection,
-  StepTwoErrors,
-} from '../../utils/Interfaces';
+import { CollectionForm, StepOneErrors } from '../../utils/Interfaces';
 import Input from '../common/Input';
 import TextArea from '../common/TextArea';
 import Tooltip from '../common/Tooltip';
 
-interface BasicNFTSectionProps {
+interface BasicCollectionSectionProps {
   handleFormChange: (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
-  formData: NftForm | NftInCollection;
-  formDataErrors: NftFormErrors | StepTwoErrors;
+  formData: CollectionForm;
+  formDataErrors: StepOneErrors;
 }
 
-const BasicNFTSection = function ({
+const BasicCollectionSection = function ({
   handleFormChange,
   formData,
   formDataErrors,
-}: BasicNFTSectionProps) {
-  const { tokenNameError, creatorNameError } = formDataErrors;
-  const isNftFormError = nftErrorType(formDataErrors);
-  const isNftForm = nftFormType(formData);
+}: BasicCollectionSectionProps) {
+  const { tokenNameError, creatorNameError, displayNameError } = formDataErrors;
   return (
     <section className="my-10">
       <div className="flex mt-8 items-center justify-between">
-        <h4 className="text-lg font-bold">Basic NFT Information</h4>
+        <h4 className="text-lg font-bold">Basic Collection Information</h4>
         <Tooltip>
           <section className="text-xs w-40 bg-white">
             <p className="pb-1 border-b p-3 border-black font-semibold">
@@ -56,11 +47,11 @@ const BasicNFTSection = function ({
         type="text"
         required
         name="tokenName"
-        error={tokenNameError}
-        errorMessage="Token Name cannot be empty."
         value={formData.tokenName}
         placeholder="Display Name"
         onChange={handleFormChange}
+        error={tokenNameError}
+        errorMessage="Token Name cannot be empty."
         className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
       />
 
@@ -70,33 +61,31 @@ const BasicNFTSection = function ({
         labelText="Creator Name"
         labelStyle="my-2.5"
         type="text"
-        error={creatorNameError}
-        errorMessage="Creator Name cannot be empty."
         required
         name="creatorName"
+        error={creatorNameError}
+        errorMessage="Creator Name cannot be empty."
         placeholder="Creator Name"
         className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
         onChange={handleFormChange}
         value={formData.creatorName}
       />
 
-      {isNftForm && (
-        <Input
-          toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
-          containerStyles="mt-4"
-          labelText="Display Name"
-          labelStyle="my-2.5"
-          required
-          type="textArea"
-          name="displayName"
-          error={isNftFormError && formDataErrors.displayNameError}
-          errorMessage="Display Name cannot be empty."
-          value={formData.displayName}
-          placeholder="Display Name"
-          className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5"
-          onChange={handleFormChange}
-        />
-      )}
+      <Input
+        toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
+        containerStyles="mt-4"
+        labelText="Display Name"
+        labelStyle="my-2.5"
+        required
+        type="text"
+        name="displayName"
+        placeholder="Display Name"
+        value={formData.displayName}
+        error={displayNameError}
+        errorMessage="Display Name cannot be empty."
+        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+        onChange={handleFormChange}
+      />
       <TextArea
         toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
         containerStyles="mt-4"
@@ -116,4 +105,4 @@ const BasicNFTSection = function ({
   );
 };
 
-export default BasicNFTSection;
+export default BasicCollectionSection;

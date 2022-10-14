@@ -28,6 +28,10 @@ const FileInformation: FC<FileInformationProps> = function ({
         <p className="text-sm font-bold w-1/3  truncate">{fileName}</p>
         <p className="text-sm font-bold text-center  ">{fileType}</p>
         <div className="flex gap-x-2 items-center">
+          <EyeIcon
+            onClick={viewIconClick}
+            className="cursor-pointer  hover:opacity-80"
+          />
           <Tooltip
             onOpen={() => setShowContent(true)}
             onClose={() => setShowContent(false)}
@@ -58,10 +62,6 @@ const FileInformation: FC<FileInformationProps> = function ({
               </div>
             </section>
           </Tooltip>
-          <EyeIcon
-            onClick={viewIconClick}
-            className="cursor-pointer  hover:opacity-80"
-          />
           <p className="text-xxs md:text-xs px-1 py-0.5 w-20 text-center border rounded-sm">
             {fileSize}
           </p>

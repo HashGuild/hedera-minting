@@ -1,27 +1,19 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
-import HbarLogo from '../../public/svg/HbarLogo';
+import React from 'react';
+// import HbarLogo from '../../public/svg/HbarLogo';
 import classNames from '../../utils/classNames';
 import { sellingOptions } from '../../utils/Constants';
-import { NftForm, NftFormErrors, SellingOption } from '../../utils/Interfaces';
-import ErrorMessage from '../common/ErrorMessage';
-import Input from '../common/Input';
 
-interface SellingOptionsSectionProps {
-  formData: NftForm;
-  setFormData: Dispatch<SetStateAction<NftForm>>;
-  handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  formDataErrors: NftFormErrors;
-  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors>>;
-}
+// import ErrorMessage from '../common/ErrorMessage';
 
-const SellingOptionsSection = function ({
-  formData,
-  setFormData,
-  handleFormChange,
-  formDataErrors,
-  setFormDataErrors,
-}: SellingOptionsSectionProps) {
-  const [currentOption, setCurrentOption] = useState<SellingOption>();
+// interface SellingOptionsSectionProps {
+//   formData?: NftForm | NftInCollection;
+//   // handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
+//   setFormData?: Dispatch<SetStateAction<NftForm | NftInCollection>>;
+//   formDataErrors?: NftFormErrors | StepTwoErrors;
+//   setFormDataErrors?: Dispatch<SetStateAction<NftFormErrors | StepTwoErrors>>;
+// }
+
+const SellingOptionsSection = function () {
   return (
     <section className="my-10 flex flex-col">
       <h4 className="text-lg font-bold">Choose Selling Option</h4>
@@ -35,30 +27,27 @@ const SellingOptionsSection = function ({
           <div
             aria-hidden="true"
             key={option.index}
-            onClick={() => {
-              setCurrentOption(option);
-              setFormDataErrors({
-                ...formDataErrors,
-                sellingOptionError: false,
-              });
-              setFormData({ ...formData, sellingOption: option.name });
-            }}
             className={classNames(
-              'flex flex-col items-center justify-center gap-y-1 basis-1/2 py-6 border shadow-xl',
-              currentOption?.index === option.index ? 'border-black' : '',
+              'flex flex-col items-center justify-center gap-y-1 basis-1/2 py-6 md:py-20 border shadow-xl ',
+              option.index === 1
+                ? 'border-black'
+                : 'pointer-events-none  bg-black/50',
             )}
           >
             <option.icon />
             <p>{option.name}</p>
+            {option.index === 2 && (
+              <p className="text-xs text-white/80">Coming soon.</p>
+            )}
           </div>
         ))}
       </div>
-      {formDataErrors.sellingOptionError && (
+      {/* {formDataErrors.sellingOptionError && (
         <ErrorMessage errorText="Please select one option" />
-      )}
+      )} */}
 
       {/* <HbarLogo /> */}
-      {currentOption?.name === 'Mint and Sell' && (
+      {/* {currentOption?.name === 'Mint and Sell' && (
         <>
           <h5 className="text-sm font-bold my-6">Set Price</h5>
 
@@ -66,18 +55,17 @@ const SellingOptionsSection = function ({
             iconLeft={<HbarLogo className="h-5 w-5" />}
             labelText="Listing Price"
             labelStyle="my-2.5"
+            error={formDataErrors.listingPriceError}
             type="number"
             name="listingPrice"
+            errorMessage="Listing Price cannot be empty"
             placeholder="Listing Price"
             className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 appearance-none "
             onChange={handleFormChange}
             value={formData.listingPrice}
           />
-          {formDataErrors.listingPriceError && (
-            <ErrorMessage errorText="Listing Price cannot be empty" />
-          )}
         </>
-      )}
+      )} */}
     </section>
   );
 };

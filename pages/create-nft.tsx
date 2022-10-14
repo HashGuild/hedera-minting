@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import VerifyAndMintSection from '../components/common/VerifyAndMintSection';
 import BasicNFTSection from '../components/createNft/BasicNFTSection';
 import FileUploadSection from '../components/createNft/FileUploadSection';
@@ -7,45 +7,54 @@ import PropertiesSection from '../components/createNft/PropertiesSection';
 import RoyaltiesSection from '../components/createNft/RoyaltiesSection';
 import SellingOptionsSection from '../components/createNft/SellingOptionsSection';
 import Button from '../components/global/Button';
-import { NftForm, NftFormErrors } from '../utils/Interfaces';
+import {
+  NftForm,
+  NftFormErrors,
+  NftInCollection,
+  StepTwoErrors,
+} from '../utils/Interfaces';
 
 const CreateNft: NextPage = function () {
   const [renderConfirmMint, setRenderConfirmMint] = useState(false);
 
-  const [formData, setFormData] = useState<NftForm>({
+  const [formData, setFormData] = useState<NftForm | NftInCollection>({
     tokenName: '',
     creatorName: '',
     displayName: '',
     nftFiles: [],
-    spinRoyaltiesEnabled: true,
-    royaltyWallets: [''],
+    description: '',
+    splitRoyaltiesEnabled: false,
+    royaltyWallets: [{ fee: 0, accountId: '' }],
     nftThumbnail: null,
-    nftPropertiesEnabled: true,
-    spinPercent: 0,
+    nftPropertiesEnabled: false,
+    splitPercent: 0,
     nftProperties: [{ key: '', value: '' }],
-    sellingOption: '',
+    sellingOption: 'Mint Only',
     listingPrice: 0,
   });
-  const [formDataErrors, setFormDataErrors] = useState<NftFormErrors>({
-    tokenNameError: false,
-    creatorNameError: false,
-    displayNameError: false,
+  const [formDataErrors, setFormDataErrors] = useState<
+    NftFormErrors | StepTwoErrors
+  >({
+    tokenNameError: true,
+    creatorNameError: true,
+    displayNameError: true,
+    descriptionError: true,
     nftFilesError: false,
-    spinRoyaltiesEnabledError: false,
-    royaltyWalletsError: false,
-    nftThumbnailError: false,
-    nftPropertiesEnabledError: false,
-    spinPercentError: false,
-    nftPropertiesError: false,
-    sellingOptionError: true,
+    nftThumbnailError: true,
+    splitPercentError: true,
+    nftPropertiesError: true,
+    sellingOptionError: false,
     listingPriceError: false,
   });
 
-  const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFormChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     if (event.currentTarget.type === 'checkbox') {
       setFormData({
         ...formData,
-        [event.currentTarget.name]: event.currentTarget.checked,
+        [event.currentTarget.name]: (event.currentTarget as HTMLInputElement)
+          .checked,
       });
     } else {
       // form Validation for events.
@@ -96,10 +105,12 @@ const CreateNft: NextPage = function () {
           />
           <hr />
           <RoyaltiesSection
-            formDataErrors={formDataErrors}
-            setFormDataErrors={setFormDataErrors}
-            setFormData={setFormData}
-            formData={formData}
+            formDataErrors={formDataErrors as NftFormErrors}
+            setFormDataErrors={
+              setFormDataErrors as Dispatch<SetStateAction<NftFormErrors>>
+            }
+            setFormData={setFormData as Dispatch<SetStateAction<NftForm>>}
+            formData={formData as NftForm}
             handleFormChange={handleFormChange}
           />
           <hr />
@@ -111,13 +122,7 @@ const CreateNft: NextPage = function () {
             handleFormChange={handleFormChange}
           />
           <hr />
-          <SellingOptionsSection
-            formDataErrors={formDataErrors}
-            setFormDataErrors={setFormDataErrors}
-            formData={formData}
-            setFormData={setFormData}
-            handleFormChange={handleFormChange}
-          />
+          <SellingOptionsSection />
 
           <hr />
 

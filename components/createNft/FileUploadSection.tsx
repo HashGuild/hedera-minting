@@ -11,7 +11,12 @@ import classNames from '../../utils/classNames';
 import formatBytes from '../../utils/formatBytes';
 import getFileName from '../../utils/getFileName';
 import getFileType from '../../utils/getFileType';
-import { NftForm, NftFormErrors } from '../../utils/Interfaces';
+import {
+  NftForm,
+  NftFormErrors,
+  NftInCollection,
+  StepTwoErrors,
+} from '../../utils/Interfaces';
 import ErrorMessage from '../common/ErrorMessage';
 import FileInformation from '../common/FileInformation';
 import Modal from '../common/Modal';
@@ -19,10 +24,10 @@ import Tooltip from '../common/Tooltip';
 import Button from '../global/Button';
 
 interface FileUploadSectionProps {
-  formData: NftForm;
-  setFormData: Dispatch<SetStateAction<NftForm>>;
-  formDataErrors: NftFormErrors;
-  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors>>;
+  formData: NftForm | NftInCollection;
+  setFormData: Dispatch<SetStateAction<NftForm | NftInCollection>>;
+  formDataErrors: NftFormErrors | StepTwoErrors;
+  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors | StepTwoErrors>>;
 }
 
 const FileUploadSection = function ({
@@ -38,6 +43,7 @@ const FileUploadSection = function ({
   const [overlayImageSrc, setOverlayImageSrc] = useState('');
   const [addThumbnail, setAddThumbnail] = useState(false);
   const [addNormalFiles, setAddNormalFiles] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   const handleDrag = function (e: DragEvent<HTMLLabelElement>) {
     e.preventDefault();
@@ -72,6 +78,7 @@ const FileUploadSection = function ({
 
   const handleChange = function (e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
+    setFocus(true);
     const { files } = e.target;
     if (e.target.multiple) {
       if (files && files[0]) {
@@ -135,7 +142,9 @@ const FileUploadSection = function ({
   const viewFile = (file: File) => {
     setViewImage(true);
     setOverlayImageSrc(URL.createObjectURL(file));
+    window.scrollTo(0, 0);
   };
+
   return (
     <>
       <Modal
@@ -163,7 +172,7 @@ const FileUploadSection = function ({
       <section className=" space-y-3 text-xs mb-14 max-w-full ">
         <p className="font-bold  text-sm">Thumbnail</p>
         <p>The thumbnail needs to be an image.</p>
-        {formDataErrors.nftThumbnailError && (
+        {formDataErrors.nftThumbnailError && focus && (
           <ErrorMessage errorText="Thumbnail is required." />
         )}
         <Modal setShowModal={setAddThumbnail} showModal={addThumbnail}>
@@ -176,7 +185,7 @@ const FileUploadSection = function ({
             onDrop={handleDrop}
             htmlFor="input-file-upload"
             className={classNames(
-              'h-72 px-20 border-black border-dashed w-full rounded-xl border-2 flex flex-col cursor-pointer items-center justify-center',
+              'h-72 px-20 border-black border-dashed  w-full rounded-xl border-2 flex flex-col cursor-pointer items-center justify-center',
               dragActive ? 'bg-black/20' : '',
             )}
           >
@@ -187,6 +196,7 @@ const FileUploadSection = function ({
               name="nftThumbnail"
               id="input-file-upload"
               multiple={false}
+              required
               className="hidden"
               onChange={handleChange}
             />
@@ -199,7 +209,7 @@ const FileUploadSection = function ({
             </p>
             <Button
               title="Add Files"
-              className="bg-black text-white w-full rounded-md"
+              className="bg-black text-white w-full rounded-md hover:bg-black/80 z-10"
               onClick={onButtonClickThumbnail}
             />
           </label>
@@ -251,7 +261,7 @@ const FileUploadSection = function ({
           />
         ))}
 
-        {formData.nftFiles.length < 5 && (
+        {formData?.nftFiles?.length < 5 && (
           <Button
             onClick={() => setAddNormalFiles(true)}
             className="bg-black text-white rounded-md w-1/2"
@@ -292,7 +302,7 @@ const FileUploadSection = function ({
             </p>
             <Button
               title="Add Files"
-              className="bg-black text-white w-full rounded-md"
+              className="bg-black text-white w-full rounded-md hover:bg-black/80 z-10"
               onClick={onButtonClick}
             />
           </label>

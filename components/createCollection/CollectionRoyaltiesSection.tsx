@@ -1,8 +1,8 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
 import {
-  NftForm,
-  NftFormErrors,
+  CollectionForm,
+  StepOneErrors,
   UserWalletRoyalty,
 } from '../../utils/Interfaces';
 import ErrorMessage from '../common/ErrorMessage';
@@ -10,23 +10,22 @@ import Input from '../common/Input';
 import Switch from '../common/Switch';
 import Button from '../global/Button';
 
-interface RoyaltiesSectionProps {
-  formData: NftForm;
-  setFormData: Dispatch<SetStateAction<NftForm>>;
+interface CollectionRoyaltiesSectionProps {
+  formData: CollectionForm;
+  setFormData: Dispatch<SetStateAction<CollectionForm>>;
   handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  formDataErrors: NftFormErrors;
-  setFormDataErrors: Dispatch<SetStateAction<NftFormErrors>>;
+  formDataErrors: StepOneErrors;
+  setFormDataErrors: Dispatch<SetStateAction<StepOneErrors>>;
 }
 
-const RoyaltiesSection = function ({
+const CollectionRoyaltiesSection = function ({
   formData,
   handleFormChange,
   setFormData,
   setFormDataErrors,
   formDataErrors,
-}: RoyaltiesSectionProps) {
+}: CollectionRoyaltiesSectionProps) {
   const { splitPercentError } = formDataErrors;
-
   const addInput = () => {
     const newWallet: UserWalletRoyalty = { fee: 0, accountId: '' };
     setFormData({
@@ -50,6 +49,7 @@ const RoyaltiesSection = function ({
     });
     return sum;
   };
+
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const newArr = formData.royaltyWallets;
     if (e.target.name === 'fee') {
@@ -97,7 +97,7 @@ const RoyaltiesSection = function ({
       </p>
       <span className="flex items-center justify-between text-sm font-bold my-6">
         <h5>Total Amount</h5>
-        <h5>{`${royaltySum(formData.royaltyWallets)}%`}</h5>
+        <h5>{` ${royaltySum(formData.royaltyWallets)} %`}</h5>
       </span>
       <div className="w-full h-3 border rounded-lg overflow-hidden">
         <div
@@ -105,14 +105,15 @@ const RoyaltiesSection = function ({
           style={{ width: `${royaltySum(formData.royaltyWallets)}%` }}
         />
       </div>
-
       <span className="flex items-center justify-between text-sm font-bold my-6">
         <h5>Split Royalties</h5>
         <Switch
           labelFor="splitRoyaltiesEnabled"
           checked={formData.splitRoyaltiesEnabled}
           name="splitRoyaltiesEnabled"
-          onChange={handleFormChange}
+          onChange={(e) => {
+            handleFormChange(e);
+          }}
         />
       </span>
 
@@ -122,11 +123,15 @@ const RoyaltiesSection = function ({
             <Input
               containerStyles="mt-4 basis-1/4"
               required
-              labelText={index === 0 ? 'Fee' : ''}
+              labelText={index === 0 ? 'Key' : ''}
               labelStyle="my-2.5"
               type="number"
               name="fee"
-              inputContainerStyles={wallet.fee === 0 ? 'border-red-400' : ''}
+              inputContainerStyles={
+                wallet.fee === 0 && formDataErrors.splitPercentError
+                  ? 'border-red-400'
+                  : ''
+              }
               errorMessage=""
               error={formDataErrors.splitPercentError}
               placeholder="Fee in %"
@@ -137,17 +142,19 @@ const RoyaltiesSection = function ({
             />
             <Input
               containerStyles="mt-4 basis-3/4"
-              labelText={index === 0 ? 'Account id' : ''}
+              labelText={index === 0 ? 'Value' : ''}
               labelStyle="my-2.5"
               type="text"
               required
               inputContainerStyles={
-                wallet.accountId.length === 0 ? 'border-red-400' : ''
+                wallet?.accountId?.length === 0 &&
+                formDataErrors.splitPercentError
+                  ? 'border-red-400'
+                  : ''
               }
-              value={wallet.accountId}
               name="accountId"
               errorMessage=""
-              error={false}
+              error={formDataErrors.splitPercentError}
               placeholder="Account id"
               className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
@@ -183,4 +190,4 @@ const RoyaltiesSection = function ({
   );
 };
 
-export default RoyaltiesSection;
+export default CollectionRoyaltiesSection;
