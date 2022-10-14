@@ -9,17 +9,7 @@ export interface MintingContract extends Truffle.Contract<MintingInstance> {
   "new"(meta?: Truffle.TransactionDetails): Promise<MintingInstance>;
 }
 
-export interface Log {
-  name: "Log";
-  args: {
-    name: string;
-    msg: BN;
-    0: string;
-    1: BN;
-  };
-}
-
-type AllEvents = Log;
+type AllEvents = never;
 
 export interface MintingInstance extends Truffle.ContractInstance {
   /**
@@ -323,8 +313,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  hello(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
   createNft: {
     (
       name: string,
@@ -332,7 +320,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
-      treasury: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
@@ -341,7 +328,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
-      treasury: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     sendTransaction(
@@ -350,7 +336,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
-      treasury: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
@@ -359,7 +344,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
-      treasury: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -383,33 +367,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     estimateGas(
       token: string,
       metadata: string[],
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<number>;
-  };
-
-  transferNft: {
-    (
-      token: string,
-      receiver: string,
-      serial: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
-    call(
-      token: string,
-      receiver: string,
-      serial: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<BN>;
-    sendTransaction(
-      token: string,
-      receiver: string,
-      serial: number | BN | string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<string>;
-    estimateGas(
-      token: string,
-      receiver: string,
-      serial: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -716,8 +673,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
-    hello(txDetails?: Truffle.TransactionDetails): Promise<string>;
-
     createNft: {
       (
         name: string,
@@ -725,7 +680,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
         memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
-        treasury: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
@@ -734,7 +688,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
         memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
-        treasury: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       sendTransaction(
@@ -743,7 +696,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
         memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
-        treasury: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
@@ -752,7 +704,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
         memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
-        treasury: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -776,33 +727,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       estimateGas(
         token: string,
         metadata: string[],
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<number>;
-    };
-
-    transferNft: {
-      (
-        token: string,
-        receiver: string,
-        serial: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
-      call(
-        token: string,
-        receiver: string,
-        serial: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<BN>;
-      sendTransaction(
-        token: string,
-        receiver: string,
-        serial: number | BN | string,
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<string>;
-      estimateGas(
-        token: string,
-        receiver: string,
-        serial: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
