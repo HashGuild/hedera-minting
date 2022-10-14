@@ -21,12 +21,12 @@
       "single",
       { "avoidEscape": true, "allowTemplateLiterals": true }
     ],
-
     "react/jsx-filename-extension": [
       1,
       {
         "extensions": [".tsx"]
       }
-    ]
+    ],
+      "import/no-extraneous-dependencies": "off"
   }
 }
