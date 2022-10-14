@@ -16,31 +16,42 @@ const Home: NextPage = function () {
 
   return (
     <div>
+      <p className="text-3xl font-semibold">Welcome Creator!</p>
 
-      <p className="text-3xl font-bold ">Welcome Creator!</p>
-
-      <p className="text-sm mt-3 mb-11 ">
-        Thank you for choosing HashGuild! We will guide you through the
-        minting process. To get started, select one of the options below!
+      <p className="text-md mt-3 mb-11">
+        Thank you for choosing HashGuild! We will guide you through the minting
+        process. To get started, select one of the options below!
       </p>
-      <p className="text-sm font-bold  mb-9">
-        What would you like to create?
-      </p>
-      <div className="flex w-full justify-between md:justify-start md:gap-16">
+      <p className="text-md font-bold mb-9">What would you like to create?</p>
+      <div className="flex w-[1/2] justify-between md:justify-start md:gap-16 aspect-auto">
         {indexFlow.map((flowItem: Flow) => (
           <div
             aria-hidden="true"
             onClick={() => setCurrentFlowChoice(flowItem)}
             key={flowItem.index}
             className={classNames(
-              'p-10 border shadow-xl select-none',
+              'p-10 border shadow-xl select-none rounded-lg',
               currentFlowChoice?.index === flowItem.index
-                ? 'border-slate-900 '
+                ? 'bg-slate-900 '
                 : 'border-2',
             )}
           >
-            <flowItem.icon className="h-20 w-20 z-10 fill-black" />
-            <span>{flowItem.name}</span>
+            <flowItem.icon
+              className={`h-20 w-20 z-10 ${
+                currentFlowChoice?.index === flowItem.index
+                  ? 'fill-white'
+                  : 'fill-black'
+              }`}
+            />
+            <span
+              className={`${
+                currentFlowChoice?.index === flowItem.index
+                  ? 'text-white'
+                  : 'text-black'
+              }  font-semibold`}
+            >
+              {flowItem.name}
+            </span>
           </div>
         ))}
       </div>
@@ -48,7 +59,7 @@ const Home: NextPage = function () {
         disabled={!currentFlowChoice}
         onClick={navigateToPage}
         title="Continue"
-        className="w-full text-white bg-black rounded-md mt-20 disabled:bg-black/50"
+        className="w-full text-white bg-black rounded-md mt-20 disabled:bg-black/50 hover:bg-black/80"
       />
     </div>
   );
