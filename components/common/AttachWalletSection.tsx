@@ -52,7 +52,7 @@ const AttachWalletSection = function () {
           <p>
             3. Step:{' '}
             <strong>
-              3. Step: Select your wallet and click &quot;Approve&quot;
+              Select your wallet and click &quot;Approve&quot;
             </strong>
           </p>
         </div>
@@ -86,7 +86,7 @@ const AttachWalletSection = function () {
           <p>
             3. Step:{' '}
             <strong>
-              3. Step: Select your wallet and click &quot;Approve&quot;
+              Select your wallet and click &quot;Approve&quot;
             </strong>
           </p>
         </div>
