@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable no-console, no-restricted-syntax */
+/* eslint-disable no-console, no-restricted-syntax, guard-for-in, no-await-in-loop */
 var sdk_1 = require("@hashgraph/sdk");
 var clientHelper_1 = require("./utils/clientHelper");
 var hashgraphQueries_1 = require("./utils/hashgraphQueries");
@@ -138,6 +138,71 @@ contract('Minting', function () {
                     error = err_2;
                     return [3 /*break*/, 7];
                 case 7:
+                    assert.notExists(error);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('mints multiple nfts on the provided token and assigns it to the sender', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var operatorId, contractId, tokenData, _a, tokenId, tokenSolidityAddr, mintNftData, error, _b, _c, _i, nft, nftId, info, err_3;
+        var _d;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0:
+                    operatorId = (0, clientHelper_1.setClientOperator)('0.0.1022', '0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4', client)[0];
+                    return [4 /*yield*/, (0, hashgraphQueries_1.getContractIdFromAddress)(Minting.address)];
+                case 1:
+                    contractId = _e.sent();
+                    tokenData = {
+                        name: 'Fall Collection',
+                        symbol: 'LEAF',
+                        maxSupply: 250,
+                        memo: 'Just a memo',
+                    };
+                    return [4 /*yield*/, (0, hashgraphQueries_1.createToken)(contractId, tokenData, client)];
+                case 2:
+                    _a = _e.sent(), tokenId = _a[0], tokenSolidityAddr = _a[1];
+                    mintNftData = {
+                        metadata: [
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                        ],
+                        tokenSolidityAddr: tokenSolidityAddr,
+                    };
+                    _e.label = 3;
+                case 3:
+                    _e.trys.push([3, 9, , 10]);
+                    return [4 /*yield*/, (0, hashgraphQueries_1.mintMultipleNfts)(contractId, mintNftData, client)];
+                case 4:
+                    _e.sent();
+                    _b = [];
+                    for (_c in mintNftData.metadata)
+                        _b.push(_c);
+                    _i = 0;
+                    _e.label = 5;
+                case 5:
+                    if (!(_i < _b.length)) return [3 /*break*/, 8];
+                    nft = _b[_i];
+                    nftId = new sdk_1.NftId(sdk_1.TokenId.fromString(tokenId), +nft + 1);
+                    return [4 /*yield*/, (0, hashgraphQueries_1.getNftInfo)(nftId, client)];
+                case 6:
+                    info = _e.sent();
+                    assert.equal(operatorId.toString(), info.accountId.toString());
+                    assert.equal(mintNftData.metadata[0].toString(), (_d = info.metadata) === null || _d === void 0 ? void 0 : _d.toString());
+                    _e.label = 7;
+                case 7:
+                    _i++;
+                    return [3 /*break*/, 5];
+                case 8: return [3 /*break*/, 10];
+                case 9:
+                    err_3 = _e.sent();
+                    console.log('Cought error: ', err_3);
+                    error = err_3;
+                    return [3 /*break*/, 10];
+                case 10:
                     assert.notExists(error);
                     return [2 /*return*/];
             }

@@ -1,4 +1,4 @@
-/* eslint-disable no-console, no-restricted-syntax */
+/* eslint-disable no-console, no-restricted-syntax, guard-for-in, no-await-in-loop */
 import { Client, NftId, TokenId } from '@hashgraph/sdk';
 import { initClient, setClientOperator } from './utils/clientHelper';
 import {
@@ -6,6 +6,8 @@ import {
   getContractIdFromAddress,
   getNftInfo,
   getTokenInformation,
+  mintMultipleNfts,
+  MintMultipleNFTsData,
   mintNft,
   MintNFTData,
 } from './utils/hashgraphQueries';
@@ -25,7 +27,7 @@ contract('Minting', () => {
     setClientOperator(
       '0.0.1022',
       '0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4',
-      client,
+      client
     );
 
     await Minting.deployed();
@@ -52,17 +54,17 @@ contract('Minting', () => {
 
     assert.equal(
       client.operatorAccountId!.toString(),
-      tokenInfo?.treasuryAccountId?.toString(),
+      tokenInfo?.treasuryAccountId?.toString()
     );
     assert.equal(
       client.operatorAccountId!.toString(),
-      tokenInfo?.autoRenewAccountId?.toString(),
+      tokenInfo?.autoRenewAccountId?.toString()
     );
     assert.equal(tokenData.name, tokenInfo?.name);
     assert.equal(tokenData.symbol, tokenInfo?.symbol);
     assert.equal(
       tokenData.maxSupply.toString(),
-      tokenInfo?.maxSupply?.toString(),
+      tokenInfo?.maxSupply?.toString()
     );
   });
 
@@ -70,7 +72,7 @@ contract('Minting', () => {
     const [operatorId] = setClientOperator(
       '0.0.1022',
       '0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4',
-      client,
+      client
     );
 
     const contractId = await getContractIdFromAddress(Minting.address);
@@ -84,13 +86,13 @@ contract('Minting', () => {
     const [tokenId, tokenSolidityAddr] = await createToken(
       contractId,
       tokenData,
-      client,
+      client
     );
 
     const mintNftData: MintNFTData = {
       metadata: [
         Buffer.from(
-          'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json',
+          'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
         ),
       ],
       tokenSolidityAddr,
@@ -104,8 +106,69 @@ contract('Minting', () => {
       assert.equal(operatorId.toString(), info.accountId.toString());
       assert.equal(
         mintNftData.metadata[0].toString(),
-        info.metadata?.toString(),
+        info.metadata?.toString()
       );
+    } catch (err) {
+      console.log('Cought error: ', err);
+      error = err;
+    }
+    assert.notExists(error);
+  });
+
+  it('mints multiple nfts on the provided token and assigns it to the sender', async () => {
+    const [operatorId] = setClientOperator(
+      '0.0.1022',
+      '0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4',
+      client
+    );
+
+    const contractId = await getContractIdFromAddress(Minting.address);
+
+    const tokenData = {
+      name: 'Fall Collection',
+      symbol: 'LEAF',
+      maxSupply: 250,
+      memo: 'Just a memo',
+    };
+    const [tokenId, tokenSolidityAddr] = await createToken(
+      contractId,
+      tokenData,
+      client
+    );
+
+    const mintNftData: MintMultipleNFTsData = {
+      metadata: [
+        Buffer.from(
+          'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+        ),
+        Buffer.from(
+          'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+        ),
+        Buffer.from(
+          'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+        ),
+        Buffer.from(
+          'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+        ),
+        Buffer.from(
+          'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+        ),
+      ],
+      tokenSolidityAddr,
+    };
+    let error;
+    try {
+      await mintMultipleNfts(contractId, mintNftData, client);
+
+      for (const nft in mintNftData.metadata) {
+        const nftId = new NftId(TokenId.fromString(tokenId), +nft + 1);
+        const info = await getNftInfo(nftId, client);
+        assert.equal(operatorId.toString(), info.accountId.toString());
+        assert.equal(
+          mintNftData.metadata[0].toString(),
+          info.metadata?.toString()
+        );
+      }
     } catch (err) {
       console.log('Cought error: ', err);
       error = err;

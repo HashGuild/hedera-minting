@@ -348,6 +348,12 @@ export interface MintingInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  mintMultipleNfts(
+    token: string,
+    metadataList: string[],
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<string[][]>;
+
   mintNft: {
     (
       token: string,
@@ -707,6 +713,12 @@ export interface MintingInstance extends Truffle.ContractInstance {
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
+
+    mintMultipleNfts(
+      token: string,
+      metadataList: string[],
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string[][]>;
 
     mintNft: {
       (

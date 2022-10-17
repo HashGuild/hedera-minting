@@ -43,15 +43,26 @@ contract Minting is ExpiryHelper {
         return createdToken;
     }
 
+    function mintMultipleNfts(address token, bytes[] memory metadataList) public returns(int64[] memory) {
+        int64[] memory serials = new int64[](metadataList.length);
+        bytes[] memory currentMetadata = new bytes[](1);
+        for (uint i = 0; i<metadataList.length; ++i) {
+            currentMetadata[0] = metadataList[i];
+            serials[i] = mintNft(token, currentMetadata);
+        }
+        return serials;
+    }
+
     function mintNft(address token, bytes[] memory metadata)
-        external
+        public
         returns (int64)
     {
         (int256 response, , int64[] memory serials) = HederaTokenService
             .mintToken(token, 0, metadata);
 
         if (response != HederaResponseCodes.SUCCESS) {
-            revert("Failed to mint non-fungible token.");
+            return int64(response);
+            // revert("Failed to mint non-fungible token.");
         }
 
         return serials[0];

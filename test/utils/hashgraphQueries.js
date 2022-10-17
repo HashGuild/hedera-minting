@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNftInfo = exports.mintNft = exports.createToken = exports.getTokenInformation = exports.getContractIdFromAddress = void 0;
+exports.getNftInfo = exports.mintMultipleNfts = exports.mintNft = exports.createToken = exports.getTokenInformation = exports.getContractIdFromAddress = void 0;
 var sdk_1 = require("@hashgraph/sdk");
 var axios_1 = __importDefault(require("axios"));
 function getContractIdFromAddress(address) {
@@ -141,6 +141,30 @@ function mintNft(contractId, data, client) {
     });
 }
 exports.mintNft = mintNft;
+function mintMultipleNfts(contractId, data, client) {
+    return __awaiter(this, void 0, void 0, function () {
+        var mintNftRequest, mintNftTx;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    mintNftRequest = new sdk_1.ContractExecuteTransaction()
+                        .setContractId(contractId)
+                        .setGas(data.metadata.length * 2500000)
+                        .setFunction('mintMultipleNfts', new sdk_1.ContractFunctionParameters()
+                        .addAddress(data.tokenSolidityAddr)
+                        .addBytesArray(data.metadata));
+                    return [4 /*yield*/, mintNftRequest.execute(client)];
+                case 1:
+                    mintNftTx = _a.sent();
+                    return [4 /*yield*/, mintNftTx.getRecord(client)];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.mintMultipleNfts = mintMultipleNfts;
 function getNftInfo(nftId, client) {
     return __awaiter(this, void 0, void 0, function () {
         var info;
