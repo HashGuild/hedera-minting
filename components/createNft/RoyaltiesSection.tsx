@@ -36,7 +36,7 @@ const RoyaltiesSection = function ({
   };
   const deleteInput = (walletIndex: number) => {
     const updatedArray = formData.royaltyWallets.filter(
-      (_, index) => index !== walletIndex,
+      (_, index) => index !== walletIndex
     );
     setFormData({
       ...formData,
@@ -126,7 +126,7 @@ const RoyaltiesSection = function ({
               labelStyle="my-2.5"
               type="number"
               name="fee"
-              inputContainerStyles={wallet.fee === 0 ? 'border-red-400' : ''}
+              inputContainerStyles={wallet?.fee === 0 ? 'border-red-400' : ''}
               errorMessage=""
               error={formDataErrors.splitPercentError}
               placeholder="Fee in %"
@@ -142,9 +142,9 @@ const RoyaltiesSection = function ({
               type="text"
               required
               inputContainerStyles={
-                wallet.accountId.length === 0 ? 'border-red-400' : ''
+                wallet?.accountId?.length === 0 ? 'border-red-400' : ''
               }
-              value={wallet.accountId}
+              value={wallet?.accountId}
               name="accountId"
               errorMessage=""
               error={false}

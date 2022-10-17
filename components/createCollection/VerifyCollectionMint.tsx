@@ -18,6 +18,16 @@ const VerifyCollectionMint = function ({
   const [waiting] = useState(false);
   const [confirmMint, setConfirmMint] = useState(false);
   const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
+  const createCollectionHandler = async () => {
+    const formDataNfts = new FormData();
+    Object.keys(formData).forEach((key) =>
+      formDataNfts.append(key, formData[key])
+    );
+    await fetch(`/api/createCollection`, {
+      method: 'POST',
+      body: formDataNfts,
+    }).then(() => console.log('sentt'));
+  };
   return (
     <>
       {waiting || error ? (
@@ -91,7 +101,7 @@ const VerifyCollectionMint = function ({
       <div className=" mt-6">
         <Button
           onClick={() => {
-            setAttachWallet(true);
+            createCollectionHandler();
           }}
           title={success ? 'Mint More' : 'Mint Now'}
           className="w-full bg-black text-white   mb-4 rounded-md disabled:bg-black/40"
