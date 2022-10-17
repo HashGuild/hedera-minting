@@ -13,7 +13,7 @@ contract Minting is ExpiryHelper {
         string memory memo,
         int64 maxSupply,
         uint32 autoRenewPeriod
-    ) external payable returns (address) {
+    ) public payable returns (address) {
         IHederaTokenService.TokenKey[]
             memory keys = new IHederaTokenService.TokenKey[](1);
 
@@ -43,6 +43,20 @@ contract Minting is ExpiryHelper {
         return createdToken;
     }
 
+    function mintNft(address token, bytes[] memory metadata)
+        public
+        returns (int64)
+    {
+        (int256 response, , int64[] memory serials) = HederaTokenService
+            .mintToken(token, 0, metadata);
+
+        if (response != HederaResponseCodes.SUCCESS) {
+            revert("Failed to mint non-fungible token.");
+        }
+
+        return serials[0];
+    }
+
     function mintMultipleNfts(address token, bytes[] memory metadataList) public returns(int64[] memory) {
         int64[] memory serials = new int64[](metadataList.length);
         bytes[] memory currentMetadata = new bytes[](1);
@@ -53,18 +67,16 @@ contract Minting is ExpiryHelper {
         return serials;
     }
 
-    function mintNft(address token, bytes[] memory metadata)
-        public
-        returns (int64)
-    {
-        (int256 response, , int64[] memory serials) = HederaTokenService
-            .mintToken(token, 0, metadata);
-
-        if (response != HederaResponseCodes.SUCCESS) {
-            return int64(response);
-            // revert("Failed to mint non-fungible token.");
-        }
-
-        return serials[0];
+    function createTokenAndMintMultipleNfts(
+        string memory name,
+        string memory symbol,
+        string memory memo,
+        int64 maxSupply,
+        uint32 autoRenewPeriod,
+        bytes[] memory metadataList
+    ) external payable returns (address tokenId) {
+        tokenId = createNft(name, symbol, memo, maxSupply, autoRenewPeriod);
+        mintMultipleNfts(tokenId, metadataList); 
+        return tokenId;
     }
 }

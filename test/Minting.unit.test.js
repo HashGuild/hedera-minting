@@ -208,4 +208,63 @@ contract('Minting', function () {
             }
         });
     }); });
+    it('creates a token and mints multiple nfts in one call', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var operatorId, contractId, createTokenAndMintMultipleNFTsData, error, tokenId, _a, _b, _i, nft, nftId, info, err_4;
+        var _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    operatorId = (0, clientHelper_1.setClientOperator)('0.0.1022', '0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4', client)[0];
+                    return [4 /*yield*/, (0, hashgraphQueries_1.getContractIdFromAddress)(Minting.address)];
+                case 1:
+                    contractId = _d.sent();
+                    createTokenAndMintMultipleNFTsData = {
+                        name: 'Fall Collection',
+                        symbol: 'LEAF',
+                        maxSupply: 250,
+                        memo: 'Just a memo',
+                        metadata: [
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                            Buffer.from('ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'),
+                        ],
+                    };
+                    _d.label = 2;
+                case 2:
+                    _d.trys.push([2, 8, , 9]);
+                    return [4 /*yield*/, (0, hashgraphQueries_1.createTokenAndMintMultipleNfts)(contractId, createTokenAndMintMultipleNFTsData, client)];
+                case 3:
+                    tokenId = (_d.sent())[0];
+                    _a = [];
+                    for (_b in createTokenAndMintMultipleNFTsData.metadata)
+                        _a.push(_b);
+                    _i = 0;
+                    _d.label = 4;
+                case 4:
+                    if (!(_i < _a.length)) return [3 /*break*/, 7];
+                    nft = _a[_i];
+                    nftId = new sdk_1.NftId(sdk_1.TokenId.fromString(tokenId), +nft + 1);
+                    return [4 /*yield*/, (0, hashgraphQueries_1.getNftInfo)(nftId, client)];
+                case 5:
+                    info = _d.sent();
+                    assert.equal(operatorId.toString(), info.accountId.toString());
+                    assert.equal(createTokenAndMintMultipleNFTsData.metadata[0].toString(), (_c = info.metadata) === null || _c === void 0 ? void 0 : _c.toString());
+                    _d.label = 6;
+                case 6:
+                    _i++;
+                    return [3 /*break*/, 4];
+                case 7: return [3 /*break*/, 9];
+                case 8:
+                    err_4 = _d.sent();
+                    console.log('Cought error: ', JSON.stringify(err_4));
+                    error = err_4;
+                    return [3 /*break*/, 9];
+                case 9:
+                    assert.notExists(error);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });

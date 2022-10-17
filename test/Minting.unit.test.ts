@@ -3,6 +3,8 @@ import { Client, NftId, TokenId } from '@hashgraph/sdk';
 import { initClient, setClientOperator } from './utils/clientHelper';
 import {
   createToken,
+  createTokenAndMintMultipleNfts,
+  CreateTokenAndMintMultipleNFTsData,
   getContractIdFromAddress,
   getNftInfo,
   getTokenInformation,
@@ -171,6 +173,64 @@ contract('Minting', () => {
       }
     } catch (err) {
       console.log('Cought error: ', err);
+      error = err;
+    }
+    assert.notExists(error);
+  });
+
+  it('creates a token and mints multiple nfts in one call', async () => {
+    const [operatorId] = setClientOperator(
+      '0.0.1022',
+      '0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4',
+      client
+    );
+
+    const contractId = await getContractIdFromAddress(Minting.address);
+
+    const createTokenAndMintMultipleNFTsData: CreateTokenAndMintMultipleNFTsData =
+      {
+        name: 'Fall Collection',
+        symbol: 'LEAF',
+        maxSupply: 250,
+        memo: 'Just a memo',
+        metadata: [
+          Buffer.from(
+            'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+          ),
+          Buffer.from(
+            'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+          ),
+          Buffer.from(
+            'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+          ),
+          Buffer.from(
+            'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+          ),
+          Buffer.from(
+            'ipfs://bafyreie3ichmqul4xa7e6xcy34tylbuq2vf3gnjf7c55trg3b6xyjr4bku/metadata.json'
+          ),
+        ],
+      };
+
+    let error;
+    try {
+      const [tokenId] = await createTokenAndMintMultipleNfts(
+        contractId,
+        createTokenAndMintMultipleNFTsData,
+        client
+      );
+
+      for (const nft in createTokenAndMintMultipleNFTsData.metadata) {
+        const nftId = new NftId(TokenId.fromString(tokenId), +nft + 1);
+        const info = await getNftInfo(nftId, client);
+        assert.equal(operatorId.toString(), info.accountId.toString());
+        assert.equal(
+          createTokenAndMintMultipleNFTsData.metadata[0].toString(),
+          info.metadata?.toString()
+        );
+      }
+    } catch (err) {
+      console.log('Cought error: ', JSON.stringify(err));
       error = err;
     }
     assert.notExists(error);
