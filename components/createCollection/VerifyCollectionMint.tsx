@@ -19,14 +19,14 @@ const VerifyCollectionMint = function ({
   const [confirmMint, setConfirmMint] = useState(false);
   const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
   const createCollectionHandler = async () => {
-    const formDataNfts = new FormData();
-    Object.keys(formData).forEach((key) =>
-      formDataNfts.append(key, formData[key])
-    );
-    await fetch(`/api/createCollection`, {
-      method: 'POST',
-      body: formDataNfts,
-    }).then(() => console.log('sentt'));
+    // const formDataNfts = new FormData();
+    // Object.keys(formData).forEach((key) =>
+    //   formDataNfts.append(key, formData[key])
+    // );
+    // await fetch(`/api/createCollection`, {
+    //   method: 'POST',
+    //   body: formDataNfts,
+    // }).then(() => console.log('sentt'));
   };
   return (
     <>

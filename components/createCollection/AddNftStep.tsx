@@ -55,11 +55,11 @@ const AddNftStep = function ({
     StepTwoErrors | NftFormErrors
   >(initialErrors);
 
-  const handleFormChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFormChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (event.currentTarget.type === 'checkbox') {
       setNftFormData({
         ...nftFormData,
-        [event.currentTarget.name]: event.currentTarget.checked,
+        [event.currentTarget.name]: (event.currentTarget as HTMLInputElement).checked,
       });
     } else {
       // form Validation for events.

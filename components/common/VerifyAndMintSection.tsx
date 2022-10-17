@@ -25,14 +25,15 @@ const VerifyAndMintSection = function ({
   }, []);
 
   const createNftHandler = async () => {
-    const formDataNfts = new FormData();
-    Object.keys(formData).forEach((key) =>
-      formDataNfts.append(key, formData[key])
-    );
-    await fetch(`/api/createNft`, {
-      method: 'POST',
-      body: formDataNfts,
-    }).then(() => console.log('sentt'));
+    // const formDataNfts = new FormData();
+    // Object.keys(formData).forEach((key) =>
+    // // @ts-ignore
+    //   formDataNfts.append(key, formData[key])
+    // );
+    // await fetch(`/api/createNft`, {
+    //   method: 'POST',
+    //   body: formDataNfts,
+    // }).then(() => console.log('sentt'));
   };
   return (
     <div>
