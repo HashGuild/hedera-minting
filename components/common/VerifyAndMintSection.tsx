@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
 import Button from '../global/Button';
@@ -25,16 +26,27 @@ const VerifyAndMintSection = function ({
   }, []);
 
   const createNftHandler = async () => {
-    // const formDataNfts = new FormData();
-    // Object.keys(formData).forEach((key) =>
-    // // @ts-ignore
-    //   formDataNfts.append(key, formData[key])
-    // );
-    // await fetch(`/api/createNft`, {
-    //   method: 'POST',
-    //   body: formDataNfts,
-    // }).then(() => console.log('sentt'));
+    try {
+      const data = new FormData();
+      data.set('name', formData.tokenName);
+      data.set('creator', formData.creatorName);
+      data.set('description', formData.description);
+      data.set('thumbnailFile', formData.nftThumbnail!);
+      data.set('attributes', JSON.stringify(formData.nftProperties))
+      for (const file of formData.nftFiles) {
+        data.append('files', file);
+      }
+      const res = await axios.post('/api/uploadMetadataToIPFS', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div>
       {waiting || error ? (

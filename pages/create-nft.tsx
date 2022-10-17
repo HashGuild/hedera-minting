@@ -82,19 +82,6 @@ const CreateNft: NextPage = function () {
     );
     return validated;
   };
-  // tokenName: '',
-  // creatorName: '',
-  // displayName: '',
-  // nftFiles: [],
-  // description: '',
-  // splitRoyaltiesEnabled: false,
-  // royaltyWallets: [{ fee: 0, accountId: '' }],
-  // nftThumbnail: null,
-  // nftPropertiesEnabled: false,
-  // splitPercent: 0,
-  // nftProperties: [{ key: '', value: '' }],
-  // sellingOption: 'Mint Only',
-  // listingPrice: 0,
 
   const uploadNftData = async () => {
     try {

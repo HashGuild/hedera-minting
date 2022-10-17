@@ -33,15 +33,60 @@ apiRoute.post<NextApiRequest & { files: any }, NextApiResponse<ResponseData>>(
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBDNkNmOTc3NzRkNmQyMTdkOWVCNzVCOWUzMjgyNEZBZjBENDY0NGMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2NTc3OTA2MzE4OCwibmFtZSI6IkRldiJ9.hmSDCTY_2ksbbZnDpSFLy5H-guxJk9fWMktCIYpaO98',
     });
 
-    const { name, description } = req.body;
-    const buffer = await fs.readFile(req.files.files[0].path);
+    const { name, description, creator, attributes } = req.body;
+    const token: Record<string, any> = {};
+
+    // Store thumbnail
+    const thumbnailData = req.files.thumbnailFile[0];
+    const buffer = await fs.readFile(thumbnailData.path);
     const image = new Blob([buffer]);
-    const storageResponse = await client.store({
-      name,
-      description,
-      image,
-    });
-    res.status(200).json({ success: true, url: storageResponse.url });
+    const { cid: thumbnailCid, car: thumbnailCar } =
+      await NFTStorage.encodeBlob(image);
+    await client.storeCar(thumbnailCar);
+    token.image = `ipfs://${thumbnailCid}`;
+
+    // Store images
+    token.files = await Promise.all(
+      req.files.files.map(async (file: any) => {
+        const fileBuffer = await fs.readFile(file.path);
+        const fileBlob = new Blob([fileBuffer]);
+        const { cid: fileCid, car: fileCar } = await NFTStorage.encodeBlob(
+          fileBlob
+        );
+        await client.storeCar(fileCar);
+        return {
+          uri: `ipfs://${fileCid}`,
+          type: file.mimetype,
+        };
+      })
+    );
+
+    // Set attributes
+    if (attributes) {
+      const parsedAttributes = JSON.parse(attributes);
+      if (Array.isArray(parsedAttributes)) {
+        token.attributes = [];
+
+        for (const attribute of parsedAttributes) {
+          token.attributes.push({
+            trait_type: attribute.key,
+            value: attribute.value,
+          });
+        }
+      }
+    }
+
+    // Set general properties
+    token.name = name;
+    token.description = description;
+    token.creator = creator;
+    token.type = thumbnailData.mimetype;
+
+    const tokenBlob = new Blob([JSON.stringify(token)]);
+    const { cid, car } = await NFTStorage.encodeBlob(tokenBlob);
+
+    await client.storeCar(car);
+    res.status(200).json({ success: true, url: `ipfs://${cid}` });
   }
 );
 
