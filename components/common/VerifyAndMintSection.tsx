@@ -24,6 +24,16 @@ const VerifyAndMintSection = function ({
     window.scrollTo(0, 0);
   }, []);
 
+  const createNftHandler = async () => {
+    const formDataNfts = new FormData();
+    Object.keys(formData).forEach((key) =>
+      formDataNfts.append(key, formData[key])
+    );
+    await fetch(`/api/createNft`, {
+      method: 'POST',
+      body: formDataNfts,
+    }).then(() => console.log('sentt'));
+  };
   return (
     <div>
       {waiting || error ? (
@@ -90,7 +100,7 @@ const VerifyAndMintSection = function ({
 
       <Button
         title={success ? 'Mint More' : 'Mint Now'}
-        onClick={() => setAttachWallet(true)}
+        onClick={() => createNftHandler()}
         className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80"
       />
       <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
