@@ -1,5 +1,17 @@
+import {
+  AccountId,
+  ContractExecuteTransaction,
+  ContractFunctionParameters,
+} from '@hashgraph/sdk';
 import axios from 'axios';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { HashConnectContext } from '../../context/HashConnectWrapper';
 import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
 import Button from '../global/Button';
 import AttachWalletSection from './AttachWalletSection';
@@ -18,6 +30,13 @@ const VerifyAndMintSection = function ({
   const [success] = useState(false);
   const [waiting] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
+  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
+
+  useEffect(() => {
+    if (!hashconnect && initHashConnect) {
+      initHashConnect();
+    }
+  }, [hashconnect, initHashConnect]);
 
   const isNftForm = nftFormType(formData);
 
@@ -27,12 +46,16 @@ const VerifyAndMintSection = function ({
 
   const createNftHandler = async () => {
     try {
+      if (!hashconnect) throw new Error('HashConnect not initialized!');
+
       const data = new FormData();
       data.set('name', formData.tokenName);
       data.set('creator', formData.creatorName);
       data.set('description', formData.description);
       data.set('thumbnailFile', formData.nftThumbnail!);
-      data.set('attributes', JSON.stringify(formData.nftProperties))
+      if (formData.nftPropertiesEnabled) {
+        data.set('attributes', JSON.stringify(formData.nftProperties));
+      }
       for (const file of formData.nftFiles) {
         data.append('files', file);
       }
@@ -41,7 +64,50 @@ const VerifyAndMintSection = function ({
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(res);
+
+      const mintNftRequest = new ContractExecuteTransaction()
+        .setContractId(process.env.NEXT_PUBLIC_MINTING_CONTRACT_ID!)
+        .setGas(2500000)
+        .setPayableAmount(500)
+        .setFunction(
+          'createTokenAndMintMultipleNfts',
+          new ContractFunctionParameters()
+            .addString(formData.tokenName)
+            .addString('TEST')
+            // @ts-ignore
+            .addInt64(1)
+            .addUint32(7000000)
+            .addBytesArray([Buffer.from(res.data.url)])
+        );
+
+      hashconnect!.connectToLocalWallet();
+
+      hashconnect!.pairingEvent.once(async (pairingData) => {
+        try {
+          const provider = hashconnect.getProvider(
+            'testnet',
+            pairingData.topic,
+            pairingData.accountIds[0]
+          );
+          const signer = hashconnect.getSigner(provider);
+
+          // const tokenSolidityAddr =
+          //   mintMultipleNftsRx.contractFunctionResult!.getAddress(0);
+          // const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
+          const trans = await mintNftRequest.freezeWithSigner(signer);
+          const transExec = await trans.executeWithSigner(signer);
+          const transRx = await transExec.getRecordWithSigner(signer);
+          const transRc = await transExec.getReceiptWithSigner(signer);
+
+          console.log('Status:', transRc.status);
+          const tokenSolidityAddr =
+            transRx.contractFunctionResult!.getAddress(0);
+          const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
+          console.log('NEW TOKEN ID: ', tokenId);
+        } catch (err) {
+          console.log(err);
+        }
+      });
     } catch (error) {
       console.log(error);
     }

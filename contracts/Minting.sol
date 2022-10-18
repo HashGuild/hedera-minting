@@ -51,7 +51,6 @@ contract Minting is ExpiryHelper {
         if (response != HederaResponseCodes.SUCCESS) {
             revert("Failed to mint non-fungible token.");
         }
-
         return serials[0];
     }
 

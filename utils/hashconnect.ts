@@ -9,7 +9,7 @@ const appMetadata: HashConnectTypes.AppMetadata = {
 
 async function initHashConnect() {
   const hashconnect = new HashConnect(true);
-  await hashconnect.init(appMetadata, 'testnet', false);
+  await hashconnect.init(appMetadata, 'testnet', true);
   return hashconnect;
 }
 
