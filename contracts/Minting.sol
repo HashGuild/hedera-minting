@@ -10,7 +10,6 @@ contract Minting is ExpiryHelper {
     function createNft(
         string memory name,
         string memory symbol,
-        string memory memo,
         int64 maxSupply,
         uint32 autoRenewPeriod
     ) public payable returns (address) {
@@ -26,7 +25,6 @@ contract Minting is ExpiryHelper {
         IHederaTokenService.HederaToken memory token;
         token.name = name;
         token.symbol = symbol;
-        token.memo = memo;
         token.treasury = msg.sender;
         token.tokenSupplyType = true;
         token.maxSupply = maxSupply;
@@ -70,12 +68,11 @@ contract Minting is ExpiryHelper {
     function createTokenAndMintMultipleNfts(
         string memory name,
         string memory symbol,
-        string memory memo,
         int64 maxSupply,
         uint32 autoRenewPeriod,
         bytes[] memory metadataList
     ) external payable returns (address tokenId) {
-        tokenId = createNft(name, symbol, memo, maxSupply, autoRenewPeriod);
+        tokenId = createNft(name, symbol, maxSupply, autoRenewPeriod);
         mintMultipleNfts(tokenId, metadataList); 
         return tokenId;
     }

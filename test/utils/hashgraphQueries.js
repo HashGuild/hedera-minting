@@ -97,7 +97,7 @@ function createToken(contractId, data, client) {
                         .setFunction('createNft', new sdk_1.ContractFunctionParameters()
                         .addString(data.name)
                         .addString(data.symbol)
-                        .addString(data.memo)
+                        // .addString(data.memo)
                         // @ts-ignore
                         .addInt64(data.maxSupply)
                         .addUint32(7000000));
@@ -178,7 +178,7 @@ function createTokenAndMintMultipleNfts(contractId, data, client) {
                         .setFunction('createTokenAndMintMultipleNfts', new sdk_1.ContractFunctionParameters()
                         .addString(data.name)
                         .addString(data.symbol)
-                        .addString(data.memo)
+                        // .addString(data.memo)
                         // @ts-ignore
                         .addInt64(data.maxSupply)
                         .addUint32(7000000)

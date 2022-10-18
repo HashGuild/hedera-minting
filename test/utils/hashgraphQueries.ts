@@ -68,7 +68,7 @@ export async function createToken(
       new ContractFunctionParameters()
         .addString(data.name)
         .addString(data.symbol)
-        .addString(data.memo)
+        // .addString(data.memo)
         // @ts-ignore
         .addInt64(data.maxSupply)
         .addUint32(7000000)
@@ -134,7 +134,7 @@ export async function createTokenAndMintMultipleNfts(
       new ContractFunctionParameters()
         .addString(data.name)
         .addString(data.symbol)
-        .addString(data.memo)
+        // .addString(data.memo)
         // @ts-ignore
         .addInt64(data.maxSupply)
         .addUint32(7000000)
