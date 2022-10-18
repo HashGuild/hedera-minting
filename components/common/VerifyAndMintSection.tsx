@@ -2,6 +2,7 @@ import {
   AccountId,
   ContractExecuteTransaction,
   ContractFunctionParameters,
+  TransactionResponse,
 } from '@hashgraph/sdk';
 import axios from 'axios';
 import React, {
@@ -32,12 +33,6 @@ const VerifyAndMintSection = function ({
   const [attachWallet, setAttachWallet] = useState(false);
   const [hashconnect, initHashConnect] = useContext(HashConnectContext);
 
-  useEffect(() => {
-    if (!hashconnect && initHashConnect) {
-      initHashConnect();
-    }
-  }, [hashconnect, initHashConnect]);
-
   const isNftForm = nftFormType(formData);
 
   useEffect(() => {
@@ -46,7 +41,10 @@ const VerifyAndMintSection = function ({
 
   const createNftHandler = async () => {
     try {
-      if (!hashconnect) throw new Error('HashConnect not initialized!');
+      let hc = hashconnect;
+      if (!hc) {
+        hc = await initHashConnect!();
+      }
 
       const data = new FormData();
       data.set('name', formData.tokenName);
@@ -80,30 +78,31 @@ const VerifyAndMintSection = function ({
             .addBytesArray([Buffer.from(res.data.url)])
         );
 
-      hashconnect!.connectToLocalWallet();
+      hc!.connectToLocalWallet();
 
-      hashconnect!.pairingEvent.once(async (pairingData) => {
+      hc!.pairingEvent.once(async (pairingData) => {
         try {
-          const provider = hashconnect.getProvider(
+          const provider = hc!.getProvider(
             'testnet',
             pairingData.topic,
             pairingData.accountIds[0]
           );
-          const signer = hashconnect.getSigner(provider);
+          const signer = hc!.getSigner(provider);
 
           // const tokenSolidityAddr =
           //   mintMultipleNftsRx.contractFunctionResult!.getAddress(0);
           // const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
           const trans = await mintNftRequest.freezeWithSigner(signer);
           const transExec = await trans.executeWithSigner(signer);
-          const transRx = await transExec.getRecordWithSigner(signer);
-          const transRc = await transExec.getReceiptWithSigner(signer);
+          // const transRx = await transExec.getRecordWithSigner(signer);
+          // const transRc = await transExec.getReceiptWithSigner(signer);
+          console.log('MY TRANS RESPONSE:',transExec)
 
-          console.log('Status:', transRc.status);
-          const tokenSolidityAddr =
-            transRx.contractFunctionResult!.getAddress(0);
-          const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
-          console.log('NEW TOKEN ID: ', tokenId);
+          // console.log('Status:', transRc.status);
+          // const tokenSolidityAddr =
+          //   transRx.contractFunctionResult!.getAddress(0);
+          // const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
+          // console.log('NEW TOKEN ID: ', tokenId);
         } catch (err) {
           console.log(err);
         }

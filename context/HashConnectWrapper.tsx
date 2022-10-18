@@ -2,7 +2,10 @@ import { HashConnect } from 'hashconnect';
 import { createContext, useMemo, useState } from 'react';
 import initialiseHashConnect from '../utils/hashconnect';
 
-type IHashConnectContext = [HashConnect | null, (() => void) | null];
+type IHashConnectContext = [
+  HashConnect | null,
+  (() => Promise<HashConnect>) | null
+];
 
 export const HashConnectContext = createContext<IHashConnectContext>([
   null,
@@ -17,9 +20,14 @@ export function HashConnectWrapper({
   const [hashConnect, setHashConnect] = useState<HashConnect | null>(null);
 
   async function initHashConnect() {
-    setHashConnect(await initialiseHashConnect());
+    const hashconnect = await initialiseHashConnect();
+    setHashConnect(hashconnect);
+    return hashconnect;
   }
-  const value = useMemo<IHashConnectContext>(() => [hashConnect, initHashConnect], [hashConnect]);
+  const value = useMemo<IHashConnectContext>(
+    () => [hashConnect, initHashConnect],
+    [hashConnect]
+  );
 
   return (
     <HashConnectContext.Provider value={value}>

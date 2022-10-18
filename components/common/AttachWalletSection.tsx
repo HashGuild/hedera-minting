@@ -10,11 +10,11 @@ const AttachWalletSection = function () {
   const [hashconnect, initHashConnect] = useContext(HashConnectContext);
   const pairingString = 'eyJtZXRhZGF0YSI6eyJuYW1lIjoiSGFAW2....';
 
-  useEffect(() => {
-    if (!hashconnect && initHashConnect) {
-      initHashConnect();
-    }
-  }, [hashconnect, initHashConnect]);
+  // useEffect(() => {
+  //   if (!hashconnect && initHashConnect) {
+  //     initHashConnect();
+  //   }
+  // }, [hashconnect, initHashConnect]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(pairingString);

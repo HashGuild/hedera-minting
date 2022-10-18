@@ -7,9 +7,20 @@ const appMetadata: HashConnectTypes.AppMetadata = {
   icon: '',
 };
 
+let hashconnectInstance: HashConnect | null = null;
+let initializingHashconnect = false;
+
 async function initHashConnect() {
+  if (initializingHashconnect) {
+    throw new Error('Already initializing HashConnect.');
+  }
+  if (hashconnectInstance) return hashconnectInstance;
+
+  initializingHashconnect = true;
   const hashconnect = new HashConnect(true);
   await hashconnect.init(appMetadata, 'testnet', true);
+  hashconnectInstance = hashconnect;
+  initializingHashconnect = false;
   return hashconnect;
 }
 
