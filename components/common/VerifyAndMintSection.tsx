@@ -13,6 +13,8 @@ import React, {
   useState,
 } from 'react';
 import { HashConnectContext } from '../../context/HashConnectWrapper';
+import getTransactionReceipt from '../../utils/getTransactionReceipt';
+import getTransactionRecord from '../../utils/getTransactionRecord';
 import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
 import Button from '../global/Button';
 import AttachWalletSection from './AttachWalletSection';
@@ -27,9 +29,9 @@ const VerifyAndMintSection = function ({
   formData,
   setRenderConfirmMint,
 }: VerifyAndMintSectionProps) {
-  const [error] = useState(false);
-  const [success] = useState(false);
-  const [waiting] = useState(false);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [waiting, setWaiting] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
   const [hashconnect, initHashConnect] = useContext(HashConnectContext);
 
@@ -41,6 +43,7 @@ const VerifyAndMintSection = function ({
 
   const createNftHandler = async () => {
     try {
+      setWaiting(true);
       let hc = hashconnect;
       if (!hc) {
         hc = await initHashConnect!();
@@ -93,16 +96,19 @@ const VerifyAndMintSection = function ({
           //   mintMultipleNftsRx.contractFunctionResult!.getAddress(0);
           // const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
           const trans = await mintNftRequest.freezeWithSigner(signer);
-          const transExec = await trans.executeWithSigner(signer);
-          // const transRx = await transExec.getRecordWithSigner(signer);
-          // const transRc = await transExec.getReceiptWithSigner(signer);
-          console.log('MY TRANS RESPONSE:',transExec)
+          const transExec = (await trans.executeWithSigner(signer)) as any;
 
-          // console.log('Status:', transRc.status);
-          // const tokenSolidityAddr =
-          //   transRx.contractFunctionResult!.getAddress(0);
-          // const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
-          // console.log('NEW TOKEN ID: ', tokenId);
+          const receipt = await getTransactionReceipt(
+            transExec.transactionId,
+            provider.client
+          );
+
+          if (receipt?.status.valueOf() === 22) {
+            setSuccess(true);
+          } else {
+            setError(true);
+          }
+          setWaiting(false);
         } catch (err) {
           console.log(err);
         }
