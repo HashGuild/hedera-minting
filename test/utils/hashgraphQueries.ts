@@ -13,17 +13,24 @@ export type MintNFTData = {
   tokenSolidityAddr: string;
   metadata: Buffer[];
 };
+export type MintMultipleNFTsData = {
+  tokenSolidityAddr: string;
+  metadata: Buffer[];
+};
 export type CreateTokenData = {
   name: string;
   symbol: string;
   maxSupply: number;
   memo: string;
 };
+export type CreateTokenAndMintMultipleNFTsData = CreateTokenData & {
+  metadata: Buffer[];
+};
 
 export async function getContractIdFromAddress(address: string) {
   try {
     const res = await axios.get(
-      `http://127.0.0.1:5551/api/v1/contracts/${address}`,
+      `http://127.0.0.1:5551/api/v1/contracts/${address}`
     );
 
     if (res.status !== 200) {
@@ -34,7 +41,7 @@ export async function getContractIdFromAddress(address: string) {
   } catch (error) {
     if (error instanceof axios.AxiosError) {
       throw new Error(
-        `Something went wrong while fetching the contract's ID: ${error.message}`,
+        `Something went wrong while fetching the contract's ID: ${error.message}`
       );
     }
     throw error;
@@ -50,7 +57,7 @@ export async function getTokenInformation(tokenId: string, client: Client) {
 export async function createToken(
   contractId: string,
   data: CreateTokenData,
-  client: Client,
+  client: Client
 ) {
   const createTokenRequest = new ContractExecuteTransaction()
     .setContractId(contractId)
@@ -61,15 +68,16 @@ export async function createToken(
       new ContractFunctionParameters()
         .addString(data.name)
         .addString(data.symbol)
-        .addString(data.memo)
+        // .addString(data.memo)
         // @ts-ignore
         .addInt64(data.maxSupply)
-        .addUint32(7000000),
+        .addUint32(7000000)
     );
   const createTokenTx = await createTokenRequest.execute(client);
   const createTokenRx = await createTokenTx.getRecord(client);
   const tokenSolidityAddr = createTokenRx.contractFunctionResult!.getAddress(0);
-  const tokenIdSolidityAddr = createTokenRx.contractFunctionResult!.getAddress(0);
+  const tokenIdSolidityAddr =
+    createTokenRx.contractFunctionResult!.getAddress(0);
   const tokenId = AccountId.fromSolidityAddress(tokenIdSolidityAddr);
   return [tokenId.toString(), tokenSolidityAddr];
 }
@@ -77,7 +85,7 @@ export async function createToken(
 export async function mintNft(
   contractId: string,
   data: MintNFTData,
-  client: Client,
+  client: Client
 ) {
   const mintNftRequest = new ContractExecuteTransaction()
     .setContractId(contractId)
@@ -86,12 +94,58 @@ export async function mintNft(
       'mintNft',
       new ContractFunctionParameters()
         .addAddress(data.tokenSolidityAddr)
-        .addBytesArray(data.metadata),
+        .addBytesArray(data.metadata)
     );
   const mintNftTx = await mintNftRequest.execute(client);
   const mintNftRx = await mintNftTx.getRecord(client);
   const serial = mintNftRx.contractFunctionResult!.getInt64(0);
   return serial;
+}
+
+export async function mintMultipleNfts(
+  contractId: string,
+  data: MintMultipleNFTsData,
+  client: Client
+) {
+  const mintNftRequest = new ContractExecuteTransaction()
+    .setContractId(contractId)
+    .setGas(data.metadata.length * 2500000)
+    .setFunction(
+      'mintMultipleNfts',
+      new ContractFunctionParameters()
+        .addAddress(data.tokenSolidityAddr)
+        .addBytesArray(data.metadata)
+    );
+  const mintNftTx = await mintNftRequest.execute(client);
+  await mintNftTx.getRecord(client);
+}
+
+export async function createTokenAndMintMultipleNfts(
+  contractId: string,
+  data: CreateTokenAndMintMultipleNFTsData,
+  client: Client
+) {
+  const mintNftRequest = new ContractExecuteTransaction()
+    .setContractId(contractId)
+    .setGas(data.metadata.length * 2500000)
+    .setPayableAmount(500)
+    .setFunction(
+      'createTokenAndMintMultipleNfts',
+      new ContractFunctionParameters()
+        .addString(data.name)
+        .addString(data.symbol)
+        // .addString(data.memo)
+        // @ts-ignore
+        .addInt64(data.maxSupply)
+        .addUint32(7000000)
+        .addBytesArray(data.metadata)
+    );
+  const mintMultipleNftsTx = await mintNftRequest.execute(client);
+  const mintMultipleNftsRx = await mintMultipleNftsTx.getRecord(client);
+  const tokenSolidityAddr =
+    mintMultipleNftsRx.contractFunctionResult!.getAddress(0);
+  const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
+  return [tokenId.toString(), tokenSolidityAddr];
 }
 
 export async function getNftInfo(nftId: NftId, client: Client) {

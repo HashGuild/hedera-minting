@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import {HashConnectContext} from '../../context/HashConnectWrapper';
 import { CollectionForm } from '../../utils/Interfaces';
+import pinFilesAndMint from '../../utils/pinFilesAndMint';
 import AttachWalletSection from '../common/AttachWalletSection';
 import ErrorMessage from '../common/ErrorMessage';
 import Modal from '../common/Modal';
@@ -12,21 +14,32 @@ type VerifyCollectionMintProps = {
 const VerifyCollectionMint = function ({
   formData,
 }: VerifyCollectionMintProps) {
-  const [error] = useState(false);
-  const [success] = useState(false);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
-  const [waiting] = useState(false);
+  const [waiting, setWaiting] = useState(false);
   const [confirmMint, setConfirmMint] = useState(false);
   const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
+  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
+
   const createCollectionHandler = async () => {
-    const formDataNfts = new FormData();
-    Object.keys(formData).forEach((key) =>
-      formDataNfts.append(key, formData[key])
-    );
-    await fetch(`/api/createCollection`, {
-      method: 'POST',
-      body: formDataNfts,
-    }).then(() => console.log('sentt'));
+    try {
+      setWaiting(true);
+      const status = await pinFilesAndMint(
+        formData,
+        formData.nfts,
+        initHashConnect!,
+        hashconnect
+      );
+      if (status === 22) {
+        setSuccess(true);
+      } else {
+        setError(true);
+      }
+      setWaiting(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>
@@ -54,7 +67,7 @@ const VerifyCollectionMint = function ({
       <h4 className="text-lg font-bold mt-8 ">Your Collection Details</h4>
       <div className="my-3 grid grid-cols-3 gap-2">
         {formData.nfts.slice(0, 6).map((nft) => (
-          <picture>
+          <picture key={nft.tokenName}>
             <source src={URL.createObjectURL(nft.nftThumbnail as Blob)} />
             <img
               className="max-h-[9rem] min-h-[9rem] md:max-h-[11rem] md:min-h-[11rem] border rounded-md overflow-hidden w-full object-cover"

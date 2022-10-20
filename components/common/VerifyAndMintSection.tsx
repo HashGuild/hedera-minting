@@ -1,5 +1,13 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { HashConnectContext } from '../../context/HashConnectWrapper';
 import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
+import pinFilesAndMint from '../../utils/pinFilesAndMint';
 import Button from '../global/Button';
 import AttachWalletSection from './AttachWalletSection';
 import Modal from './Modal';
@@ -13,10 +21,11 @@ const VerifyAndMintSection = function ({
   formData,
   setRenderConfirmMint,
 }: VerifyAndMintSectionProps) {
-  const [error] = useState(false);
-  const [success] = useState(false);
-  const [waiting] = useState(false);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [waiting, setWaiting] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
+  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
 
   const isNftForm = nftFormType(formData);
 
@@ -25,15 +34,25 @@ const VerifyAndMintSection = function ({
   }, []);
 
   const createNftHandler = async () => {
-    const formDataNfts = new FormData();
-    Object.keys(formData).forEach((key) =>
-      formDataNfts.append(key, formData[key])
-    );
-    await fetch(`/api/createNft`, {
-      method: 'POST',
-      body: formDataNfts,
-    }).then(() => console.log('sentt'));
+    try {
+      setWaiting(true);
+      const status = await pinFilesAndMint(
+        formData,
+        [formData],
+        initHashConnect!,
+        hashconnect
+      );
+      if (status === 22) {
+        setSuccess(true);
+      } else {
+        setError(true);
+      }
+      setWaiting(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <div>
       {waiting || error ? (
