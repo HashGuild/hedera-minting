@@ -61,7 +61,7 @@ const BasicNFTSection = function ({
         value={formData.tokenName}
         placeholder="Display Name"
         onChange={handleFormChange}
-        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+        className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5 bg-transparent"
       />
 
       <Input
@@ -75,7 +75,7 @@ const BasicNFTSection = function ({
         required
         name="creatorName"
         placeholder="Creator Name"
-        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+        className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5"
         onChange={handleFormChange}
         value={formData.creatorName}
       />
@@ -93,7 +93,7 @@ const BasicNFTSection = function ({
           errorMessage="Display Name cannot be empty."
           value={formData.displayName}
           placeholder="Display Name"
-          className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5"
+          className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5"
           onChange={handleFormChange}
         />
       )}
@@ -109,7 +109,7 @@ const BasicNFTSection = function ({
         errorMessage="Description cannot be empty."
         value={formData.description}
         placeholder="Description"
-        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 focus:ring-0 outline-none"
+        className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5 focus:ring-0 outline-none"
         onChange={handleFormChange}
       />
     </section>

@@ -9,7 +9,7 @@ const Footer: FC = function () {
     <footer className="flex flex-col lg:flex-row justify-between lg:items-center py-5 md:border-b md:border-accentGrey px-[5%] dark:text-white ">
       <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-24">
         <div className="pb-4 lg:pb-0 flex items-center gap-2">
-          <HashGuildLogo className="h-6 w-6 fill-gray-700 dark:fill-white" />
+          <HashGuildLogo className="h-6 w-6 fill-gray-700 dark:stroke-white" />
           <h1 className="font-bold text-gray-700 inline-block dark:text-white">
             HashGuild Minting
           </h1>

@@ -206,7 +206,7 @@ const AddNftStep = function ({
         onClick={editNft ? editNftConfirm : addNftConfirm}
         disabled={!checkFormValidated()}
         title="Continue"
-        className="w-full bg-black mt-5 text-white rounded-md disabled:bg-black/40"
+        className="w-full bg-black text-white dark:bg-white dark:text-black mt-5 rounded-md disabled:bg-black/40"
       />
 
     </>

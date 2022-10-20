@@ -1,7 +1,9 @@
 import Head from 'next/head';
+import nightwind from 'nightwind/helper';
 import React, { FC } from 'react';
 import Footer from './Footer';
 import Header from './Header';
+
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,6 +14,7 @@ const Layout: FC<LayoutProps> = function ({ children }) {
       <Head>
         <title>Hedera Minting</title>
         <meta name="Hedera Minting" content="Mint NFTs on Hedera." />
+      <script dangerouslySetInnerHTML={{ __html: nightwind.init() }} />
       </Head>
       <div className="min-h-screen w-full flex flex-col">
         <Header />

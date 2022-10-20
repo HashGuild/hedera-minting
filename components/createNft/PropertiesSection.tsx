@@ -119,7 +119,7 @@ const PropertiesSection = function ({
                 errorMessage=""
                 error={formDataErrors.nftPropertiesError}
                 placeholder="Key"
-                className="w-full text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+                className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5   "
                 onChange={(e) => {
                   handleChange(index, e);
                 }}
@@ -141,7 +141,7 @@ const PropertiesSection = function ({
                 errorMessage=""
                 error={formDataErrors.nftPropertiesError}
                 placeholder="Value"
-                className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+                className=" w-full  text-black placeholder:text-sm placeholder:text-gray-400 py-1.5   "
                 onChange={(e) => {
                   handleChange(index, e);
                 }}

@@ -11,6 +11,7 @@ import pinFilesAndMint from '../../utils/pinFilesAndMint';
 import Button from '../global/Button';
 import AttachWalletSection from './AttachWalletSection';
 import Modal from './Modal';
+import HelpModal from '../global/HelpModal';
 
 interface VerifyAndMintSectionProps {
   formData: NftForm | NftInCollection;
@@ -25,6 +26,7 @@ const VerifyAndMintSection = function ({
   const [success, setSuccess] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
+  const [troubleshooting, setTroubleshooting] = useState(false);
   const [hashconnect, initHashConnect] =
     useContext(HashConnectContext);
 
@@ -56,20 +58,22 @@ const VerifyAndMintSection = function ({
 
   return (
     <div>
+      {troubleshooting && <HelpModal openHelp={troubleshooting} setOpenHelp={setTroubleshooting} />}
       {waiting || error ? (
-        <div className="py-6 px-2 my-5 text-xs  rounded-lg bg-black text-white">
+        <div className="relative py-6 px-2 my-5 text-xs md:rounded-lg bg-black text-white w-[calc(100%+10%)] md:w-full -left-[5%] md:-left-0">
           {waiting && (
             <p>
               Waiting for you to sign the transaction.
               <br />
-              Try Again -&gt;
+              <span className='cursor-pointer hover:underline' onClick={() => setTroubleshooting(true)} role="button" tabIndex={0} onKeyDown={() => setTroubleshooting(true)}>Try Again -&gt;</span>
             </p>
           )}
 
           {error && (
             <p>
               Something went wrong while minting your collection. <br />
-              Please try again. Troubleshooting -&gt;
+              Please try again.{' '}
+              <span className='cursor-pointer hover:underline' onClick={() => setTroubleshooting(true)} role="button" tabIndex={0} onKeyDown={() => setTroubleshooting(true)}>Troubleshooting -&gt;</span>
             </p>
           )}
         </div>
@@ -106,13 +110,13 @@ const VerifyAndMintSection = function ({
             will open up your Hashpack Wallet to sign the transaction.
           </p>
           <p className="text-xs text-gray-500 mb-10 mt-5">
-            No Hashpack Wallet? Get it
+            No Hashpack Wallet?  {' '}
             <a
               href="https://www.hashpack.app/"
               className="underline hover:text-slate-600"
             >
-              {' '}
-              here -&gt;
+             
+              Get it here -&gt;
             </a>
           </p>
         </section>
@@ -120,11 +124,13 @@ const VerifyAndMintSection = function ({
 
       <Button
         title={success ? 'Mint More' : 'Mint Now'}
-        onClick={() => createNftHandler()}
-        className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80"
+        onClick={() => setAttachWallet(true)}
+        className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80 dark:hover:bg-white/80"
       />
       <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
-        <AttachWalletSection />
+        <AttachWalletSection
+        onPairingEvent={createNftHandler}
+        />
       </Modal>
       <Button
         title={
