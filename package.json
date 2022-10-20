@@ -14,6 +14,7 @@
   "dependencies": {
     "@fontsource/inter": "^4.5.13",
     "@ganache/console.log": "^0.2.0",
+    "@hashgraph/hethers": "^1.2.2",
     "@hashgraph/sdk": "^2.18.3",
     "axios": "^1.1.2",
     "bn.js": "^5.2.1",

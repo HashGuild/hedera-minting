@@ -71,10 +71,10 @@ dotenv.config();
 var delay = function (ms) { return new Promise(function (res) { return setTimeout(res, ms); }); };
 var operatorId = sdk_1.AccountId.fromString(process.env.OPERATOR_ID);
 var operatorKey = sdk_1.PrivateKey.fromString(process.env.OPERATOR_PVKEY);
-var client = sdk_1.Client.forTestnet().setOperator(operatorId, operatorKey);
-// const node = { '127.0.0.1:50211': new AccountId(3) };
-// const client = Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
-// client.setOperator(operatorId, operatorKey);
+// const client = Client.forTestnet().setOperator(operatorId, operatorKey);
+var node = { '127.0.0.1:50211': new sdk_1.AccountId(3) };
+var client = sdk_1.Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
+client.setOperator(operatorId, operatorKey);
 function autoCreateAccountFcn(senderAccountId, receiverAccountId, hbarAmount) {
     return __awaiter(this, void 0, void 0, function () {
         var transferToAliasTx, transferToAliasSign, transferToAliasSubmit, transferToAliasRx, transferToAliasRec, txRecordQuery;

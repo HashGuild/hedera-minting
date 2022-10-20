@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getNftInfo = exports.createTokenAndMintMultipleNfts = exports.mintMultipleNfts = exports.mintNft = exports.createToken = exports.getTokenInformation = exports.getContractIdFromAddress = void 0;
+var hethers_1 = require("@hashgraph/hethers");
 var sdk_1 = require("@hashgraph/sdk");
 var axios_1 = __importDefault(require("axios"));
 function getContractIdFromAddress(address) {
@@ -86,7 +87,7 @@ function getTokenInformation(tokenId, client) {
 exports.getTokenInformation = getTokenInformation;
 function createToken(contractId, data, client) {
     return __awaiter(this, void 0, void 0, function () {
-        var createTokenRequest, createTokenTx, createTokenRx, tokenSolidityAddr, tokenIdSolidityAddr, tokenId;
+        var createTokenRequest, createTokenTx, createTokenRx, base, nominator, denominator, merged, tokenSolidityAddr, tokenIdSolidityAddr, tokenId;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -107,6 +108,13 @@ function createToken(contractId, data, client) {
                     return [4 /*yield*/, createTokenTx.getRecord(client)];
                 case 2:
                     createTokenRx = _a.sent();
+                    base = hethers_1.BigNumber.from(1).shl(255);
+                    nominator = hethers_1.BigNumber.from(10).shl(160);
+                    nominator = base.or(nominator);
+                    console.log('NOMINATOR:', nominator.toHexString());
+                    denominator = hethers_1.BigNumber.from('0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4');
+                    merged = nominator.or(denominator);
+                    console.log('MERGED:', merged.toHexString());
                     tokenSolidityAddr = createTokenRx.contractFunctionResult.getAddress(0);
                     tokenIdSolidityAddr = createTokenRx.contractFunctionResult.getAddress(0);
                     tokenId = sdk_1.AccountId.fromSolidityAddress(tokenIdSolidityAddr);

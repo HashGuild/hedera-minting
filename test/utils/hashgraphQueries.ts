@@ -1,3 +1,4 @@
+import { BigNumber } from '@hashgraph/hethers';
 import {
   AccountId,
   Client,
@@ -75,6 +76,20 @@ export async function createToken(
     );
   const createTokenTx = await createTokenRequest.execute(client);
   const createTokenRx = await createTokenTx.getRecord(client);
+  const base = BigNumber.from(1).shl(255);
+  let nominator = BigNumber.from(10).shl(160);
+  nominator = base.or(nominator);
+  console.log('NOMINATOR:', nominator.toHexString());
+  const denominator = BigNumber.from(
+    '0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4'
+  );
+  const merged = nominator.or(denominator);
+  console.log('MERGED:', merged.toHexString());
+
+  // console.log(
+  //   'STATUS: ',
+  //   createTokenRx.contractFunctionResult!.getInt32(0).toString()
+  // );
   const tokenSolidityAddr = createTokenRx.contractFunctionResult!.getAddress(0);
   const tokenIdSolidityAddr =
     createTokenRx.contractFunctionResult!.getAddress(0);

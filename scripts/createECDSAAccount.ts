@@ -20,10 +20,10 @@ const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 const operatorId = AccountId.fromString(process.env.OPERATOR_ID!);
 const operatorKey = PrivateKey.fromString(process.env.OPERATOR_PVKEY!);
-const client = Client.forTestnet().setOperator(operatorId, operatorKey);
-// const node = { '127.0.0.1:50211': new AccountId(3) };
-// const client = Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
-// client.setOperator(operatorId, operatorKey);
+// const client = Client.forTestnet().setOperator(operatorId, operatorKey);
+const node = { '127.0.0.1:50211': new AccountId(3) };
+const client = Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
+client.setOperator(operatorId, operatorKey);
 
 async function autoCreateAccountFcn(
   senderAccountId: AccountId,
