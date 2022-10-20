@@ -132,8 +132,8 @@ const AddNftStep = function ({
   if (!addNft) {
     return (
       <>
-        <h1 className="text-3xl mt-16 font-bold">Create your NFTs</h1>
-        <h4 className="text-sm mt-2">Basic Collection Information</h4>
+        <h1 className="text-3xl font-bold mt-11">Create your NFTs</h1>
+        <h4 className="text mt-2">Create your NFTs which shall be minted under this collection. <br />You can create up to 15 NFTs. When you&apos;re ready, hit &apos;Mint Collection&apos;.</h4>
 
         <div className="py-7 border-b grid grid-cols-2 md:grid-cols-3 gap-2">
           <div role="presentation" onClick={addNftInCollection}>
@@ -155,6 +155,7 @@ const AddNftStep = function ({
           }}
           title="Mint Collection"
           className="w-full bg-black mt-6 text-white rounded-md disabled:bg-black/40"
+          disabled={formData?.nfts.length < 1}
         />
         <Button
           onClick={() => {
@@ -207,6 +208,7 @@ const AddNftStep = function ({
         title="Continue"
         className="w-full bg-black mt-5 text-white rounded-md disabled:bg-black/40"
       />
+
     </>
   );
 };

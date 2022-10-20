@@ -91,12 +91,10 @@ const CollectionRoyaltiesSection = function ({
     <section className="my-10 flex flex-col">
       <h4 className="text-lg font-bold">Royalties</h4>
       <p className="text-sm mt-3">
-        The files will be minted in your NFT. The order in which the files are
-        displayed represents the order of the files on the NFT. The NFT can
-        include up to 2 files including the thumbnail.
+      Royalties is the sell-on percentage fee that the creator of the NFT(s) will receive every time a sale is made on secondary markets.
       </p>
       <span className="flex items-center justify-between text-sm font-bold my-6">
-        <h5>Total Amount</h5>
+        <h5>Total Amount of Royalty</h5>
         <h5>{` ${royaltySum(formData.royaltyWallets)} %`}</h5>
       </span>
       <div className="w-full h-3 border rounded-lg overflow-hidden">
@@ -135,7 +133,7 @@ const CollectionRoyaltiesSection = function ({
               errorMessage=""
               error={formDataErrors.splitPercentError}
               placeholder="Fee in %"
-              className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+              className="w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5"
               onChange={(e) => {
                 handleChange(index, e);
               }}
@@ -155,7 +153,7 @@ const CollectionRoyaltiesSection = function ({
               name="accountId"
               errorMessage=""
               error={formDataErrors.splitPercentError}
-              placeholder="Account id"
+              placeholder="Account Id"
               className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
                 handleChange(index, e);
@@ -164,7 +162,7 @@ const CollectionRoyaltiesSection = function ({
                 index > 0 && (
                   <section
                     role="presentation"
-                    className="p-2  h-6 w-6 flex items-center bg-gray-300 rounded-full hover:bg-gray-300/80 "
+                    className="p-2 h-6 w-6 flex items-center bg-gray-300 rounded-full hover:bg-gray-300/80 cursor-pointer"
                     onClick={() => deleteInput(index)}
                   >
                     <DeleteIcon />
@@ -180,10 +178,11 @@ const CollectionRoyaltiesSection = function ({
       </div>
       {formData.splitRoyaltiesEnabled && (
         <Button
-          title="Add Wallet"
+          title="Add Account Id"
           disabled={!formData.splitRoyaltiesEnabled}
-          className=" w-1/2 bg-black text-white rounded-md mt-5 self-end disabled:bg-black/40 "
+          className="w-1/2 bg-black text-white rounded-md mt-5 self-end disabled:bg-black/40 "
           onClick={addInput}
+          buttonHeight={10}
         />
       )}
     </section>

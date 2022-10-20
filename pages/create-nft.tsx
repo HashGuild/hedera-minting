@@ -1,4 +1,3 @@
-import axios from 'axios';
 import type { NextPage } from 'next';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import VerifyAndMintSection from '../components/common/VerifyAndMintSection';
@@ -83,32 +82,8 @@ const CreateNft: NextPage = function () {
     return validated;
   };
 
-  const uploadNftData = async () => {
-    try {
-      const data = new FormData();
-      data.set('name', formData.tokenName);
-      data.set('creator', formData.creatorName);
-      data.set('description', formData.description);
-      data.set('thumbnailFile', formData.nftThumbnail!);
-      for (const file of formData.nftFiles) {
-        data.append('files', file);
-      }
-      console.log(data)
-      const res = await axios.post('/api/uploadMetadataToIPFS', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <div>
-      <button type="button" onClick={uploadNftData}>
-        Upload ffs
-      </button>
       {renderConfirmMint ? (
         <VerifyAndMintSection
           setRenderConfirmMint={setRenderConfirmMint}
@@ -116,7 +91,7 @@ const CreateNft: NextPage = function () {
         />
       ) : (
         <>
-          <h1 className="text-3xl mt-16 font-bold">Create a single NFT</h1>
+          <h1 className="text-3xl font-bold">Create a single NFT</h1>
           <FileUploadSection
             formDataErrors={formDataErrors}
             setFormDataErrors={setFormDataErrors}

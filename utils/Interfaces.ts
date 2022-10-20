@@ -91,5 +91,5 @@ export const nftErrorType = (props: unknown): props is NftFormErrors =>
   Object.prototype.hasOwnProperty.call(props, 'displayNameError');
 export type HelpButtons = {
   name: string;
-  onClick: () => void;
+  href: string;
 };

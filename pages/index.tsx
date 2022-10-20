@@ -20,10 +20,11 @@ const Home: NextPage = function () {
 
       <p className="text-md mt-3 mb-11">
         Thank you for choosing HashGuild! We will guide you through the minting
-        process. To get started, select one of the options below!
+        process. 
+        <br />To get started, select one of the options below!
       </p>
       <p className="text-md font-bold mb-9">What would you like to create?</p>
-      <div className="flex w-[1/2] justify-between md:justify-start md:gap-16 aspect-auto">
+      <div className="flex w-[1/2] justify-start gap-16 aspect-auto">
         {indexFlow.map((flowItem: Flow) => (
           <div
             aria-hidden="true"
@@ -37,7 +38,7 @@ const Home: NextPage = function () {
             )}
           >
             <flowItem.icon
-              className={`h-20 w-20 z-10 ${
+              className={`h-20 w-20 md:h-32 md:w-32 z-10 ${
                 currentFlowChoice?.index === flowItem.index
                   ? 'fill-white'
                   : 'fill-black'

@@ -137,7 +137,7 @@ const RoyaltiesSection = function ({
             />
             <Input
               containerStyles="mt-4 basis-3/4"
-              labelText={index === 0 ? 'Account id' : ''}
+              labelText={index === 0 ? 'Account Id' : ''}
               labelStyle="my-2.5"
               type="text"
               required
@@ -148,7 +148,7 @@ const RoyaltiesSection = function ({
               name="accountId"
               errorMessage=""
               error={false}
-              placeholder="Account id"
+              placeholder="Account Id"
               className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
                 handleChange(index, e);
@@ -173,10 +173,11 @@ const RoyaltiesSection = function ({
       </div>
       {formData.splitRoyaltiesEnabled && (
         <Button
-          title="Add Wallet"
+          title="Add Account Id"
           disabled={!formData.splitRoyaltiesEnabled}
           className=" w-1/2 bg-black text-white rounded-md mt-5 self-end disabled:bg-black/40 "
           onClick={addInput}
+          buttonHeight={10}
         />
       )}
     </section>
