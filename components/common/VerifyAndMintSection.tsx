@@ -25,7 +25,8 @@ const VerifyAndMintSection = function ({
   const [success, setSuccess] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
-  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
+  const [hashconnect, initHashConnect] =
+    useContext(HashConnectContext);
 
   const isNftForm = nftFormType(formData);
 

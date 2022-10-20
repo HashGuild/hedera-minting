@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { HashConnectContext } from '../../context/HashConnectWrapper';
 import CopyIcon from '../../public/svg/CopyIcon';
 import classNames from '../../utils/classNames';
 import Button from '../global/Button';
@@ -6,16 +7,28 @@ import Button from '../global/Button';
 const AttachWalletSection = function () {
   const [currentOption, setCurrentOption] = useState(1);
   const [copied, setCopied] = useState(false);
-  const pairingString = 'eyJtZXRhZGF0YSI6eyJuYW1lIjoiSGFAW2....';
+  const [hashconnect, initHashConnect, initData] =
+    useContext(HashConnectContext);
+  const [pairingString, setPairingString] = useState<string | null>(null);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(pairingString);
-    setCopied(true);
+    if (pairingString) {
+      navigator.clipboard.writeText(pairingString);
+      setCopied(true);
+    }
   };
 
   function connectToWallet() {
     // hashconnect?.connectToLocalWallet();
   }
+
+  useEffect(() => {
+    if (!hashconnect || !initData) {
+      initHashConnect!().catch((err) => console.log(err))
+      return
+    }
+    setPairingString(initData.pairingString);
+  }, [initHashConnect, hashconnect, initData]);
 
   return (
     <>

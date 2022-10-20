@@ -3,19 +3,21 @@ import {
   ContractFunctionParameters,
 } from '@hashgraph/sdk';
 import axios, { AxiosResponse } from 'axios';
-import { HashConnect } from 'hashconnect';
+import { HashConnect, HashConnectTypes } from 'hashconnect';
 import getTransactionReceipt from './getTransactionReceipt';
 
 export default async function pinFilesAndMint(
   tokenData: any,
   nfts: any[],
-  initHashConnect: () => Promise<HashConnect>,
+  initHashConnect: () => Promise<
+    [HashConnect, HashConnectTypes.InitilizationData]
+  >,
   hashconnect?: HashConnect | null
 ) {
   try {
     let hc = hashconnect;
     if (!hc) {
-      hc = await initHashConnect();
+      [hc] = await initHashConnect();
     }
 
     const operations: Promise<AxiosResponse<any, any>>[] = [];
