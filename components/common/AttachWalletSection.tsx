@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { HashConnectContext } from '../../context/HashConnectWrapper';
+import React, { useState } from 'react';
 import CopyIcon from '../../public/svg/CopyIcon';
 import classNames from '../../utils/classNames';
 import Button from '../global/Button';
@@ -7,14 +6,7 @@ import Button from '../global/Button';
 const AttachWalletSection = function () {
   const [currentOption, setCurrentOption] = useState(1);
   const [copied, setCopied] = useState(false);
-  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
   const pairingString = 'eyJtZXRhZGF0YSI6eyJuYW1lIjoiSGFAW2....';
-
-  // useEffect(() => {
-  //   if (!hashconnect && initHashConnect) {
-  //     initHashConnect();
-  //   }
-  // }, [hashconnect, initHashConnect]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(pairingString);
