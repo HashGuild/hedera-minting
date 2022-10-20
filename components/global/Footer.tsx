@@ -1,33 +1,44 @@
-import React, { FC } from 'react';
-import { HederaLogo } from '../../public/svg/HederaLogo';
+import React, { FC, useState } from 'react';
+import HashGuildLogo from '../../public/svg/HashGuildLogo';
+import HelpModal from './HelpModal';
 
 const Footer: FC = function () {
+  const [openHelp, setOpenHelp] = useState(false);
+
   return (
     <footer className="flex flex-col lg:flex-row justify-between lg:items-center py-5 md:border-b md:border-accentGrey px-[5%] dark:text-white ">
       <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-24">
         <div className="pb-4 lg:pb-0 flex items-center gap-2">
-          <HederaLogo className="h-6 w-6 fill-gray-700 dark:fill-white" />
+          <HashGuildLogo className="h-6 w-6 fill-gray-700 dark:fill-white" />
           <h1 className="font-bold text-gray-700 inline-block dark:text-white">
-            Hedera
+            HashGuild Minting
           </h1>
         </div>
         <div className="flex flex-col lg:flex-row lg:gap-8 pb-4 lg:pb-0">
           <div className="flex gap-8 pb-4 lg:pb-0 font-semibold text-base">
-            <a href="/" target="_blank" rel="noreferrer">
-              Hedera
+            <a
+              href="https://hashguild.xyz/information"
+              target="_blank"
+              rel="noreferrer"
+            >
+              About HashGuild
             </a>
-            <a href="/" target="_blank" rel="noreferrer">
-              Blog
+            <a href="https://hedera.com/nft" target="_blank" rel="noreferrer">
+              Why Hedera
             </a>
-            <a href="/" target="_blank" rel="noreferrer">
+            <span className="cursor-pointer" onClick={() => setOpenHelp(true)}>
               Support
-            </a>
-            <a href="/" target="_blank" rel="noreferrer">
-              Press
-            </a>
+            </span>
+            {openHelp && (
+              <HelpModal openHelp={openHelp} setOpenHelp={setOpenHelp} />
+            )}
           </div>
           <div className="flex gap-8">
-            <a href="/" target="_blank" rel="noreferrer">
+            <a
+              href="https://discord.gg/TEyQkbMwaw"
+              target="_blank"
+              rel="noreferrer"
+            >
               <svg
                 width="24"
                 height="24"
@@ -44,7 +55,11 @@ const Footer: FC = function () {
                 />
               </svg>
             </a>
-            <a href="." target="_blank" rel="noreferrer">
+            <a
+              href="https://twitter.com/hashguild"
+              target="_blank"
+              rel="noreferrer"
+            >
               <svg
                 width="24"
                 height="24"
@@ -61,38 +76,21 @@ const Footer: FC = function () {
                 />
               </svg>
             </a>
-            <a href="/" target="_blank" rel="noreferrer">
-              <svg
-                width="24"
-                height="24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0 0 5.373 0 12Z"
-                  fill="#606265"
-                />
-                <path
-                  d="M12 6.9h2.55c.6 0 .9.15 1.125.225.3.15.525.225.75.45.225.225.375.45.45.75.075.225.15.525.225 1.125v5.1c0 .6-.15.9-.225 1.125-.15.3-.225.525-.45.75-.225.225-.45.375-.75.45-.225.075-.525.15-1.125.225h-5.1c-.6 0-.9-.15-1.125-.225-.3-.15-.525-.225-.75-.45-.225-.225-.375-.45-.45-.75-.075-.225-.15-.525-.225-1.125v-5.1c0-.6.15-.9.225-1.125.15-.3.225-.525.45-.75.225-.225.45-.375.75-.45.225-.075.525-.15 1.125-.225H12Zm0-1.125H9.45c-.675 0-1.125.15-1.5.3s-.75.375-1.125.75-.525.675-.75 1.125c-.15.375-.225.825-.3 1.5v5.1c0 .675.15 1.125.3 1.5s.375.75.75 1.125.675.525 1.125.75c.375.15.825.225 1.5.3h5.1c.675 0 1.125-.15 1.5-.3s.75-.375 1.125-.75.525-.675.75-1.125c.15-.375.225-.825.3-1.5v-5.1c0-.675-.15-1.125-.3-1.5a3.275 3.275 0 0 0-.75-1.125c-.375-.375-.675-.525-1.125-.75-.375-.15-.825-.225-1.5-.3H12Z"
-                  fill="#F4F5F5"
-                />
-                <path
-                  d="M12 8.775A3.201 3.201 0 0 0 8.775 12c0 1.8 1.425 3.225 3.225 3.225S15.225 13.8 15.225 12 13.8 8.775 12 8.775Zm0 5.325c-1.125 0-2.1-.9-2.1-2.1 0-1.125.9-2.1 2.1-2.1 1.125 0 2.1.9 2.1 2.1 0 1.125-.975 2.1-2.1 2.1ZM15.3 9.45a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-                  fill="#F4F5F5"
-                />
-              </svg>
-            </a>
           </div>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row lg:gap-8 lg:justify-between lg:items-center">
         <div className="text-xs text-gray-500  pb-2 lg:pb-0">© 2022</div>
         <div className="flex gap-8 text-xs  font-medium underline">
-          <a href="/" target="_blank" rel="noreferrer">
+          <a href="https://hashguild.xyz/tos" target="_blank" rel="noreferrer">
             Terms of Service
           </a>
-          <a href="/" target="_blank" rel="noreferrer">
-            Privacy Preferences
+          <a
+            href="https://hashguild.xyz/privacy"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Privacy Policy
           </a>
         </div>
       </div>

@@ -85,13 +85,12 @@ const PropertiesSection = function ({
 
   return (
     <section className="my-10 flex flex-col">
-      <h4 className="text-lg font-bold">Properties</h4>
+      <h4 className="text-lg font-bold">Attributes</h4>
       <p className="text-sm mt-3">
-        NFTs can contain property data, featuring custom attributes used for
-        e.g. rarity, more information and distinguishing NFTs.
+      NFTs can contain specific attributes which can determine rarity or provide additional information about the NFT.
       </p>
       <span className="flex items-center justify-between text-sm font-bold my-6">
-        <h5>Add Custom Properties</h5>
+        <h5>Add Custom Attributes</h5>
         <Switch
           labelFor="nftPropertiesEnabled"
           checked={formData.nftPropertiesEnabled}
@@ -107,7 +106,7 @@ const PropertiesSection = function ({
               <Input
                 containerStyles="mt-4 basis-1/4"
                 required
-                labelText={index === 0 ? 'Key' : ''}
+                labelText={index === 0 ? 'Trait Type' : ''}
                 labelStyle="my-2.5"
                 type="text"
                 value={property.key}
@@ -120,14 +119,14 @@ const PropertiesSection = function ({
                 errorMessage=""
                 error={formDataErrors.nftPropertiesError}
                 placeholder="Key"
-                className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+                className="w-full text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
                 onChange={(e) => {
                   handleChange(index, e);
                 }}
               />
               <Input
                 containerStyles="mt-4 basis-3/4"
-                labelText={index === 0 ? 'Value' : ''}
+                labelText={index === 0 ? 'Description' : ''}
                 labelStyle="my-2.5"
                 type="text"
                 required
@@ -150,7 +149,7 @@ const PropertiesSection = function ({
                   index > 0 && (
                     <section
                       role="presentation"
-                      className="p-2  h-6 w-6 flex items-center bg-gray-300 rounded-full hover:bg-gray-300/80 "
+                      className="p-2  h-6 w-6 flex items-center bg-gray-300 rounded-full hover:bg-gray-300/80 cursor-pointer"
                       onClick={() => deleteInput(index)}
                     >
                       <DeleteIcon />
@@ -161,9 +160,10 @@ const PropertiesSection = function ({
             </div>
           ))}
           <Button
-            title="Add Properties"
-            className=" w-1/2 bg-black text-white rounded-md mt-5 self-end "
+            title="Add Attributes"
+            className=" w-1/2 bg-black text-white rounded-md mt-5 self-end"
             onClick={addProperty}
+            buttonHeight={10}
           />
         </>
       )}

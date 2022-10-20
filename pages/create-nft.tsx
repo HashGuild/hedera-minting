@@ -90,7 +90,7 @@ const CreateNft: NextPage = function () {
         />
       ) : (
         <>
-          <h1 className="text-3xl mt-16 font-bold">Create a single NFT</h1>
+          <h1 className="text-3xl font-bold">Create a single NFT</h1>
           <FileUploadSection
             formDataErrors={formDataErrors}
             setFormDataErrors={setFormDataErrors}

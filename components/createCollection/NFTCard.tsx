@@ -38,7 +38,7 @@ const NFTCard = function ({
         </div>
       ) : (
         <div className="text-xs font-semibold border shadow-lg rounded-md relative">
-          <div className="absolute right-2 top-2 bg-gray-300 h-7 w-7 cursor-pointer rounded-full flex items-center justify-center">
+          <div className="absolute right-2 top-2 bg-gray-200 hover:bg-opacity-80 h-7 w-7 cursor-pointer rounded-full flex items-center justify-center">
             <Tooltip
               onOpen={() => setShowContent(true)}
               onClose={() => setShowContent(false)}
@@ -74,19 +74,19 @@ const NFTCard = function ({
           <picture>
             <source src={image} type="image/webp" />
             <img
-              className="max-h-[9rem] min-h-[9rem] md:max-h-[11rem] md:min-h-[11rem]  w-full"
+              className="max-h-[9rem] min-h-[9rem] md:max-h-[11rem] md:min-h-[11rem] w-full rounded-t-md"
               src={image}
               alt="nft"
             />
           </picture>
-          <div className="flex justify-between items-center p-2  ">
+          <div className="flex justify-between items-center text-lg p-2">
             <p className="truncate">{nftName}</p>
             <EditIcon
               onClick={editNft}
               className="cursor-pointer hover:opacity-80"
             />
           </div>
-          <p className="truncate px-2 pb-5 text-gray-500">{collectionName}</p>
+          <p className="truncate text-sm px-2 pb-5 text-gray-500">{collectionName}</p>
         </div>
       )}
     </div>
