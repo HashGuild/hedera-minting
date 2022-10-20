@@ -1,3 +1,4 @@
+import axios from 'axios';
 import type { NextPage } from 'next';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import VerifyAndMintSection from '../components/common/VerifyAndMintSection';
@@ -48,7 +49,7 @@ const CreateNft: NextPage = function () {
   });
 
   const handleFormChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (event.currentTarget.type === 'checkbox') {
       setFormData({
@@ -77,12 +78,37 @@ const CreateNft: NextPage = function () {
   };
   const checkFormValidated = () => {
     const validated = Object.values(formDataErrors).every(
-      (item) => item === false,
+      (item) => item === false
     );
     return validated;
   };
+
+  const uploadNftData = async () => {
+    try {
+      const data = new FormData();
+      data.set('name', formData.tokenName);
+      data.set('creator', formData.creatorName);
+      data.set('description', formData.description);
+      data.set('thumbnailFile', formData.nftThumbnail!);
+      for (const file of formData.nftFiles) {
+        data.append('files', file);
+      }
+      console.log(data)
+      const res = await axios.post('/api/uploadMetadataToIPFS', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
+      <button type="button" onClick={uploadNftData}>
+        Upload ffs
+      </button>
       {renderConfirmMint ? (
         <VerifyAndMintSection
           setRenderConfirmMint={setRenderConfirmMint}

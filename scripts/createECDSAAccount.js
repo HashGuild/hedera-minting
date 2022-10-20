@@ -69,12 +69,12 @@ var dotenv = __importStar(require("dotenv"));
 dotenv.config();
 // eslint-disable-next-line
 var delay = function (ms) { return new Promise(function (res) { return setTimeout(res, ms); }); };
-var operatorId = sdk_1.AccountId.fromString('0.0.2');
-var operatorKey = sdk_1.PrivateKey.fromString('302e020100300506032b65700422042091132178e72057a1d7528025956fe39b0b847f200ab59b2fdd367017f3087137');
-// const client = Client.forTestnet().setOperator(operatorId, operatorKey);
-var node = { '127.0.0.1:50211': new sdk_1.AccountId(3) };
-var client = sdk_1.Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
-client.setOperator(operatorId, operatorKey);
+var operatorId = sdk_1.AccountId.fromString(process.env.OPERATOR_ID);
+var operatorKey = sdk_1.PrivateKey.fromString(process.env.OPERATOR_PVKEY);
+var client = sdk_1.Client.forTestnet().setOperator(operatorId, operatorKey);
+// const node = { '127.0.0.1:50211': new AccountId(3) };
+// const client = Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
+// client.setOperator(operatorId, operatorKey);
 function autoCreateAccountFcn(senderAccountId, receiverAccountId, hbarAmount) {
     return __awaiter(this, void 0, void 0, function () {
         var transferToAliasTx, transferToAliasSign, transferToAliasSubmit, transferToAliasRx, transferToAliasRec, txRecordQuery;
@@ -119,7 +119,7 @@ function mirrorQueryFcn(publicKey) {
                 case 1:
                     // Query a mirror node for information about the account creation
                     _a.sent(); // Wait for 10 seconds before querying account id
-                    mirrorNodeUrl = 'http://127.0.0.1:5551/api/v1/';
+                    mirrorNodeUrl = process.env.MIRROR_NODE_URL;
                     return [4 /*yield*/, axios_1["default"].get("".concat(mirrorNodeUrl, "accounts?account.publickey=").concat(publicKey.toStringRaw()))];
                 case 2:
                     mQuery = _a.sent();
