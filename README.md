@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+#### Hedera Minting Application
+
+This is a minting application for the Hedera HashGraph powered by HashGuild.
+We enable the hedera community to mint their NFTs using an accessible interface.
+We mint directly into the user wallet using Hedera Smart Contracts with the Hedera Token Service.
 
 ## Getting Started
 
