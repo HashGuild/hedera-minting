@@ -49,17 +49,20 @@ const AddNftStep = function ({
   const [editNft, setEditNft] = useState(false);
 
   const [nftFormData, setNftFormData] = useState<NftInCollection | NftForm>(
-    initialState,
+    initialState
   );
   const [formDataErrors, setFormDataErrors] = useState<
     StepTwoErrors | NftFormErrors
   >(initialErrors);
 
-  const handleFormChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleFormChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     if (event.currentTarget.type === 'checkbox') {
       setNftFormData({
         ...nftFormData,
-        [event.currentTarget.name]: (event.currentTarget as HTMLInputElement).checked,
+        [event.currentTarget.name]: (event.currentTarget as HTMLInputElement)
+          .checked,
       });
     } else {
       // form Validation for events.
@@ -82,13 +85,13 @@ const AddNftStep = function ({
   };
   const checkFormValidated = () => {
     const validated = Object.values(formDataErrors).every(
-      (item) => item === false,
+      (item) => item === false
     );
     return validated;
   };
   const deleteNft = (tokenName: string) => {
     const updatedArray = formData.nfts.filter(
-      (item) => item.tokenName !== tokenName,
+      (item) => item.tokenName !== tokenName
     );
     setFormData({
       ...formData,
@@ -100,7 +103,7 @@ const AddNftStep = function ({
     setNftFormData(nft);
     setAddNft(true);
     const updatedArray = formData.nfts.filter(
-      (item) => item.tokenName !== nft.tokenName,
+      (item) => item.tokenName !== nft.tokenName
     );
     setFormData({
       ...formData,
@@ -128,12 +131,15 @@ const AddNftStep = function ({
     setFormDataErrors(initialErrors);
     setAddNft(true);
   };
-
   if (!addNft) {
     return (
       <>
         <h1 className="text-3xl font-bold mt-11">Create your NFTs</h1>
-        <h4 className="text mt-2">Create your NFTs which shall be minted under this collection. <br />You can create up to 15 NFTs. When you&apos;re ready, hit &apos;Mint Collection&apos;.</h4>
+        <h4 className="text mt-2">
+          Create your NFTs which shall be minted under this collection. <br />
+          You can create up to 15 NFTs. When you&apos;re ready, hit &apos;Mint
+          Collection&apos;.
+        </h4>
 
         <div className="py-7 border-b grid grid-cols-2 md:grid-cols-3 gap-2">
           <div role="presentation" onClick={addNftInCollection}>
@@ -205,10 +211,9 @@ const AddNftStep = function ({
       <Button
         onClick={editNft ? editNftConfirm : addNftConfirm}
         disabled={!checkFormValidated()}
-        title="Continue"
+        title="Add NFT To Collection"
         className="w-full bg-black mt-5 text-white rounded-md disabled:bg-black/40"
       />
-
     </>
   );
 };
