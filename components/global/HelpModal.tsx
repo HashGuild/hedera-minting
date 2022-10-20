@@ -1,7 +1,6 @@
-import React, { FC, useState, Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { helpButtons } from '../../utils/Constants';
 import Modal from '../common/Modal';
-import Button from './Button';
 
 interface HelpModalProps {
     openHelp: boolean;

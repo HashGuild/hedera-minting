@@ -26,7 +26,7 @@ const Footer: FC = function () {
             <a href="https://hedera.com/nft" target="_blank" rel="noreferrer">
               Why Hedera
             </a>
-            <span className="cursor-pointer" onClick={() => setOpenHelp(true)}>
+            <span className="cursor-pointer" onClick={() => setOpenHelp(true)} role="button" tabIndex={0} onKeyDown={() => setOpenHelp(true)}>
               Support
             </span>
             {openHelp && (
