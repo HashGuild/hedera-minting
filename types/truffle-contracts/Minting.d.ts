@@ -317,7 +317,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     (
       name: string,
       symbol: string,
-      memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -325,7 +324,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     call(
       name: string,
       symbol: string,
-      memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -333,7 +331,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     sendTransaction(
       name: string,
       symbol: string,
-      memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -341,7 +338,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     estimateGas(
       name: string,
       symbol: string,
-      memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       txDetails?: Truffle.TransactionDetails
@@ -398,7 +394,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     (
       name: string,
       symbol: string,
-      memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       metadataList: string[],
@@ -407,7 +402,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     call(
       name: string,
       symbol: string,
-      memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       metadataList: string[],
@@ -416,7 +410,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     sendTransaction(
       name: string,
       symbol: string,
-      memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       metadataList: string[],
@@ -425,7 +418,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
     estimateGas(
       name: string,
       symbol: string,
-      memo: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       metadataList: string[],
@@ -739,7 +731,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       (
         name: string,
         symbol: string,
-        memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         txDetails?: Truffle.TransactionDetails
@@ -747,7 +738,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       call(
         name: string,
         symbol: string,
-        memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         txDetails?: Truffle.TransactionDetails
@@ -755,7 +745,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       sendTransaction(
         name: string,
         symbol: string,
-        memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         txDetails?: Truffle.TransactionDetails
@@ -763,7 +752,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       estimateGas(
         name: string,
         symbol: string,
-        memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         txDetails?: Truffle.TransactionDetails
@@ -820,7 +808,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       (
         name: string,
         symbol: string,
-        memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         metadataList: string[],
@@ -829,7 +816,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       call(
         name: string,
         symbol: string,
-        memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         metadataList: string[],
@@ -838,7 +824,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       sendTransaction(
         name: string,
         symbol: string,
-        memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         metadataList: string[],
@@ -847,7 +832,6 @@ export interface MintingInstance extends Truffle.ContractInstance {
       estimateGas(
         name: string,
         symbol: string,
-        memo: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         metadataList: string[],
