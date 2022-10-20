@@ -44,7 +44,7 @@ export default async function pinFilesAndMint(
     const responses = await Promise.all(operations);
 
     const mintNftRequest = new ContractExecuteTransaction()
-      .setContractId(process.env.NEXT_PUBLIC_MINTING_CONTRACT_ID!)
+      .setContractId('0.0.48644217')
       .setGas(2500000)
       .setPayableAmount(500)
       .setFunction(
