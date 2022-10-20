@@ -6,22 +6,26 @@ const appMetadata: HashConnectTypes.AppMetadata = {
     'A minting application enabling you to mint your project without writing a single line of code.',
   icon: '',
 };
-
 let hashconnectInstance: HashConnect | null = null;
+let hcInitData: HashConnectTypes.InitilizationData | null = null;
 let initializingHashconnect = false;
 
-async function initHashConnect() {
+async function initHashConnect(): Promise<
+  [HashConnect, HashConnectTypes.InitilizationData]
+> {
   if (initializingHashconnect) {
     throw new Error('Already initializing HashConnect.');
   }
-  if (hashconnectInstance) return hashconnectInstance;
+  if (hashconnectInstance && hcInitData)
+    return [hashconnectInstance, hcInitData];
 
   initializingHashconnect = true;
   const hashconnect = new HashConnect(true);
-  await hashconnect.init(appMetadata, 'testnet', true);
+  const initData = await hashconnect.init(appMetadata, 'testnet', true);
   hashconnectInstance = hashconnect;
+  hcInitData = initData;
   initializingHashconnect = false;
-  return hashconnect;
+  return [hashconnect, initData];
 }
 
 export default initHashConnect;
