@@ -16,6 +16,7 @@ import { HashConnectContext } from '../../context/HashConnectWrapper';
 import getTransactionReceipt from '../../utils/getTransactionReceipt';
 import getTransactionRecord from '../../utils/getTransactionRecord';
 import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
+import pinFilesAndMint from '../../utils/pinFilesAndMint';
 import Button from '../global/Button';
 import AttachWalletSection from './AttachWalletSection';
 import Modal from './Modal';
@@ -44,77 +45,20 @@ const VerifyAndMintSection = function ({
   const createNftHandler = async () => {
     try {
       setWaiting(true);
-      let hc = hashconnect;
-      if (!hc) {
-        hc = await initHashConnect!();
+      const status = await pinFilesAndMint(
+        formData,
+        [formData],
+        initHashConnect!,
+        hashconnect
+      );
+      if (status === 22) {
+        setSuccess(true);
+      } else {
+        setError(true);
       }
-
-      const data = new FormData();
-      data.set('name', formData.tokenName);
-      data.set('creator', formData.creatorName);
-      data.set('description', formData.description);
-      data.set('thumbnailFile', formData.nftThumbnail!);
-      if (formData.nftPropertiesEnabled) {
-        data.set('attributes', JSON.stringify(formData.nftProperties));
-      }
-      for (const file of formData.nftFiles) {
-        data.append('files', file);
-      }
-      const res = await axios.post('/api/uploadMetadataToIPFS', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      const mintNftRequest = new ContractExecuteTransaction()
-        .setContractId(process.env.NEXT_PUBLIC_MINTING_CONTRACT_ID!)
-        .setGas(2500000)
-        .setPayableAmount(500)
-        .setFunction(
-          'createTokenAndMintMultipleNfts',
-          new ContractFunctionParameters()
-            .addString(formData.tokenName)
-            .addString('TEST')
-            // @ts-ignore
-            .addInt64(1)
-            .addUint32(7000000)
-            .addBytesArray([Buffer.from(res.data.url)])
-        );
-
-      hc!.connectToLocalWallet();
-
-      hc!.pairingEvent.once(async (pairingData) => {
-        try {
-          const provider = hc!.getProvider(
-            'testnet',
-            pairingData.topic,
-            pairingData.accountIds[0]
-          );
-          const signer = hc!.getSigner(provider);
-
-          // const tokenSolidityAddr =
-          //   mintMultipleNftsRx.contractFunctionResult!.getAddress(0);
-          // const tokenId = AccountId.fromSolidityAddress(tokenSolidityAddr);
-          const trans = await mintNftRequest.freezeWithSigner(signer);
-          const transExec = (await trans.executeWithSigner(signer)) as any;
-
-          const receipt = await getTransactionReceipt(
-            transExec.transactionId,
-            provider.client
-          );
-
-          if (receipt?.status.valueOf() === 22) {
-            setSuccess(true);
-          } else {
-            setError(true);
-          }
-          setWaiting(false);
-        } catch (err) {
-          console.log(err);
-        }
-      });
-    } catch (error) {
-      console.log(error);
+      setWaiting(false);
+    } catch (err) {
+      console.log(err);
     }
   };
 
