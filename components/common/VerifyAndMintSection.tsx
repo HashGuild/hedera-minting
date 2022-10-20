@@ -1,10 +1,3 @@
-import {
-  AccountId,
-  ContractExecuteTransaction,
-  ContractFunctionParameters,
-  TransactionResponse,
-} from '@hashgraph/sdk';
-import axios from 'axios';
 import React, {
   Dispatch,
   SetStateAction,
@@ -13,8 +6,6 @@ import React, {
   useState,
 } from 'react';
 import { HashConnectContext } from '../../context/HashConnectWrapper';
-import getTransactionReceipt from '../../utils/getTransactionReceipt';
-import getTransactionRecord from '../../utils/getTransactionRecord';
 import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
 import pinFilesAndMint from '../../utils/pinFilesAndMint';
 import Button from '../global/Button';
