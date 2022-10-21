@@ -15,15 +15,40 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
+type ExecutionEnvironment = 'local' | 'testnet' | 'mainnet';
+
 // eslint-disable-next-line
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
+const cliArguments = process.argv;
+if (!['local', 'testnet', 'mainnet'].includes(cliArguments[2]))
+  throw new Error(
+    "Please provide either 'local', 'testnet' or 'mainnet' as an argument."
+  );
+
+const env: ExecutionEnvironment = cliArguments[2] as ExecutionEnvironment;
+
 const operatorId = AccountId.fromString(process.env.OPERATOR_ID!);
 const operatorKey = PrivateKey.fromString(process.env.OPERATOR_PVKEY!);
-const client = Client.forTestnet().setOperator(operatorId, operatorKey);
-// const node = { '127.0.0.1:50211': new AccountId(3) };
-// const client = Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
-// client.setOperator(operatorId, operatorKey);
+
+let client: Client;
+switch (env) {
+  case 'local':
+    {
+      const node = { '127.0.0.1:50211': new AccountId(3) };
+      client = Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
+    }
+    client.setOperator(operatorId, operatorKey);
+    break;
+  case 'testnet':
+    client = Client.forTestnet().setOperator(operatorId, operatorKey);
+    break;
+  case 'mainnet':
+    client = Client.forMainnet().setOperator(operatorId, operatorKey);
+    break;
+  default:
+    throw new Error('Environment not specified.');
+}
 
 async function autoCreateAccountFcn(
   senderAccountId: AccountId,
@@ -59,7 +84,7 @@ async function mirrorQueryFcn(publicKey: PublicKey) {
 }
 
 async function main() {
-  console.log('Generating a new key pair...');
+  console.log(`Generating a new key-pair for ${env}...`);
   const newPrivateKey = PrivateKey.generateECDSA();
   const newPublicKey = newPrivateKey.publicKey;
   const newAliasAccountId = newPublicKey.toAccountId(0, 0);

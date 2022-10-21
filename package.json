@@ -9,11 +9,12 @@
     "lint": "next lint",
     "generate-types": "npx typechain --target=truffle-v5 'build/contracts/*.json'",
     "prepare": "npx truffle compile && yarn run generate-types",
-    "test:smart-contract": "npx tsc -p ./test/tsconfig.json && npx truffle test ./test/**.js"
+    "test:smart-contract": "npx tsc -p ./test/tsconfig.json && npx truffle test ./test/dist/test/**.js"
   },
   "dependencies": {
     "@fontsource/inter": "^4.5.13",
     "@ganache/console.log": "^0.2.0",
+    "@hashgraph/hethers": "^1.2.2",
     "@hashgraph/sdk": "^2.18.3",
     "axios": "^1.1.2",
     "bn.js": "^5.2.1",
@@ -25,7 +26,8 @@
     "next-transpile-modules": "^9.1.0",
     "nft.storage": "^7.0.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "web3": "^1.8.0"
   },
   "devDependencies": {
     "@truffle/hdwallet-provider": "^2.0.17",

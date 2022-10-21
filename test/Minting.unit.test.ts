@@ -13,6 +13,9 @@ import {
   mintNft,
   MintNFTData,
 } from './utils/hashgraphQueries';
+import MintingContractAbiWrapper from '../build/contracts/Minting.json';
+
+const { abi: MintingContractAbi } = MintingContractAbiWrapper;
 
 const Minting = artifacts.require('Minting');
 
@@ -45,7 +48,12 @@ contract('Minting', () => {
     let error;
     try {
       const contractId = await getContractIdFromAddress(Minting.address);
-      const [tokenIdString] = await createToken(contractId, tokenData, client);
+      const [tokenIdString] = await createToken(
+        contractId,
+        tokenData,
+        client,
+        MintingContractAbi
+      );
 
       tokenInfo = await getTokenInformation(tokenIdString, client);
     } catch (err) {
@@ -88,7 +96,8 @@ contract('Minting', () => {
     const [tokenId, tokenSolidityAddr] = await createToken(
       contractId,
       tokenData,
-      client
+      client,
+      MintingContractAbi
     );
 
     const mintNftData: MintNFTData = {
@@ -135,7 +144,8 @@ contract('Minting', () => {
     const [tokenId, tokenSolidityAddr] = await createToken(
       contractId,
       tokenData,
-      client
+      client,
+      MintingContractAbi
     );
 
     const mintNftData: MintMultipleNFTsData = {
@@ -217,7 +227,8 @@ contract('Minting', () => {
       const [tokenId] = await createTokenAndMintMultipleNfts(
         contractId,
         createTokenAndMintMultipleNFTsData,
-        client
+        client,
+        MintingContractAbi
       );
 
       for (const nft in createTokenAndMintMultipleNFTsData.metadata) {
