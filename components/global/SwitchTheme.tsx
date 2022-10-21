@@ -2,8 +2,6 @@ import { useTheme } from 'next-themes';
 import nightwind from 'nightwind/helper';
 import SunIcon from '../../public/svg/SunIcon';
 
-
-
 export default function ToggleTheme() {
   const { theme, setTheme } = useTheme()
 
@@ -16,5 +14,5 @@ export default function ToggleTheme() {
     }
   }
 
-  return <button onClick={toggle} type="button"><SunIcon /></button>
+  return <button onClick={toggle} type="button" aria-label='Toggle Theme'><SunIcon /></button>
 }
