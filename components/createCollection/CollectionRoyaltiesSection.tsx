@@ -1,14 +1,14 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
-import DeleteIcon from "../../public/svg/DeleteIcon";
+import DeleteIcon from '../../public/svg/DeleteIcon';
 import {
   CollectionForm,
   StepOneErrors,
   UserWalletRoyalty,
-} from "../../utils/Interfaces";
-import ErrorMessage from "../common/ErrorMessage";
-import Input from "../common/Input";
-import Switch from "../common/Switch";
-import Button from "../global/Button";
+} from '../../utils/Interfaces';
+import ErrorMessage from '../common/ErrorMessage';
+import Input from '../common/Input';
+import Switch from '../common/Switch';
+import Button from '../global/Button';
 
 interface CollectionRoyaltiesSectionProps {
   formData: CollectionForm;
@@ -27,7 +27,7 @@ const CollectionRoyaltiesSection = function ({
 }: CollectionRoyaltiesSectionProps) {
   const { splitPercentError } = formDataErrors;
   const addInput = () => {
-    const newWallet: UserWalletRoyalty = { fee: 0, accountId: "" };
+    const newWallet: UserWalletRoyalty = { fee: 0, accountId: '' };
     setFormData({
       ...formData,
       royaltyWallets: [...formData.royaltyWallets, { ...newWallet }],
@@ -52,7 +52,7 @@ const CollectionRoyaltiesSection = function ({
 
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const newArr = formData.royaltyWallets;
-    if (e.target.name === "fee") {
+    if (e.target.name === 'fee') {
       newArr[index].fee = +e.target.value;
       if (royaltySum(newArr) > 100) {
         setFormDataErrors({
@@ -65,7 +65,7 @@ const CollectionRoyaltiesSection = function ({
           splitPercentError: false,
         });
       }
-    } else if (e.target.name === "accountId") {
+    } else if (e.target.name === 'accountId') {
       newArr[index].accountId = e.target.value;
     }
     setFormData({ ...formData, royaltyWallets: newArr });
@@ -76,7 +76,7 @@ const CollectionRoyaltiesSection = function ({
       if (!formData.splitRoyaltiesEnabled) {
         setFormData((prev) => ({
           ...prev,
-          royaltyWallets: [{ fee: 0, accountId: "" }],
+          royaltyWallets: [{ fee: 0, accountId: '' }],
         }));
         setFormDataErrors((errors) => ({
           ...errors,
@@ -112,14 +112,14 @@ const CollectionRoyaltiesSection = function ({
             <Input
               containerStyles="mt-4 basis-1/4"
               required
-              labelText={index === 0 ? "Key" : ""}
+              labelText={index === 0 ? 'Key' : ''}
               labelStyle="my-2.5"
               type="number"
               name="fee"
               inputContainerStyles={
                 wallet?.fee === 0 && formDataErrors.splitPercentError
-                  ? "border-red-400"
-                  : ""
+                  ? 'border-red-400'
+                  : ''
               }
               errorMessage=""
               error={formDataErrors.splitPercentError}
@@ -131,15 +131,15 @@ const CollectionRoyaltiesSection = function ({
             />
             <Input
               containerStyles="mt-4 basis-3/4"
-              labelText={index === 0 ? "Value" : ""}
+              labelText={index === 0 ? 'Value' : ''}
               labelStyle="my-2.5"
               type="text"
               required
               inputContainerStyles={
                 wallet?.accountId?.length === 0 &&
                 formDataErrors.splitPercentError
-                  ? "border-red-400"
-                  : ""
+                  ? 'border-red-400'
+                  : ''
               }
               name="accountId"
               errorMessage=""
@@ -164,14 +164,14 @@ const CollectionRoyaltiesSection = function ({
           </div>
         ))}
         {splitPercentError && (
-          <ErrorMessage errorText="The distribution should not exceed 100%. Please revise the total royalty fee or change the allocation. " />
+          <ErrorMessage errorText="The distribution should not exceed 100%. Please revise the total royalty fee or change the allocation." />
         )}
       </div>
       {formData.splitRoyaltiesEnabled && (
         <Button
           title="Add Account Id"
           disabled={!formData.splitRoyaltiesEnabled}
-          className="w-1/2 bg-black text-white dark:text-black dark:bg-white rounded-md mt-5 self-end disabled:bg-black/40 "
+          className="w-1/2 bg-black text-white dark:text-black dark:bg-white rounded-md mt-5 self-end disabled:bg-black/40"
           onClick={addInput}
           buttonHeight={10}
         />
