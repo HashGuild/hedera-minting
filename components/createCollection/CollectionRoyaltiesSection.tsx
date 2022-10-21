@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
+import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
 import {
   CollectionForm,
