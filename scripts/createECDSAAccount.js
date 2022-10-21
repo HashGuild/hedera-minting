@@ -69,12 +69,30 @@ var dotenv = __importStar(require("dotenv"));
 dotenv.config();
 // eslint-disable-next-line
 var delay = function (ms) { return new Promise(function (res) { return setTimeout(res, ms); }); };
+var cliArguments = process.argv;
+if (!['local', 'testnet', 'mainnet'].includes(cliArguments[2]))
+    throw new Error("Please provide either 'local', 'testnet' or 'mainnet' as an argument.");
+var env = cliArguments[2];
 var operatorId = sdk_1.AccountId.fromString(process.env.OPERATOR_ID);
 var operatorKey = sdk_1.PrivateKey.fromString(process.env.OPERATOR_PVKEY);
-// const client = Client.forTestnet().setOperator(operatorId, operatorKey);
-var node = { '127.0.0.1:50211': new sdk_1.AccountId(3) };
-var client = sdk_1.Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
-client.setOperator(operatorId, operatorKey);
+var client;
+switch (env) {
+    case 'local':
+        {
+            var node = { '127.0.0.1:50211': new sdk_1.AccountId(3) };
+            client = sdk_1.Client.forNetwork(node).setMirrorNetwork('127.0.0.1:5600');
+        }
+        client.setOperator(operatorId, operatorKey);
+        break;
+    case 'testnet':
+        client = sdk_1.Client.forTestnet().setOperator(operatorId, operatorKey);
+        break;
+    case 'mainnet':
+        client = sdk_1.Client.forMainnet().setOperator(operatorId, operatorKey);
+        break;
+    default:
+        throw new Error('Environment not specified.');
+}
 function autoCreateAccountFcn(senderAccountId, receiverAccountId, hbarAmount) {
     return __awaiter(this, void 0, void 0, function () {
         var transferToAliasTx, transferToAliasSign, transferToAliasSubmit, transferToAliasRx, transferToAliasRec, txRecordQuery;
@@ -135,7 +153,7 @@ function main() {
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    console.log('Generating a new key pair...');
+                    console.log("Generating a new key-pair for ".concat(env, "..."));
                     newPrivateKey = sdk_1.PrivateKey.generateECDSA();
                     newPublicKey = newPrivateKey.publicKey;
                     newAliasAccountId = newPublicKey.toAccountId(0, 0);

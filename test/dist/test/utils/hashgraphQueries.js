@@ -131,7 +131,6 @@ function createToken(contractId, data, client, abi) {
                     tokenSolidityAddr = createTokenRx.contractFunctionResult.getAddress(0);
                     tokenIdSolidityAddr = createTokenRx.contractFunctionResult.getAddress(0);
                     tokenId = sdk_1.AccountId.fromSolidityAddress(tokenIdSolidityAddr);
-                    console.log('TOKENID: ', tokenId.toString());
                     return [2 /*return*/, [tokenId.toString(), tokenSolidityAddr]];
             }
         });
