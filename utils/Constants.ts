@@ -20,7 +20,7 @@ export const indexFlow: Flow[] = [
   },
   {
     index: 2,
-    name: 'Collection',
+    name: 'NFT Collection',
     href: '/create-collection',
     icon: CollectionSvg,
   },
@@ -33,20 +33,26 @@ export const sellingOptions: SellingOption[] = [
   },
   {
     index: 2,
-    name: 'Mint and Sell',
+    name: 'Mint & List',
     icon: MintAndSell,
   },
 ];
 
 export const helpButtons: HelpButtons[] = [
-  { name: 'Read the How-to-Use Guide', onClick: () => console.log('hook') },
+  {
+    name: 'Read the How-to-Use Guide',
+    href: 'https://hashguild.xyz/mint-nfts',
+  },
   {
     name: 'Enter Discord to Chat with a Person',
-    onClick: () => console.log('hook'),
+    href: 'https://discord.gg/TEyQkbMwaw',
   },
-  { name: 'Go to the HashGuild Twitter', onClick: () => console.log('hook') },
+  {
+    name: 'Go to the HashGuild Twitter',
+    href: 'https://twitter.com/hashguild',
+  },
   {
     name: 'Have a look at the Project on Github',
-    onClick: () => console.log('hook'),
+    href: 'https://github.com/HashGuild/hedera-minting',
   },
 ];

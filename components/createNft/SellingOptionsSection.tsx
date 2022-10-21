@@ -18,9 +18,7 @@ const SellingOptionsSection = function () {
     <section className="my-10 flex flex-col">
       <h4 className="text-lg font-bold">Choose Selling Option</h4>
       <p className="text-sm mt-3">
-        Decide if you would like to only mint the NFT or list directly on
-        HashGuild. After minting, the NFT is accesible on your HashGuild
-        account.
+      Would you like to list your NFT on HashGuild directly?
       </p>
       <div className="my-8 flex gap-x-10 select-none">
         {sellingOptions.map((option) => (

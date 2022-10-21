@@ -169,8 +169,8 @@ const FileUploadSection = function ({
         include up to 6 files including the thumbnail.
       </p>
 
-      <section className=" space-y-3 text-xs mb-14 max-w-full ">
-        <p className="font-bold  text-sm">Thumbnail</p>
+      <section className=" space-y-3 text-sm mb-14 max-w-full ">
+        <p className="font-bold text-sm">Thumbnail</p>
         <p>The thumbnail needs to be an image.</p>
         {formDataErrors.nftThumbnailError && focus && (
           <ErrorMessage errorText="Thumbnail is required." />
@@ -237,6 +237,7 @@ const FileUploadSection = function ({
             onClick={() => setAddThumbnail(true)}
             className="bg-black text-white rounded-md w-1/2"
             title="Add Thumbnail"
+            buttonHeight={10}
           />
         )}
         <p className="font-bold text-sm mt-10">Other Files</p>
@@ -266,6 +267,7 @@ const FileUploadSection = function ({
             onClick={() => setAddNormalFiles(true)}
             className="bg-black text-white rounded-md w-1/2"
             title="Add normal files(s)"
+            buttonHeight={10}
           />
         )}
 

@@ -74,7 +74,7 @@ const VerifyAndMintSection = function ({
           )}
         </div>
       ) : null}
-      <h1 className="font-bold text-3xl">
+      <h1 className="font-bold text-3xl mt-8">
         {' '}
         {success ? 'Success!' : 'Verify and Mint'}
       </h1>
