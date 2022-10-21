@@ -1,4 +1,4 @@
-import { BigNumber } from '@hashgraph/hethers';
+import Web3 from 'web3';
 import {
   AccountId,
   Client,
@@ -49,6 +49,21 @@ export async function getContractIdFromAddress(address: string) {
   }
 }
 
+function encodeFunctionCall(
+  functionName: string,
+  parameters: any[],
+  abi: any[]
+) {
+  const web3 = new Web3();
+  const functionAbi = abi.find(
+    (func) => func.name === functionName && func.type === 'function'
+  );
+  const encodedParametersHex = web3.eth.abi
+    .encodeFunctionCall(functionAbi, parameters)
+    .slice(2);
+  return Buffer.from(encodedParametersHex, 'hex');
+}
+
 export async function getTokenInformation(tokenId: string, client: Client) {
   const query = new TokenInfoQuery().setTokenId(tokenId);
   const res = await query.execute(client);
@@ -58,38 +73,39 @@ export async function getTokenInformation(tokenId: string, client: Client) {
 export async function createToken(
   contractId: string,
   data: CreateTokenData,
-  client: Client
+  client: Client,
+  abi: any[]
 ) {
+  const encodedFunctionCall = encodeFunctionCall(
+    'createNft',
+    [
+      data.name,
+      data.symbol,
+      data.maxSupply.toString(),
+      '7000000',
+      [
+        {
+          numerator: '10',
+          denominator: '100',
+          feeCollector: client.operatorAccountId!.toSolidityAddress(),
+        },
+        {
+          numerator: '20',
+          denominator: '100',
+          feeCollector: AccountId.fromString('0.0.2').toSolidityAddress(),
+        },
+      ],
+    ],
+    abi
+  );
   const createTokenRequest = new ContractExecuteTransaction()
     .setContractId(contractId)
     .setGas(2500000)
     .setPayableAmount(500)
-    .setFunction(
-      'createNft',
-      new ContractFunctionParameters()
-        .addString(data.name)
-        .addString(data.symbol)
-        // .addString(data.memo)
-        // @ts-ignore
-        .addInt64(data.maxSupply)
-        .addUint32(7000000)
-    );
+    .setFunctionParameters(encodedFunctionCall);
   const createTokenTx = await createTokenRequest.execute(client);
   const createTokenRx = await createTokenTx.getRecord(client);
-  const base = BigNumber.from(1).shl(255);
-  let nominator = BigNumber.from(10).shl(160);
-  nominator = base.or(nominator);
-  console.log('NOMINATOR:', nominator.toHexString());
-  const denominator = BigNumber.from(
-    '0xa608e2130a0a3cb34f86e757303c862bee353d9ab77ba4387ec084f881d420d4'
-  );
-  const merged = nominator.or(denominator);
-  console.log('MERGED:', merged.toHexString());
 
-  // console.log(
-  //   'STATUS: ',
-  //   createTokenRx.contractFunctionResult!.getInt32(0).toString()
-  // );
   const tokenSolidityAddr = createTokenRx.contractFunctionResult!.getAddress(0);
   const tokenIdSolidityAddr =
     createTokenRx.contractFunctionResult!.getAddress(0);
@@ -138,23 +154,26 @@ export async function mintMultipleNfts(
 export async function createTokenAndMintMultipleNfts(
   contractId: string,
   data: CreateTokenAndMintMultipleNFTsData,
-  client: Client
+  client: Client,
+  abi: any[]
 ) {
+  const encodedFunctionCall = encodeFunctionCall(
+    'createTokenAndMintMultipleNfts',
+    [
+      data.name,
+      data.symbol,
+      data.maxSupply.toString(),
+      '7000000',
+      data.metadata,
+      [],
+    ],
+    abi
+  );
   const mintNftRequest = new ContractExecuteTransaction()
     .setContractId(contractId)
     .setGas(data.metadata.length * 2500000)
     .setPayableAmount(500)
-    .setFunction(
-      'createTokenAndMintMultipleNfts',
-      new ContractFunctionParameters()
-        .addString(data.name)
-        .addString(data.symbol)
-        // .addString(data.memo)
-        // @ts-ignore
-        .addInt64(data.maxSupply)
-        .addUint32(7000000)
-        .addBytesArray(data.metadata)
-    );
+    .setFunctionParameters(encodedFunctionCall);
   const mintMultipleNftsTx = await mintNftRequest.execute(client);
   const mintMultipleNftsRx = await mintMultipleNftsTx.getRecord(client);
   const tokenSolidityAddr =

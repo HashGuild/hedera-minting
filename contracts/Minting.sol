@@ -6,19 +6,19 @@ import "../hedera-smart-contracts/contracts/hts-precompile/IHederaTokenService.s
 import "../hedera-smart-contracts/contracts/hts-precompile/HederaResponseCodes.sol";
 import "../hedera-smart-contracts/contracts/hts-precompile/ExpiryHelper.sol";
 
+struct RoyaltyFeeData {
+    uint32 numerator;
+    uint32 denominator;
+    address feeCollector;
+}
+
 contract Minting is ExpiryHelper {
-    // /**
-    //  * Creates a new fungible token with the provided name, symbol, supply, renewPeriod and royalty fees
-    //  *
-    //  * @param royaltyFeePairs - A uint32 array of royalty fee nominators mapped to receiver addresses.
-    //  *                          The first 160 bits represent the receiver address, the remaining 96 represent the numerator.
-    //  */
     function createNft(
         string memory name,
         string memory symbol,
         int64 maxSupply,
-        uint32 autoRenewPeriod
-        // uint256[] memory royaltyFeePairs
+        uint32 autoRenewPeriod,
+        RoyaltyFeeData[] memory royaltyFeesData
     ) public payable returns (address) {
         IHederaTokenService.TokenKey[]
             memory keys = new IHederaTokenService.TokenKey[](1);
@@ -39,14 +39,17 @@ contract Minting is ExpiryHelper {
         token.freezeDefault = false;
         token.expiry = createAutoRenewExpiry(msg.sender, autoRenewPeriod);
 
-        IHederaTokenService.RoyaltyFee memory myFee;
-        myFee.numerator = 100;
-        myFee.denominator = 1000;
-        myFee.feeCollector = msg.sender;
-
+        // Create royalty fees
         IHederaTokenService.RoyaltyFee[]
-            memory royaltyFees = new IHederaTokenService.RoyaltyFee[](1);
-        royaltyFees[0] = myFee;
+            memory royaltyFees = new IHederaTokenService.RoyaltyFee[](royaltyFeesData.length);
+        for (uint32 i = 0; i < royaltyFeesData.length; ++i) {
+            IHederaTokenService.RoyaltyFee memory fee;
+            fee.numerator = royaltyFeesData[i].numerator;
+            fee.denominator = royaltyFeesData[i].denominator;
+            fee.feeCollector = royaltyFeesData[i].feeCollector;
+            royaltyFees[i] = fee;
+        }
+
         IHederaTokenService.FixedFee[]
             memory fixedFees = new IHederaTokenService.FixedFee[](0);
         (int256 responseCode, address createdToken) = HederaTokenService
@@ -93,9 +96,16 @@ contract Minting is ExpiryHelper {
         string memory symbol,
         int64 maxSupply,
         uint32 autoRenewPeriod,
-        bytes[] memory metadataList
+        bytes[] memory metadataList,
+        RoyaltyFeeData[] memory royaltyFees
     ) external payable returns (address tokenId) {
-        tokenId = createNft(name, symbol, maxSupply, autoRenewPeriod);
+        tokenId = createNft(
+            name,
+            symbol,
+            maxSupply,
+            autoRenewPeriod,
+            royaltyFees
+        );
         mintMultipleNfts(tokenId, metadataList);
         return tokenId;
     }

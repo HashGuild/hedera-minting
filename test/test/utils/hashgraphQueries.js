@@ -69,6 +69,14 @@ function getContractIdFromAddress(address) {
     });
 }
 exports.getContractIdFromAddress = getContractIdFromAddress;
+function encodeFunctionCall(functionName, parameters, abi) {
+    var web3 = new web3_1.default();
+    var functionAbi = abi.find(function (func) { return func.name === functionName && func.type === 'function'; });
+    var encodedParametersHex = web3.eth.abi
+        .encodeFunctionCall(functionAbi, parameters)
+        .slice(2);
+    return Buffer.from(encodedParametersHex, 'hex');
+}
 function getTokenInformation(tokenId, client) {
     return __awaiter(this, void 0, void 0, function () {
         var query, res;
@@ -85,67 +93,17 @@ function getTokenInformation(tokenId, client) {
     });
 }
 exports.getTokenInformation = getTokenInformation;
-function createToken(contractId, data, client) {
+function createToken(contractId, data, client, abi) {
     return __awaiter(this, void 0, void 0, function () {
-        var web3, fee, parameters, createTokenRequest, createTokenTx, createTokenRx, tokenSolidityAddr, tokenIdSolidityAddr, tokenId;
+        var encodedFunctionCall, createTokenRequest, createTokenTx, createTokenRx, tokenSolidityAddr, tokenIdSolidityAddr, tokenId;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    web3 = new web3_1.default();
-                    fee = new sdk_1.CustomRoyaltyFee()
-                        .setNumerator(10)
-                        .setDenominator(100)
-                        .setFeeCollectorAccountId(client.operatorAccountId);
-                    console.log('FEE:', fee);
-                    parameters = web3.eth.abi.encodeFunctionCall({
-                        name: 'createNft',
-                        type: 'function',
-                        inputs: [
-                            {
-                                type: 'string',
-                                name: 'name',
-                            },
-                            {
-                                type: 'string',
-                                name: 'symbol',
-                            },
-                            {
-                                type: 'int64',
-                                name: 'maxSupply',
-                            },
-                            {
-                                type: 'uint32',
-                                name: 'autoRenewPeriod',
-                            },
-                            {
-                                components: [
-                                    {
-                                        internalType: 'uint32',
-                                        name: 'numerator',
-                                        type: 'uint32',
-                                    },
-                                    {
-                                        internalType: 'uint32',
-                                        name: 'denominator',
-                                        type: 'uint32',
-                                    },
-                                    {
-                                        internalType: 'address',
-                                        name: 'feeCollector',
-                                        type: 'address',
-                                    },
-                                ],
-                                internalType: 'struct RoyaltyFeeData[]',
-                                name: 'royaltyFeesData',
-                                type: 'tuple[]',
-                            },
-                        ],
-                    }, [
+                    encodedFunctionCall = encodeFunctionCall('createNft', [
                         data.name,
                         data.symbol,
                         data.maxSupply.toString(),
                         '7000000',
-                        // @ts-ignore
                         [
                             {
                                 numerator: '10',
@@ -153,12 +111,12 @@ function createToken(contractId, data, client) {
                                 feeCollector: client.operatorAccountId.toSolidityAddress(),
                             },
                         ],
-                    ]);
+                    ], abi);
                     createTokenRequest = new sdk_1.ContractExecuteTransaction()
                         .setContractId(contractId)
                         .setGas(2500000)
                         .setPayableAmount(500)
-                        .setFunctionParameters(Buffer.from(parameters.replace('0x', ''), 'hex'));
+                        .setFunctionParameters(encodedFunctionCall);
                     return [4 /*yield*/, createTokenRequest.execute(client)];
                 case 1:
                     createTokenTx = _a.sent();
