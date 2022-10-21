@@ -6,12 +6,19 @@ import "../hedera-smart-contracts/contracts/hts-precompile/IHederaTokenService.s
 import "../hedera-smart-contracts/contracts/hts-precompile/HederaResponseCodes.sol";
 import "../hedera-smart-contracts/contracts/hts-precompile/ExpiryHelper.sol";
 
+struct RoyaltyFeeData {
+    uint32 numerator;
+    uint32 denominator;
+    address feeCollector;
+}
+
 contract Minting is ExpiryHelper {
     function createNft(
         string memory name,
         string memory symbol,
         int64 maxSupply,
-        uint32 autoRenewPeriod
+        uint32 autoRenewPeriod,
+        RoyaltyFeeData[] memory royaltyFeesData
     ) public payable returns (address) {
         IHederaTokenService.TokenKey[]
             memory keys = new IHederaTokenService.TokenKey[](1);
@@ -32,8 +39,25 @@ contract Minting is ExpiryHelper {
         token.freezeDefault = false;
         token.expiry = createAutoRenewExpiry(msg.sender, autoRenewPeriod);
 
+        // Create royalty fees
+        IHederaTokenService.RoyaltyFee[]
+            memory royaltyFees = new IHederaTokenService.RoyaltyFee[](royaltyFeesData.length);
+        for (uint32 i = 0; i < royaltyFeesData.length; ++i) {
+            IHederaTokenService.RoyaltyFee memory fee;
+            fee.numerator = royaltyFeesData[i].numerator;
+            fee.denominator = royaltyFeesData[i].denominator;
+            fee.feeCollector = royaltyFeesData[i].feeCollector;
+            royaltyFees[i] = fee;
+        }
+
+        IHederaTokenService.FixedFee[]
+            memory fixedFees = new IHederaTokenService.FixedFee[](0);
         (int256 responseCode, address createdToken) = HederaTokenService
-            .createNonFungibleToken(token);
+            .createNonFungibleTokenWithCustomFees(
+                token,
+                fixedFees,
+                royaltyFees
+            );
 
         if (responseCode != HederaResponseCodes.SUCCESS) {
             revert("Failed to create non-fungible token.");
@@ -54,10 +78,13 @@ contract Minting is ExpiryHelper {
         return serials[0];
     }
 
-    function mintMultipleNfts(address token, bytes[] memory metadataList) public returns(int64[] memory) {
+    function mintMultipleNfts(address token, bytes[] memory metadataList)
+        public
+        returns (int64[] memory)
+    {
         int64[] memory serials = new int64[](metadataList.length);
         bytes[] memory currentMetadata = new bytes[](1);
-        for (uint i = 0; i<metadataList.length; ++i) {
+        for (uint256 i = 0; i < metadataList.length; ++i) {
             currentMetadata[0] = metadataList[i];
             serials[i] = mintNft(token, currentMetadata);
         }
@@ -69,10 +96,17 @@ contract Minting is ExpiryHelper {
         string memory symbol,
         int64 maxSupply,
         uint32 autoRenewPeriod,
-        bytes[] memory metadataList
+        bytes[] memory metadataList,
+        RoyaltyFeeData[] memory royaltyFees
     ) external payable returns (address tokenId) {
-        tokenId = createNft(name, symbol, maxSupply, autoRenewPeriod);
-        mintMultipleNfts(tokenId, metadataList); 
+        tokenId = createNft(
+            name,
+            symbol,
+            maxSupply,
+            autoRenewPeriod,
+            royaltyFees
+        );
+        mintMultipleNfts(tokenId, metadataList);
         return tokenId;
     }
 }

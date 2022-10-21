@@ -2,7 +2,7 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "target": "es5",
-        "outDir": "./",
+        "outDir": "./dist",
         "noEmit": false,
         "incremental": false,
         "module": "commonjs"
@@ -10,5 +10,8 @@
     "include": [
         "./",
         "../types/**/*"
+    ],
+    "exclude": [
+        "./dist/**/*"
     ]
 }

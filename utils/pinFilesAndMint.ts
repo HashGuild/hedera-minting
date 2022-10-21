@@ -1,10 +1,49 @@
 import {
+  AccountId,
   ContractExecuteTransaction,
   ContractFunctionParameters,
 } from '@hashgraph/sdk';
 import axios, { AxiosResponse } from 'axios';
 import { HashConnect, HashConnectTypes } from 'hashconnect';
+import Web3 from 'web3';
 import getTransactionReceipt from './getTransactionReceipt';
+import MintingContractAbiWrapper from '../build/contracts/Minting.json';
+
+const { abi: MintingContractAbi } = MintingContractAbiWrapper;
+
+function encodeFunctionCall(
+  functionName: string,
+  parameters: any[],
+  abi: any[]
+) {
+  const web3 = new Web3();
+  const functionAbi = abi.find(
+    (func) => func.name === functionName && func.type === 'function'
+  );
+  console.log('ABI', functionAbi);
+  console.log('PARAMS:', parameters);
+  const encodedParametersHex = web3.eth.abi
+    .encodeFunctionCall(functionAbi, parameters)
+    .slice(2);
+  return Buffer.from(encodedParametersHex, 'hex');
+}
+
+class RoyaltyFeeData {
+  numerator: string;
+
+  denominator: string;
+
+  feeCollector: string;
+
+  constructor(numerator: number, denominator: number, feeCollector: string) {
+    if (numerator >= denominator) {
+      throw new Error('Royalty Fee too large.');
+    }
+    this.numerator = Math.floor(numerator).toString();
+    this.denominator = denominator.toString();
+    this.feeCollector = feeCollector;
+  }
+}
 
 export default async function pinFilesAndMint(
   tokenData: any,
@@ -43,20 +82,37 @@ export default async function pinFilesAndMint(
     }
     const responses = await Promise.all(operations);
 
+    const royalties = tokenData.royaltyWallets.map(
+      (wallet: { fee: number; accountId: string }) =>
+        new RoyaltyFeeData(
+          wallet.fee * 100,
+          10000,
+          AccountId.fromString(wallet.accountId).toSolidityAddress()
+        )
+    );
+    const maxSupply = responses.length;
+    const metadataUInt8Array = responses.map((res) =>
+      Buffer.from(res.data.url)
+    );
+
+    const encodedFunctionCall = encodeFunctionCall(
+      'createTokenAndMintMultipleNfts',
+      [
+        tokenData.tokenName,
+        'TEST',
+        maxSupply.toString(),
+        '7000000',
+        metadataUInt8Array,
+        royalties,
+      ],
+      MintingContractAbi
+    );
+
     const mintNftRequest = new ContractExecuteTransaction()
-      .setContractId('0.0.48644217')
+      .setContractId('0.0.48679240')
       .setGas(2500000)
       .setPayableAmount(500)
-      .setFunction(
-        'createTokenAndMintMultipleNfts',
-        new ContractFunctionParameters()
-          .addString(tokenData.tokenName)
-          .addString('TEST')
-          // @ts-ignore
-          .addInt64(1)
-          .addUint32(7000000)
-          .addBytesArray(responses.map((res) => Buffer.from(res.data.url)))
-      );
+      .setFunctionParameters(encodedFunctionCall);
 
     hc!.connectToLocalWallet();
 
