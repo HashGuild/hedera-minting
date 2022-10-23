@@ -41,12 +41,28 @@ const CreateNft: NextPage = function () {
     descriptionError: true,
     nftFilesError: false,
     nftThumbnailError: true,
-    splitPercentError: true,
+    splitPercentError: false,
+    feeError: true,
+    accountIdError: true,
     nftPropertiesError: true,
     sellingOptionError: false,
     listingPriceError: false,
   });
-
+  const validateNftForm = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (event.target.value.length === 0) {
+      setFormDataErrors({
+        ...formDataErrors,
+        [`${event.target.name}Error`]: true,
+      });
+    } else {
+      setFormDataErrors({
+        ...formDataErrors,
+        [`${event.target.name}Error`]: false,
+      });
+    }
+  };
   const handleFormChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -58,22 +74,13 @@ const CreateNft: NextPage = function () {
       });
     } else {
       // form Validation for events.
-      if (event.target.value.length === 0) {
-        setFormDataErrors({
-          ...formDataErrors,
-          [`${event.target.name}Error`]: true,
-        });
-      } else {
-        setFormDataErrors({
-          ...formDataErrors,
-          [`${event.target.name}Error`]: false,
-        });
-      }
+
       setFormData({
         ...formData,
         [event.currentTarget.name]: event.currentTarget.value,
       });
     }
+    validateNftForm(event);
   };
   const checkFormValidated = () => {
     const validated = Object.values(formDataErrors).every(

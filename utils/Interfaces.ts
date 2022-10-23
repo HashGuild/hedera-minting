@@ -39,6 +39,8 @@ export type NftFormErrors = {
   creatorNameError: boolean;
   displayNameError: boolean;
   descriptionError: boolean;
+  accountIdError: boolean;
+  feeError: boolean;
   nftThumbnailError: boolean;
   nftFilesError: boolean;
   splitPercentError: boolean;
@@ -57,7 +59,7 @@ export type StepOneErrors = Omit<
 >;
 export type StepTwoErrors = Omit<
   NftFormErrors,
-  'splitPercentError' | 'displayNameError'
+  'splitPercentError' | 'displayNameError' | 'feeError' | 'accountIdError'
 > & {
   descriptionError: boolean;
 };

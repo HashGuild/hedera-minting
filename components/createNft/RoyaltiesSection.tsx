@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import DeleteIcon from '../../public/svg/DeleteIcon';
 import {
   NftForm,
@@ -33,6 +33,12 @@ const RoyaltiesSection = function ({
       ...formData,
       royaltyWallets: [...formData.royaltyWallets, { ...newWallet }],
     });
+    setFormDataErrors({
+      ...formDataErrors,
+      feeError: true,
+      accountIdError: true,
+      splitPercentError: false,
+    });
   };
   const deleteInput = (walletIndex: number) => {
     const updatedArray = formData.royaltyWallets.filter(
@@ -50,43 +56,68 @@ const RoyaltiesSection = function ({
     });
     return sum;
   };
+  const validatateRoyaltySum = (
+    wallets: UserWalletRoyalty[],
+    feeError: boolean
+  ) => {
+    if (royaltySum(wallets) > 100) {
+      setFormDataErrors({
+        ...formDataErrors,
+        splitPercentError: true,
+        feeError,
+      });
+    } else {
+      setFormDataErrors({
+        ...formDataErrors,
+        splitPercentError: false,
+        feeError,
+      });
+    }
+  };
+
+  const validateSplitFee = (
+    e: ChangeEvent<HTMLInputElement>,
+    wallets: UserWalletRoyalty[]
+  ) => {
+    if (+e.target.value === 0) {
+      setFormDataErrors({
+        ...formDataErrors,
+        feeError: true,
+      });
+      validatateRoyaltySum(wallets, true);
+    } else {
+      setFormDataErrors({
+        ...formDataErrors,
+        feeError: false,
+      });
+      validatateRoyaltySum(wallets, false);
+    }
+  };
+  const validateSplitAccount = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length === 0) {
+      setFormDataErrors({
+        ...formDataErrors,
+        accountIdError: true,
+      });
+    } else {
+      setFormDataErrors({
+        ...formDataErrors,
+        accountIdError: false,
+      });
+    }
+  };
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const newArr = formData.royaltyWallets;
     if (e.target.name === 'fee') {
       newArr[index].fee = +e.target.value;
-      if (royaltySum(newArr) > 100) {
-        setFormDataErrors({
-          ...formDataErrors,
-          splitPercentError: true,
-        });
-      } else {
-        setFormDataErrors({
-          ...formDataErrors,
-          splitPercentError: false,
-        });
-      }
+      validateSplitFee(e, newArr);
     } else if (e.target.name === 'accountId') {
       newArr[index].accountId = e.target.value;
+      validateSplitAccount(e);
     }
+
     setFormData({ ...formData, royaltyWallets: newArr });
   };
-
-  useEffect(() => {
-    function resetRoyalties() {
-      if (!formData.splitRoyaltiesEnabled) {
-        setFormData((prev) => ({
-          ...prev,
-          royaltyWallets: [{ fee: 0, accountId: '' }],
-        }));
-        setFormDataErrors((errors) => ({
-          ...errors,
-          [`splitPercentError`]: false,
-        }));
-      }
-    }
-    resetRoyalties();
-  }, [formData.splitRoyaltiesEnabled, setFormData, setFormDataErrors]);
-
   return (
     <section className="my-10 flex flex-col">
       <h4 className="text-lg font-bold">Royalties</h4>
@@ -126,11 +157,14 @@ const RoyaltiesSection = function ({
               labelStyle="my-2.5"
               type="number"
               name="fee"
-              inputContainerStyles={wallet?.fee === 0 ? 'border-red-400' : ''}
+              onWheel={(e) => e.currentTarget.blur()}
+              inputContainerStyles={
+                formDataErrors.feeError ? 'border-red-400' : ''
+              }
               errorMessage=""
-              error={formDataErrors.splitPercentError}
+              error={formDataErrors.feeError}
               placeholder="Fee in %"
-              className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+              className=" w-full text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 ac "
               onChange={(e) => {
                 handleChange(index, e);
               }}
@@ -142,7 +176,7 @@ const RoyaltiesSection = function ({
               type="text"
               required
               inputContainerStyles={
-                wallet?.accountId?.length === 0 ? 'border-red-400' : ''
+                formDataErrors.accountIdError ? 'border-red-400' : ''
               }
               value={wallet?.accountId}
               name="accountId"

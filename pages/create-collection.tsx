@@ -26,9 +26,36 @@ const CreateNft: NextPage = function () {
     displayNameError: true,
     splitPercentError: false,
     descriptionError: true,
+    feeError: true,
+    accountIdError: true,
   });
+  const validateCollectionForm = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (
+      !(event.currentTarget as HTMLInputElement).checked &&
+      event.currentTarget.name === 'splitRoyaltiesEnabled'
+    ) {
+      setStepOneErrors({
+        ...stepOneErrors,
+        [`splitPercentError`]: false,
+      });
+    }
+    if (event.target.value.length === 0) {
+      setStepOneErrors({
+        ...stepOneErrors,
+        [`${event.target.name}Error`]: true,
+      });
+    } else {
+      setStepOneErrors({
+        ...stepOneErrors,
+        [`${event.target.name}Error`]: false,
+      });
+    }
+  };
+
   const handleFormChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (event.currentTarget.type === 'checkbox') {
       setFormData({
@@ -36,33 +63,13 @@ const CreateNft: NextPage = function () {
         [event.currentTarget.name]: (event.currentTarget as HTMLInputElement)
           .checked,
       });
-      if (
-        !(event.currentTarget as HTMLInputElement).checked &&
-        event.currentTarget.name === 'splitRoyaltiesEnabled'
-      ) {
-        setStepOneErrors({
-          ...stepOneErrors,
-          [`splitPercentError`]: false,
-        });
-      }
     } else {
-      // form Validation for events.
-      if (event.target.value.length === 0) {
-        setStepOneErrors({
-          ...stepOneErrors,
-          [`${event.target.name}Error`]: true,
-        });
-      } else {
-        setStepOneErrors({
-          ...stepOneErrors,
-          [`${event.target.name}Error`]: false,
-        });
-      }
       setFormData({
         ...formData,
         [event.currentTarget.name]: event.currentTarget.value,
       });
     }
+    validateCollectionForm(event);
   };
 
   const renderSteps = function () {

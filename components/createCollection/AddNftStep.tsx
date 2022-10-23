@@ -40,6 +40,7 @@ const initialErrors = {
   sellingOptionError: false,
   listingPriceError: false,
 };
+
 const AddNftStep = function ({
   setStep,
   setFormData,
@@ -55,6 +56,21 @@ const AddNftStep = function ({
     StepTwoErrors | NftFormErrors
   >(initialErrors);
 
+  const validateStep = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (event.target.value.length === 0) {
+      setFormDataErrors({
+        ...formDataErrors,
+        [`${event.target.name}Error`]: true,
+      });
+    } else {
+      setFormDataErrors({
+        ...formDataErrors,
+        [`${event.target.name}Error`]: false,
+      });
+    }
+  };
   const handleFormChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -66,22 +82,12 @@ const AddNftStep = function ({
       });
     } else {
       // form Validation for events.
-      if (event.target.value.length === 0) {
-        setFormDataErrors({
-          ...formDataErrors,
-          [`${event.target.name}Error`]: true,
-        });
-      } else {
-        setFormDataErrors({
-          ...formDataErrors,
-          [`${event.target.name}Error`]: false,
-        });
-      }
       setNftFormData({
         ...nftFormData,
         [event.currentTarget.name]: event.currentTarget.value,
       });
     }
+    validateStep(event);
   };
   const checkFormValidated = () => {
     const validated = Object.values(formDataErrors).every(
@@ -213,6 +219,13 @@ const AddNftStep = function ({
         disabled={!checkFormValidated()}
         title="Add NFT To Collection"
         className="w-full bg-black mt-5 text-white rounded-md disabled:bg-black/40"
+      />
+      <Button
+        onClick={() => {
+          setStep((prev) => prev - 1);
+        }}
+        title="Go Back and Change Data"
+        className="w-full bg-white mt-2 text-black rounded-md border border-black disabled:bg-black/40"
       />
     </>
   );
