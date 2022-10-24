@@ -51,10 +51,10 @@ require("ts-node").register({
 // require('dotenv').config();
 // const { MNEMONIC, PROJECT_ID } = process.env;
 
-const privKey =
-  process.env.NODE_ENV === "development"
-    ? process.env.ETH_PRIVATE_KEY.replace("0x", "")
-    : "";
+const privKey = process.env.ETH_PRIVATE_KEY.replace("0x", "");
+// process.env.NODE_ENV === "development"
+//   ? process.env.ETH_PRIVATE_KEY.replace("0x", "")
+//   : "";
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 
@@ -80,9 +80,10 @@ module.exports = {
       network_id: process.env.NETWORK_ID,
       provider: () =>
         new HDWalletProvider(privKey, process.env.JSON_RPC_RELAY_URL),
-      gas: 8500000,
+      gas: 85000000,
       // gasPrice: 200_000_000_000,
       gasPrice: 200_000_000_0000,
+      // production: true,
     },
     //
     // An additional network, but with some advanced options…
