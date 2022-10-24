@@ -2,6 +2,7 @@ import React, { InputHTMLAttributes, useState } from 'react';
 import classNames from '../../utils/classNames';
 import ErrorMessage from './ErrorMessage';
 import Tooltip from './Tooltip';
+import AssistantModal from './AssistantModal';
 
 interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   labelText?: string;
@@ -13,6 +14,9 @@ interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   inputContainerStyles?: string;
   error: boolean;
   errorMessage: string;
+  helpModalHeader?: string;
+  helpModalText?: string; 
+  helpModalImgSrc?: string;
 }
 
 const TextArea = function ({
@@ -25,6 +29,9 @@ const TextArea = function ({
   iconRight,
   error,
   errorMessage,
+  helpModalHeader,
+  helpModalText,
+  helpModalImgSrc,
   ...props
 }: TextAreaProps) {
   const [focus, setFocus] = useState(false);
@@ -43,6 +50,11 @@ const TextArea = function ({
           {toolTipContent && (
             <Tooltip iconStyle="stroke-gray-400">{toolTipContent}</Tooltip>
           )}
+          {
+            helpModalHeader &&
+           helpModalText && 
+            helpModalImgSrc && 
+            (<AssistantModal contentHeader={helpModalHeader} contentText={helpModalText} contentImgSrc={helpModalImgSrc} />)}
         </div>
         {iconRight && <div className="mx-2 ">{iconRight}</div>}
       </div>

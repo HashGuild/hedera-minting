@@ -17,7 +17,7 @@ const Layout: FC<LayoutProps> = function ({ children }) {
         <Header />
         <div className="max-w-[90%] min-w-[90%] mx-auto mb-10 flex-1">
           <div className="flex flex-col items-center justify-center">
-            <div className="my-16 md:my-6 md:border md:shadow-md px-0 md:px-32 w-full md:max-w-5xl ">
+            <div className="my-16 md:my-6 md:border md:shadow-md px-0 md:px-32 w-full md:max-w-5xl rounded-lg">
               <div className="flex flex-col md:py-12 max-w-screen-md ">
                 {children}
               </div>
