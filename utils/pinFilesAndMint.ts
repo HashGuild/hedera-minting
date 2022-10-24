@@ -20,8 +20,6 @@ function encodeFunctionCall(
   const functionAbi = abi.find(
     (func) => func.name === functionName && func.type === 'function'
   );
-  console.log('ABI', functionAbi);
-  console.log('PARAMS:', parameters);
   const encodedParametersHex = web3.eth.abi
     .encodeFunctionCall(functionAbi, parameters)
     .slice(2);
@@ -82,14 +80,19 @@ export default async function pinFilesAndMint(
     }
     const responses = await Promise.all(operations);
 
-    const royalties = tokenData.royaltyWallets.map(
-      (wallet: { fee: number; accountId: string }) =>
-        new RoyaltyFeeData(
-          wallet.fee * 100,
-          10000,
-          AccountId.fromString(wallet.accountId).toSolidityAddress()
-        )
-    );
+    const royalties = tokenData.royaltyWallets
+      .filter(
+        (wallet: { fee: number; accountId: string }) =>
+          !!wallet.accountId && !!wallet.fee
+      )
+      .map(
+        (wallet: { fee: number; accountId: string }) =>
+          new RoyaltyFeeData(
+            wallet.fee * 100,
+            10000,
+            AccountId.fromString(wallet.accountId).toSolidityAddress()
+          )
+      );
     const maxSupply = responses.length;
     const metadataUInt8Array = responses.map((res) =>
       Buffer.from(res.data.url)
