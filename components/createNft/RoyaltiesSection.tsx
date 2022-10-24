@@ -95,16 +95,6 @@ const RoyaltiesSection = function ({
         displayed represents the order of the files on the NFT. The NFT can
         include up to 2 files including the thumbnail.
       </p>
-      <span className="flex items-center justify-between text-sm font-bold my-6">
-        <h5>Total Amount</h5>
-        <h5>{`${royaltySum(formData.royaltyWallets)}%`}</h5>
-      </span>
-      <div className="w-full h-3 border rounded-lg overflow-hidden">
-        <div
-          className="h-full bg-black"
-          style={{ width: `${royaltySum(formData.royaltyWallets)}%` }}
-        />
-      </div>
 
       <span className="flex items-center justify-between text-sm font-bold my-6">
         <h5>Split Royalties</h5>
@@ -130,7 +120,7 @@ const RoyaltiesSection = function ({
               errorMessage=""
               error={formDataErrors.splitPercentError}
               placeholder="Fee in %"
-              className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+              className=" w-full  text-black placeholder:text-sm placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
                 handleChange(index, e);
               }}
@@ -149,7 +139,7 @@ const RoyaltiesSection = function ({
               errorMessage=""
               error={false}
               placeholder="Account Id"
-              className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+              className=" w-full  text-black placeholder:text-sm placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
                 handleChange(index, e);
               }}
@@ -168,18 +158,28 @@ const RoyaltiesSection = function ({
           </div>
         ))}
         {splitPercentError && (
-          <ErrorMessage errorText="The distribution should not exceed 100%. Please revise the total royalty fee or change the allocation. " />
+          <ErrorMessage errorText="The distribution should not exceed 100%. Please revise the total royalty fee or change the allocation." />
         )}
       </div>
       {formData.splitRoyaltiesEnabled && (
         <Button
           title="Add Account Id"
           disabled={!formData.splitRoyaltiesEnabled}
-          className=" w-1/2 bg-black text-white rounded-md mt-5 self-end disabled:bg-black/40 "
+          className=" w-1/2 bg-black text-white dark:text-black dark:bg-white rounded-md mt-5 self-end disabled:bg-black/40"
           onClick={addInput}
           buttonHeight={10}
         />
       )}
+      <span className="flex items-center justify-between text-sm font-bold my-6">
+        <h5>Total Amount</h5>
+        <h5>{`${royaltySum(formData.royaltyWallets)}%`}</h5>
+      </span>
+      <div className="w-full h-3 border rounded-lg overflow-hidden">
+        <div
+          className="h-full bg-black"
+          style={{ width: `${royaltySum(formData.royaltyWallets)}%` }}
+        />
+      </div>
     </section>
   );
 };

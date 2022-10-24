@@ -33,22 +33,22 @@ const Home: NextPage = function () {
             className={classNames(
               'p-10 border shadow-xl select-none rounded-lg',
               currentFlowChoice?.index === flowItem.index
-                ? 'bg-slate-900 '
+                ? 'bg-slate-900 dark:bg-white'
                 : 'border-2',
             )}
           >
             <flowItem.icon
               className={`h-20 w-20 md:h-32 md:w-32 z-10 ${
                 currentFlowChoice?.index === flowItem.index
-                  ? 'fill-white'
-                  : 'fill-black'
+                  ? 'fill-white dark:fill-black'
+                  : 'fill-black dark:fill-white'
               }`}
             />
             <span
               className={`${
                 currentFlowChoice?.index === flowItem.index
-                  ? 'text-white'
-                  : 'text-black'
+                  ? 'text-white dark:text-black'
+                  : 'text-black dark:text-white'
               }  font-semibold`}
             >
               {flowItem.name}
@@ -60,7 +60,7 @@ const Home: NextPage = function () {
         disabled={!currentFlowChoice}
         onClick={navigateToPage}
         title="Continue"
-        className="w-full text-white bg-black rounded-md mt-20 disabled:bg-black/50 hover:bg-black/80"
+        className="text-white bg-black dark:text-black dark:bg-white disabled:bg-black/50 dark:disabled:bg-white/50 hover:bg-black/80 dark:hover:bg-white/80 w-full rounded-md mt-20"
       />
     </div>
   );

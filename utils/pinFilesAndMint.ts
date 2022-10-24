@@ -1,7 +1,6 @@
 import {
   AccountId,
   ContractExecuteTransaction,
-  ContractFunctionParameters,
 } from '@hashgraph/sdk';
 import axios, { AxiosResponse } from 'axios';
 import { HashConnect, HashConnectTypes } from 'hashconnect';
@@ -123,7 +122,7 @@ export default async function pinFilesAndMint(
       hc!.pairingEvent.once(async (pairingData) => {
         try {
           const provider = hc!.getProvider(
-            'testnet',
+            'mainnet',
             pairingData.topic,
             pairingData.accountIds[0]
           );

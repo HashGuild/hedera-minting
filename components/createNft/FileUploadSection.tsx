@@ -169,12 +169,9 @@ const FileUploadSection = function ({
         include up to 6 files including the thumbnail.
       </p>
 
-      <section className=" space-y-3 text-sm mb-14 max-w-full ">
+      <section className="flex flex-col space-y-3 text-sm mb-14 max-w-full ">
         <p className="font-bold text-sm">Thumbnail</p>
         <p>The thumbnail needs to be an image.</p>
-        {formDataErrors.nftThumbnailError && focus && (
-          <ErrorMessage errorText="Thumbnail is required." />
-        )}
         <Modal setShowModal={setAddThumbnail} showModal={addThumbnail}>
           <h4 className="text-lg mb-5 font-bold">Upload Thumbnail</h4>
 
@@ -201,7 +198,8 @@ const FileUploadSection = function ({
               onChange={handleChange}
             />
 
-            <UploadFile />
+            <UploadFile 
+            className='stroke-black dark:stroke-white'/>
             <p className="my-5 text-sm text-center text-gray-400 whitespace-nowrap">
               Click to browse or
               <br />
@@ -209,7 +207,7 @@ const FileUploadSection = function ({
             </p>
             <Button
               title="Add Files"
-              className="bg-black text-white w-full rounded-md hover:bg-black/80 z-10"
+              className="bg-black text-white w-full rounded-md hover:bg-black/80 dark:hover:bg-white/80 z-10"
               onClick={onButtonClickThumbnail}
             />
           </label>
@@ -235,10 +233,13 @@ const FileUploadSection = function ({
         {!formData.nftThumbnail && (
           <Button
             onClick={() => setAddThumbnail(true)}
-            className="bg-black text-white rounded-md w-1/2"
+            className="bg-black text-white dark:text-black dark:bg-white rounded-md w-1/2"
             title="Add Thumbnail"
             buttonHeight={10}
           />
+        )}
+        {formDataErrors.nftThumbnailError && focus && (
+        <ErrorMessage errorText="Thumbnail is required." />
         )}
         <p className="font-bold text-sm mt-10">Other Files</p>
         <p>
@@ -265,7 +266,7 @@ const FileUploadSection = function ({
         {formData?.nftFiles?.length < 5 && (
           <Button
             onClick={() => setAddNormalFiles(true)}
-            className="bg-black text-white rounded-md w-1/2"
+            className="bg-black text-white dark:text-black dark:bg-white rounded-md w-1/2"
             title="Add normal files(s)"
             buttonHeight={10}
           />
@@ -296,7 +297,9 @@ const FileUploadSection = function ({
               onChange={handleChange}
             />
 
-            <UploadFile />
+            <UploadFile
+             className='stroke-black dark:stroke-white'
+              />
             <p className="my-5 text-sm text-center text-gray-400 whitespace-nowrap">
               Click to browse or
               <br />
@@ -304,7 +307,7 @@ const FileUploadSection = function ({
             </p>
             <Button
               title="Add Files"
-              className="bg-black text-white w-full rounded-md hover:bg-black/80 z-10"
+              className="bg-black text-white w-full rounded-md hover:bg-black/80 dark:hover:bg-white/80 z-10"
               onClick={onButtonClick}
             />
           </label>

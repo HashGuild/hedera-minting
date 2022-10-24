@@ -1,10 +1,10 @@
 import { HashConnect, HashConnectTypes } from 'hashconnect';
 
 const appMetadata: HashConnectTypes.AppMetadata = {
-  name: 'Hedera Minting | powered by HashGuild',
+  name: 'Hedera Minting powered by HashGuild',
   description:
     'A minting application enabling you to mint your project without writing a single line of code.',
-  icon: '',
+  icon: 'https://s3.amazonaws.com/appforest_uf/f1666649189674x197365688252022720/HashGuildMintingLogo_200.png',
 };
 let hashconnectInstance: HashConnect | null = null;
 let hcInitData: HashConnectTypes.InitilizationData | null = null;
@@ -21,7 +21,7 @@ async function initHashConnect(): Promise<
 
   initializingHashconnect = true;
   const hashconnect = new HashConnect(true);
-  const initData = await hashconnect.init(appMetadata, 'testnet', true);
+  const initData = await hashconnect.init(appMetadata, 'mainnet', true);
   hashconnectInstance = hashconnect;
   hcInitData = initData;
   initializingHashconnect = false;
