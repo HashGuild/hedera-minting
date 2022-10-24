@@ -103,7 +103,8 @@ const VerifyCollectionMint = function ({
             <a
               href="https://www.hashpack.app/"
               className="underline hover:text-slate-600"
-              target="_parent"
+              target="_blank"
+              rel="noreferrer"
             >
              
               here -&gt;

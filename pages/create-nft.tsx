@@ -133,7 +133,7 @@ const CreateNft: NextPage = function () {
             }}
             disabled={!checkFormValidated()}
             title="Continue"
-            className="w-full bg-black mt-5 text-white dark:bg-white dark:text-black rounded-md disabled:bg-black/40 dark:disabled:bg-white/40"
+            className="w-full bg-black mt-5 text-white hover:bg-black/80 dark:hover:bg-white/80 dark:bg-white dark:text-black rounded-md disabled:bg-black/40 dark:disabled:bg-white/40"
           />
         </>
       )}

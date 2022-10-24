@@ -169,12 +169,9 @@ const FileUploadSection = function ({
         include up to 6 files including the thumbnail.
       </p>
 
-      <section className=" space-y-3 text-sm mb-14 max-w-full ">
+      <section className="flex flex-col space-y-3 text-sm mb-14 max-w-full ">
         <p className="font-bold text-sm">Thumbnail</p>
         <p>The thumbnail needs to be an image.</p>
-        {formDataErrors.nftThumbnailError && focus && (
-          <ErrorMessage errorText="Thumbnail is required." />
-        )}
         <Modal setShowModal={setAddThumbnail} showModal={addThumbnail}>
           <h4 className="text-lg mb-5 font-bold">Upload Thumbnail</h4>
 
@@ -240,6 +237,9 @@ const FileUploadSection = function ({
             title="Add Thumbnail"
             buttonHeight={10}
           />
+        )}
+        {formDataErrors.nftThumbnailError && focus && (
+        <ErrorMessage errorText="Thumbnail is required." />
         )}
         <p className="font-bold text-sm mt-10">Other Files</p>
         <p>

@@ -10,8 +10,8 @@ const Layout: FC<LayoutProps> = function ({ children }) {
   return (
     <>
       <Head>
-        <title>Hedera Minting</title>
-        <meta name="Hedera Minting" content="Mint NFTs on Hedera." />
+        <title>HashGuild Minting</title>
+        <meta name="HashGuild Minting" content="Mint NFTs on Hedera." />
       </Head>
       <div className="min-h-screen w-full flex flex-col">
         <Header />

@@ -88,7 +88,7 @@ const VerifyAndMintSection = function ({
         <img
           src={URL.createObjectURL(formData.nftThumbnail!)}
           alt="overlay"
-          className="rounded-md w-full h-1/2 mb-8"
+          className="rounded-md w-full h-1/2 mb-8 max-w-xs"
         />
       </picture>
       {success ? (
@@ -96,13 +96,13 @@ const VerifyAndMintSection = function ({
           You have just created your NFT {formData.tokenName}. Congratulations!
         </p>
       ) : (
-        <section className="mb-16">
+        <section className="mb-16 flex flex-col gap-3">
           <p className="text-xs text-gray-500">
             Creator: {formData.creatorName}
           </p>
           <p className="text-xl font-semibold">{formData.tokenName}</p>
-          <p className=" my-3">{isNftForm ? formData.description : ''}</p>
-          <p className="text-sm ">
+          <p>{isNftForm ? formData.description : ''}</p>
+          <p className="text-sm">
             You are minting 1 NFT
             <br />
             <br />
@@ -114,6 +114,8 @@ const VerifyAndMintSection = function ({
             <a
               href="https://www.hashpack.app/"
               className="underline hover:text-slate-600"
+              target="_blank"
+              rel="noreferrer"
             >
              
               Get it here -&gt;
@@ -137,7 +139,7 @@ const VerifyAndMintSection = function ({
           success ? 'List your NFT on HashGuild' : 'Go Back and Change Data'
         }
         onClick={() => setRenderConfirmMint(false)}
-        className="w-full rounded-md bg-white text-black border border-black"
+        className="w-full rounded-md bg-white text-black border border-black hover:bg-black/30 dark:hover:bg-white/30"
       />
     </div>
   );
