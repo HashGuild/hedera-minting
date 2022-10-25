@@ -42,7 +42,7 @@ const NFTCard = function ({
             <Tooltip
               onOpen={() => setShowContent(true)}
               onClose={() => setShowContent(false)}
-              className={'border border-black p-1 '}
+              className="p-1 "
               showContent={showContent}
               right={false}
               TooltipIcon={
