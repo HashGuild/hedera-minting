@@ -27,8 +27,7 @@ const VerifyAndMintSection = function ({
   const [waiting, setWaiting] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
   const [troubleshooting, setTroubleshooting] = useState(false);
-  const [hashconnect, initHashConnect] =
-    useContext(HashConnectContext);
+  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
 
   const isNftForm = nftFormType(formData);
 
@@ -58,14 +57,27 @@ const VerifyAndMintSection = function ({
 
   return (
     <div>
-      {troubleshooting && <HelpModal openHelp={troubleshooting} setOpenHelp={setTroubleshooting} />}
+      {troubleshooting && (
+        <HelpModal
+          openHelp={troubleshooting}
+          setOpenHelp={setTroubleshooting}
+        />
+      )}
       {waiting || error ? (
         <div className="relative py-6 px-2 my-5 text-xs md:rounded-lg bg-black text-white w-[calc(100%+10%)] md:w-full -left-[5%] md:-left-0">
           {waiting && (
             <p>
               Waiting for you to sign the transaction.
               <br />
-              <span className='cursor-pointer hover:underline' onClick={() => setTroubleshooting(true)} role="button" tabIndex={0} onKeyDown={() => setTroubleshooting(true)}>Try Again -&gt;</span>
+              <span
+                className="cursor-pointer hover:underline"
+                onClick={() => setTroubleshooting(true)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={() => setTroubleshooting(true)}
+              >
+                Try Again -&gt;
+              </span>
             </p>
           )}
 
@@ -73,7 +85,15 @@ const VerifyAndMintSection = function ({
             <p>
               Something went wrong while minting your collection. <br />
               Please try again.{' '}
-              <span className='cursor-pointer hover:underline' onClick={() => setTroubleshooting(true)} role="button" tabIndex={0} onKeyDown={() => setTroubleshooting(true)}>Troubleshooting -&gt;</span>
+              <span
+                className="cursor-pointer hover:underline"
+                onClick={() => setTroubleshooting(true)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={() => setTroubleshooting(true)}
+              >
+                Troubleshooting -&gt;
+              </span>
             </p>
           )}
         </div>
@@ -93,14 +113,17 @@ const VerifyAndMintSection = function ({
       </picture>
       {success ? (
         <p className="my-10">
-          You have just created your NFT {formData.tokenName}. Congratulations!
+          You have just created your NFT {isNftForm ? formData.tokenName : ''}.
+          Congratulations!
         </p>
       ) : (
         <section className="mb-16 flex flex-col gap-3">
           <p className="text-xs text-gray-500">
             Creator: {formData.creatorName}
           </p>
-          <p className="text-xl font-semibold">{formData.tokenName}</p>
+          <p className="text-xl font-semibold">
+            {isNftForm ? formData.tokenName : ''}
+          </p>
           <p>{isNftForm ? formData.description : ''}</p>
           <p className="text-sm">
             You are minting 1 NFT
@@ -110,14 +133,13 @@ const VerifyAndMintSection = function ({
             will open up your Hashpack Wallet to sign the transaction.
           </p>
           <p className="text-xs text-gray-500 mb-10 mt-5">
-            No Hashpack Wallet?  {' '}
+            No Hashpack Wallet?{' '}
             <a
               href="https://www.hashpack.app/"
               className="underline hover:text-slate-600"
               target="_blank"
               rel="noreferrer"
             >
-             
               Get it here -&gt;
             </a>
           </p>
@@ -130,9 +152,7 @@ const VerifyAndMintSection = function ({
         className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80 dark:hover:bg-white/80"
       />
       <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
-        <AttachWalletSection
-        onPairingEvent={createNftHandler}
-        />
+        <AttachWalletSection onPairingEvent={createNftHandler} />
       </Modal>
       <Button
         title={
