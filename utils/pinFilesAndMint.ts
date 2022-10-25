@@ -48,7 +48,8 @@ export default async function pinFilesAndMint(
   initHashConnect: () => Promise<
     [HashConnect, HashConnectTypes.InitilizationData]
   >,
-  hashconnect?: HashConnect | null
+  hashconnect?: HashConnect | null,
+  filesUploadedCallback?: (success: boolean) => unknown
 ) {
   try {
     let hc = hashconnect;
@@ -78,6 +79,9 @@ export default async function pinFilesAndMint(
       );
     }
     const responses = await Promise.all(operations);
+    if (filesUploadedCallback) {
+      filesUploadedCallback(true);
+    }
 
     const royalties = tokenData.royaltyWallets
       .filter(
@@ -118,9 +122,19 @@ export default async function pinFilesAndMint(
 
     hc!.connectToLocalWallet();
 
+    let timedOut = false;
+    setTimeout(() => {
+      timedOut = true;
+      if (filesUploadedCallback) {
+        filesUploadedCallback(false);
+      }
+    }, 60000);
     return await new Promise((resolve, reject) => {
       hc!.pairingEvent.once(async (pairingData) => {
         try {
+          if (timedOut) {
+            return;
+          }
           const provider = hc!.getProvider(
             'mainnet',
             pairingData.topic,
@@ -138,6 +152,9 @@ export default async function pinFilesAndMint(
 
           resolve(receipt?.status.valueOf());
         } catch (err) {
+          if (filesUploadedCallback) {
+            filesUploadedCallback(false);
+          }
           console.log(err);
           reject(err);
         }

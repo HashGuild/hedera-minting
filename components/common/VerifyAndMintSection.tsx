@@ -25,6 +25,7 @@ const VerifyAndMintSection = function ({
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [waiting, setWaiting] = useState(false);
+  const [waitingMessage, setWaitingMessage] = useState('');
   const [attachWallet, setAttachWallet] = useState(false);
   const [troubleshooting, setTroubleshooting] = useState(false);
   const [hashconnect, initHashConnect] =
@@ -36,22 +37,49 @@ const VerifyAndMintSection = function ({
     window.scrollTo(0, 0);
   }, []);
 
+  const resetWaitingState = () => {
+    setWaiting(false);
+    setWaitingMessage('');
+  };
+
+  const resetTransactionState = () => {
+    setSuccess(false);
+    setError(false);
+    resetWaitingState();
+  };
+
   const createNftHandler = async () => {
     try {
+      resetTransactionState();
+      setWaitingMessage(
+        'Pinning your NFT files to IPFS storage, this might take a second...'
+      );
       setWaiting(true);
       const status = await pinFilesAndMint(
         formData,
         [formData],
         initHashConnect!,
-        hashconnect
+        hashconnect,
+        (fileUploadSuccessful: boolean) => {
+          if (!fileUploadSuccessful) {
+            setWaiting(false);
+            setWaitingMessage('');
+            setError(true);
+            return;
+          }
+          setWaitingMessage(
+            'Waiting for you to sign the transaction. If it does not open automatically, please open the HashPack extension.'
+          );
+        }
       );
       if (status === 22) {
         setSuccess(true);
       } else {
         setError(true);
       }
-      setWaiting(false);
+      resetWaitingState();
     } catch (err) {
+      resetWaitingState();
       console.log(err);
     }
   };
@@ -60,14 +88,8 @@ const VerifyAndMintSection = function ({
     <div>
       {troubleshooting && <HelpModal openHelp={troubleshooting} setOpenHelp={setTroubleshooting} />}
       {waiting || error ? (
-        <div className="relative py-6 px-2 my-5 text-xs md:rounded-lg bg-black text-white w-[calc(100%+10%)] md:w-full -left-[5%] md:-left-0">
-          {waiting && (
-            <p>
-              Waiting for you to sign the transaction.
-              <br />
-              <span className='cursor-pointer hover:underline' onClick={() => setTroubleshooting(true)} role="button" tabIndex={0} onKeyDown={() => setTroubleshooting(true)}>Try Again -&gt;</span>
-            </p>
-          )}
+        <div className="py-6 px-2 my-5 text-xs  rounded-lg bg-black text-white">
+          {waiting && <p>{waitingMessage}</p>}
 
           {error && (
             <p>
