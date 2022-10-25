@@ -94,7 +94,7 @@ apiRoute.post<NextApiRequest & { files: any }, NextApiResponse<ResponseData>>(
     const { cid, car } = await NFTStorage.encodeBlob(tokenBlob);
 
     await client.storeCar(car);
-    res.status(200).json({ success: true, url: `ipfs://${cid}` });
+    return res.status(200).json({ success: true, url: `ipfs://${cid}` });
   }
 );
 
