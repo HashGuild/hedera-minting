@@ -18,26 +18,55 @@ const VerifyCollectionMint = function ({
   const [success, setSuccess] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
   const [waiting, setWaiting] = useState(false);
+  const [waitingMessage, setWaitingMessage] = useState('');
   const [confirmMint, setConfirmMint] = useState(false);
   const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
   const [hashconnect, initHashConnect] = useContext(HashConnectContext);
 
+  const resetWaitingState = () => {
+    setWaiting(false);
+    setWaitingMessage('');
+  };
+
+  const resetTransactionState = () => {
+    setSuccess(false);
+    setError(false);
+    resetWaitingState();
+  };
+
   const createCollectionHandler = async () => {
     try {
+      resetTransactionState();
+
+      setWaitingMessage(
+        'Pinning your NFT files to IPFS storage, this might take a second...'
+      );
       setWaiting(true);
       const status = await pinFilesAndMint(
         formData,
         formData.nfts,
         initHashConnect!,
-        hashconnect
+        hashconnect,
+        (fileUploadSuccessful: boolean) => {
+          if (!fileUploadSuccessful) {
+            setWaiting(false);
+            setWaitingMessage('');
+            setError(true);
+            return;
+          }
+          setWaitingMessage(
+            'Waiting for you to sign the transaction. If it does not open automatically, please open the HashPack extension.'
+          );
+        }
       );
       if (status === 22) {
         setSuccess(true);
       } else {
         setError(true);
       }
-      setWaiting(false);
+      resetWaitingState();
     } catch (err) {
+      resetWaitingState();
       console.log(err);
     }
   };
@@ -45,13 +74,7 @@ const VerifyCollectionMint = function ({
     <>
       {waiting || error ? (
         <div className="py-6 px-2 my-5 text-xs rounded-lg bg-black text-white">
-          {waiting && (
-            <p>
-              Waiting for you to sign the transaction.
-              <br />
-              Try Again -&gt;
-            </p>
-          )}
+          {waiting && <p>{waitingMessage}</p>}
 
           {error && (
             <p>
