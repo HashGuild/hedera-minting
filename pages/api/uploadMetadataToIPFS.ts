@@ -36,6 +36,12 @@ apiRoute.post<NextApiRequest & { files: any }, NextApiResponse<ResponseData>>(
     const { name, description, creator, attributes } = req.body;
     const token: Record<string, any> = {};
 
+    if (!req.files?.length) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'No files uploaded.' });
+    }
+
     // Store thumbnail
     const thumbnailData = req.files.thumbnailFile[0];
     const buffer = await fs.readFile(thumbnailData.path);
@@ -45,21 +51,23 @@ apiRoute.post<NextApiRequest & { files: any }, NextApiResponse<ResponseData>>(
     await client.storeCar(thumbnailCar);
     token.image = `ipfs://${thumbnailCid}`;
 
-    // Store images
-    token.files = await Promise.all(
-      req.files.files.map(async (file: any) => {
-        const fileBuffer = await fs.readFile(file.path);
-        const fileBlob = new Blob([fileBuffer]);
-        const { cid: fileCid, car: fileCar } = await NFTStorage.encodeBlob(
-          fileBlob
-        );
-        await client.storeCar(fileCar);
-        return {
-          uri: `ipfs://${fileCid}`,
-          type: file.mimetype,
-        };
-      })
-    );
+    // Store images if available
+    if (req.files.files?.length) {
+      token.files = await Promise.all(
+        req.files.files.map(async (file: any) => {
+          const fileBuffer = await fs.readFile(file.path);
+          const fileBlob = new Blob([fileBuffer]);
+          const { cid: fileCid, car: fileCar } = await NFTStorage.encodeBlob(
+            fileBlob
+          );
+          await client.storeCar(fileCar);
+          return {
+            uri: `ipfs://${fileCid}`,
+            type: file.mimetype,
+          };
+        })
+      );
+    }
 
     // Set attributes
     if (attributes) {
