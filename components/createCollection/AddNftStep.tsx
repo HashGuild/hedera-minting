@@ -133,7 +133,7 @@ const AddNftStep = function ({
     return (
       <>
         <h1 className="text-3xl font-bold mt-11">Create your NFTs</h1>
-        <h4 className="text mt-2">Create your NFTs which shall be minted under this collection. <br />You can create up to 15 NFTs. When you&apos;re ready, hit &apos;Mint Collection&apos;.</h4>
+        <h4 className="text mt-2">Create your NFTs which shall be minted under this collection. <br /> When you&apos;re ready, hit &apos;Mint Collection&apos;.</h4>
 
         <div className="py-7 border-b grid grid-cols-2 md:grid-cols-3 gap-2">
           <div role="presentation" onClick={addNftInCollection}>
