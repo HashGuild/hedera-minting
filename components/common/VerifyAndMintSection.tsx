@@ -24,9 +24,9 @@ const VerifyAndMintSection = function ({
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [waiting, setWaiting] = useState(false);
+  const [waitingMessage, setWaitingMessage] = useState('');
   const [attachWallet, setAttachWallet] = useState(false);
-  const [hashconnect, initHashConnect] =
-    useContext(HashConnectContext);
+  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
 
   const isNftForm = nftFormType(formData);
 
@@ -34,22 +34,49 @@ const VerifyAndMintSection = function ({
     window.scrollTo(0, 0);
   }, []);
 
+  const resetWaitingState = () => {
+    setWaiting(false);
+    setWaitingMessage('');
+  };
+
+  const resetTransactionState = () => {
+    setSuccess(false);
+    setError(false);
+    resetWaitingState();
+  };
+
   const createNftHandler = async () => {
     try {
+      resetTransactionState();
+      setWaitingMessage(
+        'Pinning your NFT files to IPFS storage, this might take a second...'
+      );
       setWaiting(true);
       const status = await pinFilesAndMint(
         formData,
         [formData],
         initHashConnect!,
-        hashconnect
+        hashconnect,
+        (fileUploadSuccessful: boolean) => {
+          if (!fileUploadSuccessful) {
+            setWaiting(false);
+            setWaitingMessage('');
+            setError(true);
+            return;
+          }
+          setWaitingMessage(
+            'Waiting for you to sign the transaction. If it does not open automatically, please open the HashPack extension.'
+          );
+        }
       );
       if (status === 22) {
         setSuccess(true);
       } else {
         setError(true);
       }
-      setWaiting(false);
+      resetWaitingState();
     } catch (err) {
+      resetWaitingState();
       console.log(err);
     }
   };
@@ -58,13 +85,7 @@ const VerifyAndMintSection = function ({
     <div>
       {waiting || error ? (
         <div className="py-6 px-2 my-5 text-xs  rounded-lg bg-black text-white">
-          {waiting && (
-            <p>
-              Waiting for you to sign the transaction.
-              <br />
-              Try Again -&gt;
-            </p>
-          )}
+          {waiting && <p>{waitingMessage}</p>}
 
           {error && (
             <p>
