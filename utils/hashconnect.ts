@@ -10,7 +10,8 @@ let hashconnectInstance: HashConnect | null = null;
 let hcInitData: HashConnectTypes.InitilizationData | null = null;
 let initializingHashconnect = false;
 
-const HEDERA_NETWORK = process.env.NEXT_PUBLIC_VERCEL_ENV === 'MAINNET' ? 'mainnet' : 'testnet'
+const HEDERA_NETWORK = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'mainnet' : 'testnet'
+console.log('process.env.NEXT_PUBLIC_VERCEL_ENV   ',process.env.NEXT_PUBLIC_VERCEL_ENV)
 
 async function initHashConnect(): Promise<
   [HashConnect, HashConnectTypes.InitilizationData]
