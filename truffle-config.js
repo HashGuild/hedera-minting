@@ -51,10 +51,10 @@ require("ts-node").register({
 // require('dotenv').config();
 // const { MNEMONIC, PROJECT_ID } = process.env;
 
-const privKey = process.env.ETH_PRIVATE_KEY.replace("0x", "");
-// process.env.NODE_ENV === "development"
-//   ? process.env.ETH_PRIVATE_KEY.replace("0x", "")
-//   : "";
+const privKey =
+  process.env.NODE_ENV === "development"
+    ? process.env.ETH_PRIVATE_KEY.replace("0x", "")
+    : "";
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 
