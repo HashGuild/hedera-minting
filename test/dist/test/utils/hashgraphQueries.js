@@ -120,7 +120,7 @@ function createToken(contractId, data, client, abi) {
                     createTokenRequest = new sdk_1.ContractExecuteTransaction()
                         .setContractId(contractId)
                         .setGas(2500000)
-                        .setPayableAmount(500)
+                        .setPayableAmount(20)
                         .setFunctionParameters(encodedFunctionCall);
                     return [4 /*yield*/, createTokenRequest.execute(client)];
                 case 1:
@@ -203,7 +203,7 @@ function createTokenAndMintMultipleNfts(contractId, data, client, abi) {
                     mintNftRequest = new sdk_1.ContractExecuteTransaction()
                         .setContractId(contractId)
                         .setGas(data.metadata.length * 2500000)
-                        .setPayableAmount(500)
+                        .setPayableAmount(20)
                         .setFunctionParameters(encodedFunctionCall);
                     return [4 /*yield*/, mintNftRequest.execute(client)];
                 case 1:

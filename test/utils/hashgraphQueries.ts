@@ -101,7 +101,7 @@ export async function createToken(
   const createTokenRequest = new ContractExecuteTransaction()
     .setContractId(contractId)
     .setGas(2500000)
-    .setPayableAmount(500)
+    .setPayableAmount(20)
     .setFunctionParameters(encodedFunctionCall);
   const createTokenTx = await createTokenRequest.execute(client);
   const createTokenRx = await createTokenTx.getRecord(client);
@@ -172,7 +172,7 @@ export async function createTokenAndMintMultipleNfts(
   const mintNftRequest = new ContractExecuteTransaction()
     .setContractId(contractId)
     .setGas(data.metadata.length * 2500000)
-    .setPayableAmount(500)
+    .setPayableAmount(20)
     .setFunctionParameters(encodedFunctionCall);
   const mintMultipleNftsTx = await mintNftRequest.execute(client);
   const mintMultipleNftsRx = await mintMultipleNftsTx.getRecord(client);
