@@ -46,7 +46,7 @@ const NFTCard = function ({
               showContent={showContent}
               right={false}
               TooltipIcon={
-                <DeleteIcon className="cursor-pointer z-10 stroke-transparent " />
+                <DeleteIcon className="cursor-pointer z-10 stroke-transparent dark:stroke-white" />
               }
             >
               <section className="text-xs whitespace-nowrap bg-white">
