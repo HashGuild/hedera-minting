@@ -80,7 +80,7 @@ module.exports = {
       network_id: process.env.NETWORK_ID,
       provider: () =>
         new HDWalletProvider(privKey, process.env.JSON_RPC_RELAY_URL),
-      gas: 85000000,
+      gas: 8500000,
       // gasPrice: 200_000_000_000,
       gasPrice: 200_000_000_0000,
       // production: true,
