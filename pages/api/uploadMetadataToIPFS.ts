@@ -36,7 +36,7 @@ apiRoute.post<NextApiRequest & { files: any }, NextApiResponse<ResponseData>>(
     const { name, description, creator, attributes } = req.body;
     const token: Record<string, any> = {};
 
-    if (!req.files?.length) {
+    if (!req.files.thumbnailFile?.length) {
       return res
         .status(400)
         .json({ success: false, error: 'No files uploaded.' });
