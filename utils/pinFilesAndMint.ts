@@ -9,6 +9,7 @@ import getTransactionReceipt from './getTransactionReceipt';
 import MintingContractAbiWrapper from '../build/contracts/Minting.json';
 
 const { abi: MintingContractAbi } = MintingContractAbiWrapper;
+const HEDERA_NETWORK = process.env.HEDERA_NETWORK_TYPE === 'MAINNET' ? 'mainnet' : 'testnet'
 
 function encodeFunctionCall(
   functionName: string,
@@ -101,7 +102,7 @@ export default async function pinFilesAndMint(
       'createTokenAndMintMultipleNfts',
       [
         tokenData.tokenName,
-        'TEST',
+        tokenData.tokenSymbol,
         maxSupply.toString(),
         '7000000',
         metadataUInt8Array,
@@ -122,7 +123,7 @@ export default async function pinFilesAndMint(
       hc!.pairingEvent.once(async (pairingData) => {
         try {
           const provider = hc!.getProvider(
-            'mainnet',
+            HEDERA_NETWORK,
             pairingData.topic,
             pairingData.accountIds[0]
           );

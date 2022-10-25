@@ -33,12 +33,14 @@ export type NftForm = {
   nftProperties: NftProperty[];
   sellingOption: string;
   listingPrice: number;
+  tokenSymbol: string; 
 };
 export type NftFormErrors = {
   tokenNameError: boolean;
   creatorNameError: boolean;
   displayNameError: boolean;
   descriptionError: boolean;
+  tokenSymbolError: boolean; 
   nftThumbnailError: boolean;
   nftFilesError: boolean;
   splitPercentError: boolean;
@@ -54,6 +56,8 @@ export type StepOneErrors = Omit<
   | 'nftPropertiesError'
   | 'sellingOptionError'
   | 'listingPriceError'
+  | 'descriptionError'
+  | 'displayNameError'
 >;
 export type StepTwoErrors = Omit<
   NftFormErrors,
@@ -71,6 +75,7 @@ export type NftInCollection = {
   nftProperties: NftProperty[];
   sellingOption: string;
   listingPrice: number;
+  tokenSymbol: string; 
 };
 export type CollectionForm = Omit<
   NftForm,

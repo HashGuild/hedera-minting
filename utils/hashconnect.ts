@@ -10,6 +10,8 @@ let hashconnectInstance: HashConnect | null = null;
 let hcInitData: HashConnectTypes.InitilizationData | null = null;
 let initializingHashconnect = false;
 
+const HEDERA_NETWORK = process.env.HEDERA_NETWORK_TYPE === 'MAINNET' ? 'mainnet' : 'testnet'
+
 async function initHashConnect(): Promise<
   [HashConnect, HashConnectTypes.InitilizationData]
 > {
@@ -21,7 +23,7 @@ async function initHashConnect(): Promise<
 
   initializingHashconnect = true;
   const hashconnect = new HashConnect(true);
-  const initData = await hashconnect.init(appMetadata, 'mainnet', true);
+  const initData = await hashconnect.init(appMetadata, HEDERA_NETWORK, true);
   hashconnectInstance = hashconnect;
   hcInitData = initData;
   initializingHashconnect = false;

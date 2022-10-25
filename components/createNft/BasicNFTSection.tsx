@@ -24,7 +24,7 @@ const BasicNFTSection = function ({
   formData,
   formDataErrors,
 }: BasicNFTSectionProps) {
-  const { tokenNameError, creatorNameError } = formDataErrors;
+  const { tokenNameError, creatorNameError, tokenSymbolError } = formDataErrors;
   const isNftFormError = nftErrorType(formDataErrors);
   const isNftForm = nftFormType(formData);
   return (
@@ -75,6 +75,24 @@ const BasicNFTSection = function ({
         value={formData.creatorName}
         helpModalHeader='What is the Creator Name?'
         helpModalText='The Creator Name is how your NFT will be identified by other users on secondary marketplaces.'
+        helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+      />
+
+      <Input
+        containerStyles="mt-4"
+        labelText="Token Symbol"
+        labelStyle="my-2.5"
+        type="text"
+        error={tokenSymbolError}
+        errorMessage="Token Symbol cannot be empty."
+        required
+        name="tokenSymbol"
+        placeholder="Token Symbol"
+        className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5"
+        onChange={handleFormChange}
+        value={formData.tokenSymbol}
+        helpModalHeader='What is the Token Symbol?'
+        helpModalText='The Token Symbol varies - either it is an collection image or it is an abbreviation of the token name.'
         helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
       />
 
