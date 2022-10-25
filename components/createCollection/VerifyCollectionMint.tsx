@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {HashConnectContext} from '../../context/HashConnectWrapper';
+import { HashConnectContext } from '../../context/HashConnectWrapper';
 import { CollectionForm } from '../../utils/Interfaces';
 import pinFilesAndMint from '../../utils/pinFilesAndMint';
 import AttachWalletSection from '../common/AttachWalletSection';
@@ -67,7 +67,7 @@ const VerifyCollectionMint = function ({
       <h4 className="text-lg font-bold mt-8 ">Your Collection Details</h4>
       <div className="my-3 grid grid-cols-3 gap-2">
         {formData.nfts.slice(0, 6).map((nft) => (
-          <picture key={nft.tokenName}>
+          <picture key={nft.serial}>
             <source src={URL.createObjectURL(nft.nftThumbnail as Blob)} />
             <img
               className="max-h-[9rem] min-h-[9rem] md:max-h-[11rem] md:min-h-[11rem] border rounded-md overflow-hidden w-full object-cover"
@@ -78,7 +78,8 @@ const VerifyCollectionMint = function ({
         ))}
       </div>
       <p className="text-xs  ">
-        Showing {formData.nfts.slice(0, 6).length} of {formData.nfts.length} NFT{formData.nfts.length > 1 && 's'}
+        Showing {formData.nfts.slice(0, 6).length} of {formData.nfts.length} NFT
+        {formData.nfts.length > 1 && 's'}
       </p>
 
       <hr className="my-10" />
@@ -91,7 +92,10 @@ const VerifyCollectionMint = function ({
       ) : (
         <>
           <p>
-            You are minting <strong>{formData?.nfts?.length} NFT{formData.nfts.length > 1 && 's'}.</strong>
+            You are minting{' '}
+            <strong>
+              {formData?.nfts?.length} NFT{formData.nfts.length > 1 && 's'}.
+            </strong>
           </p>
           <p className="mt-3">
             To proceed with your collection mint, please click on “Mint Now”
@@ -99,14 +103,13 @@ const VerifyCollectionMint = function ({
             transaction.
           </p>
           <p className="text-xs text-gray-500 mb-10 mt-5">
-            No Hashpack Wallet? Get it {' '}
+            No Hashpack Wallet? Get it{' '}
             <a
               href="https://www.hashpack.app/"
               className="underline hover:text-slate-600"
               target="_blank"
               rel="noreferrer"
             >
-             
               here -&gt;
             </a>
           </p>
@@ -115,7 +118,7 @@ const VerifyCollectionMint = function ({
       <div className="mt-6">
         <Button
           onClick={() => {
-          setAttachWallet(true)
+            setAttachWallet(true);
           }}
           title={success ? 'Mint More' : 'Mint Now'}
           className="w-full bg-black text-white   mb-4 rounded-md disabled:bg-black/40"
@@ -131,8 +134,7 @@ const VerifyCollectionMint = function ({
         )}
       </div>
       <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
-        <AttachWalletSection
-         onPairingEvent={createCollectionHandler} />
+        <AttachWalletSection onPairingEvent={createCollectionHandler} />
       </Modal>
       <Modal
         setShowModal={setOpenConfirmMintModal}
