@@ -130,17 +130,18 @@ const VerifyCollectionMint = function ({
             <a
               href="https://www.hashpack.app/"
               className="underline hover:text-slate-600"
-              target="_parent"
+              target="_blank"
+              rel="noreferrer"
             >
               here -&gt;
             </a>
           </p>
         </>
       )}
-      <div className=" mt-6">
+      <div className="mt-6">
         <Button
           onClick={() => {
-            createCollectionHandler();
+          setAttachWallet(true)
           }}
           title={success ? 'Mint More' : 'Mint Now'}
           className="w-full bg-black text-white   mb-4 rounded-md disabled:bg-black/40"
@@ -156,7 +157,8 @@ const VerifyCollectionMint = function ({
         )}
       </div>
       <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
-        <AttachWalletSection />
+        <AttachWalletSection
+         onPairingEvent={createCollectionHandler} />
       </Modal>
       <Modal
         setShowModal={setOpenConfirmMintModal}

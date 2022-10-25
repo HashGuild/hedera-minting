@@ -11,6 +11,7 @@ import pinFilesAndMint from '../../utils/pinFilesAndMint';
 import Button from '../global/Button';
 import AttachWalletSection from './AttachWalletSection';
 import Modal from './Modal';
+import HelpModal from '../global/HelpModal';
 
 interface VerifyAndMintSectionProps {
   formData: NftForm | NftInCollection;
@@ -26,7 +27,9 @@ const VerifyAndMintSection = function ({
   const [waiting, setWaiting] = useState(false);
   const [waitingMessage, setWaitingMessage] = useState('');
   const [attachWallet, setAttachWallet] = useState(false);
-  const [hashconnect, initHashConnect] = useContext(HashConnectContext);
+  const [troubleshooting, setTroubleshooting] = useState(false);
+  const [hashconnect, initHashConnect] =
+    useContext(HashConnectContext);
 
   const isNftForm = nftFormType(formData);
 
@@ -83,6 +86,7 @@ const VerifyAndMintSection = function ({
 
   return (
     <div>
+      {troubleshooting && <HelpModal openHelp={troubleshooting} setOpenHelp={setTroubleshooting} />}
       {waiting || error ? (
         <div className="py-6 px-2 my-5 text-xs  rounded-lg bg-black text-white">
           {waiting && <p>{waitingMessage}</p>}
@@ -90,7 +94,8 @@ const VerifyAndMintSection = function ({
           {error && (
             <p>
               Something went wrong while minting your collection. <br />
-              Please try again. Troubleshooting -&gt;
+              Please try again.{' '}
+              <span className='cursor-pointer hover:underline' onClick={() => setTroubleshooting(true)} role="button" tabIndex={0} onKeyDown={() => setTroubleshooting(true)}>Troubleshooting -&gt;</span>
             </p>
           )}
         </div>
@@ -105,7 +110,7 @@ const VerifyAndMintSection = function ({
         <img
           src={URL.createObjectURL(formData.nftThumbnail!)}
           alt="overlay"
-          className="rounded-md w-full h-1/2 mb-8"
+          className="rounded-md w-full h-1/2 mb-8 max-w-xs"
         />
       </picture>
       {success ? (
@@ -113,13 +118,13 @@ const VerifyAndMintSection = function ({
           You have just created your NFT {formData.tokenName}. Congratulations!
         </p>
       ) : (
-        <section className="mb-16">
+        <section className="mb-16 flex flex-col gap-3">
           <p className="text-xs text-gray-500">
             Creator: {formData.creatorName}
           </p>
           <p className="text-xl font-semibold">{formData.tokenName}</p>
-          <p className=" my-3">{isNftForm ? formData.description : ''}</p>
-          <p className="text-sm ">
+          <p>{isNftForm ? formData.description : ''}</p>
+          <p className="text-sm">
             You are minting 1 NFT
             <br />
             <br />
@@ -127,13 +132,15 @@ const VerifyAndMintSection = function ({
             will open up your Hashpack Wallet to sign the transaction.
           </p>
           <p className="text-xs text-gray-500 mb-10 mt-5">
-            No Hashpack Wallet? Get it
+            No Hashpack Wallet?  {' '}
             <a
               href="https://www.hashpack.app/"
               className="underline hover:text-slate-600"
+              target="_blank"
+              rel="noreferrer"
             >
-              {' '}
-              here -&gt;
+             
+              Get it here -&gt;
             </a>
           </p>
         </section>
@@ -141,18 +148,20 @@ const VerifyAndMintSection = function ({
 
       <Button
         title={success ? 'Mint More' : 'Mint Now'}
-        onClick={() => createNftHandler()}
-        className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80"
+        onClick={() => setAttachWallet(true)}
+        className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80 dark:hover:bg-white/80"
       />
       <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
-        <AttachWalletSection />
+        <AttachWalletSection
+        onPairingEvent={createNftHandler}
+        />
       </Modal>
       <Button
         title={
           success ? 'List your NFT on HashGuild' : 'Go Back and Change Data'
         }
         onClick={() => setRenderConfirmMint(false)}
-        className="w-full rounded-md bg-white text-black border border-black"
+        className="w-full rounded-md bg-white text-black border border-black hover:bg-black/30 dark:hover:bg-white/30"
       />
     </div>
   );

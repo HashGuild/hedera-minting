@@ -141,6 +141,82 @@ export interface MintingInstance extends Truffle.ContractInstance {
   };
 
   /**
+   * Only applicable to fungible tokens
+   * @param amount The amount of tokens to transfer from `from` to `to`
+   * @param from The account address of the owner of the token, on the behalf of which to transfer `amount` tokens
+   * @param to The account address of the receiver of the `amount` tokens
+   * @param token The address of the fungible Hedera token to transfer
+   */
+  transferFrom: {
+    (
+      token: string,
+      from: string,
+      to: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      token: string,
+      from: string,
+      to: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+    sendTransaction(
+      token: string,
+      from: string,
+      to: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      token: string,
+      from: string,
+      to: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  /**
+   * Transfers `serialNumber` of `token` from `from` to `to` using the allowance mechanism. Only applicable to NFT tokens
+   * @param from The account address of the owner of `serialNumber` of `token`
+   * @param serialNumber The NFT serial number to transfer
+   * @param to The account address of the receiver of `serialNumber`
+   * @param token The address of the non-fungible Hedera token to transfer
+   */
+  transferFromNFT: {
+    (
+      token: string,
+      from: string,
+      to: string,
+      serialNumber: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      token: string,
+      from: string,
+      to: string,
+      serialNumber: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<BN>;
+    sendTransaction(
+      token: string,
+      from: string,
+      to: string,
+      serialNumber: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      token: string,
+      from: string,
+      to: string,
+      serialNumber: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  /**
    * Operation to unpause token
    * @param token The token address to be unpaused
    */
@@ -550,6 +626,82 @@ export interface MintingInstance extends Truffle.ContractInstance {
       estimateGas(
         token: string,
         account: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    /**
+     * Only applicable to fungible tokens
+     * @param amount The amount of tokens to transfer from `from` to `to`
+     * @param from The account address of the owner of the token, on the behalf of which to transfer `amount` tokens
+     * @param to The account address of the receiver of the `amount` tokens
+     * @param token The address of the fungible Hedera token to transfer
+     */
+    transferFrom: {
+      (
+        token: string,
+        from: string,
+        to: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        token: string,
+        from: string,
+        to: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<BN>;
+      sendTransaction(
+        token: string,
+        from: string,
+        to: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        token: string,
+        from: string,
+        to: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    /**
+     * Transfers `serialNumber` of `token` from `from` to `to` using the allowance mechanism. Only applicable to NFT tokens
+     * @param from The account address of the owner of `serialNumber` of `token`
+     * @param serialNumber The NFT serial number to transfer
+     * @param to The account address of the receiver of `serialNumber`
+     * @param token The address of the non-fungible Hedera token to transfer
+     */
+    transferFromNFT: {
+      (
+        token: string,
+        from: string,
+        to: string,
+        serialNumber: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        token: string,
+        from: string,
+        to: string,
+        serialNumber: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<BN>;
+      sendTransaction(
+        token: string,
+        from: string,
+        to: string,
+        serialNumber: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        token: string,
+        from: string,
+        to: string,
+        serialNumber: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

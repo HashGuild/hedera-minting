@@ -1,4 +1,4 @@
-#### Hedera Minting Application
+# HashGuild Minting Application
 
 This is a minting application for the Hedera HashGraph powered by HashGuild.
 We enable the hedera community to mint their NFTs using an accessible interface.

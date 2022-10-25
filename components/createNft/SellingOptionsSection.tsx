@@ -26,16 +26,18 @@ const SellingOptionsSection = function () {
             aria-hidden="true"
             key={option.index}
             className={classNames(
-              'flex flex-col items-center justify-center gap-y-1 basis-1/2 py-6 md:py-20 border shadow-xl ',
+              'flex flex-col items-center justify-center gap-y-1 basis-1/2 py-6 md:py-20 border shadow-xl',
               option.index === 1
                 ? 'border-black'
-                : 'pointer-events-none  bg-black/50',
+                : 'pointer-events-none  bg-black/50 dark:bg-white/50',
             )}
           >
-            <option.icon />
+            <option.icon 
+            className='stroke-black dark:stroke-white'
+            />
             <p>{option.name}</p>
             {option.index === 2 && (
-              <p className="text-xs text-white/80">Coming soon.</p>
+              <p className="text-xs text-white/80 dark:text-white/40">Coming soon.</p>
             )}
           </div>
         ))}
@@ -58,7 +60,7 @@ const SellingOptionsSection = function () {
             name="listingPrice"
             errorMessage="Listing Price cannot be empty"
             placeholder="Listing Price"
-            className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 appearance-none "
+            className=" w-full  text-black placeholder:text-sm placeholder:text-gray-400 py-1.5 appearance-none "
             onChange={handleFormChange}
             value={formData.listingPrice}
           />

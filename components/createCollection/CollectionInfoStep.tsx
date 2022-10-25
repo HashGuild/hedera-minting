@@ -53,7 +53,7 @@ const CollectionInfoStep: FC<CollectionInfoStepProps> = function ({
         }}
         disabled={!checkFormValidated()}
         title="Continue"
-        className="w-full bg-black mt-5 text-white rounded-md disabled:bg-black/40"
+        className="w-full bg-black mt-5 text-white dark:bg-white dark:text-black rounded-md disabled:bg-black/40"
       />
     </>
   );

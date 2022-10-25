@@ -28,19 +28,13 @@ const BasicCollectionSection = function ({
               Basic Information
             </p>
             <p className="p-3">
-              Basic Information The name, description and lorem ipsum dolor sit
-              amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem
-              ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor
-              sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
-              lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum
-              dolor sit amet
+              In this section, you create the Token of your Collection.
             </p>
           </section>
         </Tooltip>
       </div>
 
       <Input
-        toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
         containerStyles="mt-4"
         labelText="Token Name"
         labelStyle="my-2.5"
@@ -52,11 +46,13 @@ const BasicCollectionSection = function ({
         onChange={handleFormChange}
         error={tokenNameError}
         errorMessage="Token Name cannot be empty."
-        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+        className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5"
+        helpModalHeader='What is the Token Name?'
+        helpModalText='The Token Name is connected to the Token ID that&apos;s being created. Whenever somebody searches for the token ID, this name will show (similar to collection name).'
+        helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
       />
 
       <Input
-        toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
         containerStyles="mt-4"
         labelText="Creator Name"
         labelStyle="my-2.5"
@@ -66,13 +62,15 @@ const BasicCollectionSection = function ({
         error={creatorNameError}
         errorMessage="Creator Name cannot be empty."
         placeholder="Creator Name"
-        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+        className=" w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5"
         onChange={handleFormChange}
         value={formData.creatorName}
+        helpModalHeader='What is the Creator Name?'
+        helpModalText='The Creator Name is how your NFT will be identified by other users on secondary marketplaces.'
+        helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
       />
 
       <Input
-        toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
         containerStyles="mt-4"
         labelText="Display Name"
         labelStyle="my-2.5"
@@ -83,11 +81,13 @@ const BasicCollectionSection = function ({
         value={formData.displayName}
         error={displayNameError}
         errorMessage="Display Name cannot be empty."
-        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5   "
+        className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5"
         onChange={handleFormChange}
+        helpModalHeader='What is the Display Name?'
+        helpModalText='The Display Name is the name that will be visible to all users interested in your NFT. It is the primary name of the NFT itself. When minting a single NFT, the Display NFT name can be the same as the Token name, but it&apos;s up to you, maybe you want to give it a nickname?'
+        helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
       />
       <TextArea
-        toolTipContent={<h3 className="p-2 bg-white">lorem ipsum</h3>}
         containerStyles="mt-4"
         labelText="Description"
         labelStyle="my-2.5"
@@ -98,8 +98,12 @@ const BasicCollectionSection = function ({
         errorMessage="Description cannot be empty."
         value={formData.description}
         placeholder="Description"
-        className=" w-full  text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 focus:ring-0 outline-none"
+        className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5 focus:ring-0 outline-none"
         onChange={handleFormChange}
+        helpModalHeader='What is the Description?'
+        helpModalText='The description of your NFT will be tied to the NFT itself, so it will always be visible for anyone to see. 
+        Please avoid links in description field. You can enter all the info you want (Utility of NFT, history of NFT,...), but keep in mind, that the description cannot be changed.'
+        helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
       />
     </section>
   );
