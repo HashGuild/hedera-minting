@@ -9,7 +9,8 @@ import getTransactionReceipt from './getTransactionReceipt';
 import MintingContractAbiWrapper from '../build/contracts/Minting.json';
 
 const { abi: MintingContractAbi } = MintingContractAbiWrapper;
-const HEDERA_NETWORK = process.env.HEDERA_NETWORK_TYPE === 'MAINNET' ? 'mainnet' : 'testnet'
+const HEDERA_NETWORK = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'mainnet' : 'testnet'
+
 
 function encodeFunctionCall(
   functionName: string,
