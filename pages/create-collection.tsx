@@ -15,6 +15,7 @@ const CreateNft: NextPage = function () {
     creatorName: '',
     displayName: '',
     description: '',
+    tokenSymbol: '',
     splitRoyaltiesEnabled: false,
     royaltyWallets: [{ fee: 0, accountId: '' }],
     splitPercent: 0,
@@ -23,9 +24,8 @@ const CreateNft: NextPage = function () {
   const [stepOneErrors, setStepOneErrors] = useState<StepOneErrors>({
     tokenNameError: true,
     creatorNameError: true,
-    displayNameError: true,
     splitPercentError: false,
-    descriptionError: true,
+    tokenSymbolError: true
   });
   const handleFormChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
