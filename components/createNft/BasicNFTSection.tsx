@@ -38,7 +38,7 @@ const BasicNFTSection = function ({
               Basic Information
             </p>
             <p className="p-3">
-              In this section, you create the Token of your Collection.
+              {isNftForm ? 'The token name is the unique collection which your 1/1 NFT will be displayed under.' : 'In this section, you create the Token of your Collection.'}              
             </p>
           </section>
         </Tooltip>
@@ -132,8 +132,9 @@ const BasicNFTSection = function ({
         className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5 focus:ring-0 outline-none"
         onChange={handleFormChange}
         helpModalHeader="What is the Description?"
-        helpModalText="The description of your NFT will be tied to the NFT itself, so it will always be visible for anyone to see. 
-        Please avoid links in description field. You can enter all the info you want (Utility of NFT, history of NFT,...), but keep in mind, that the description cannot be changed."
+        helpModalText="The description of your NFT will be tied to the NFT itself, meaning it will always be visible for anyone to see.
+        Do not include links in the description.
+        Enter any information you want (utility, use cases, backstory, etc…), but please note that the description of your NFT can never be changed."
         helpModalImgSrc="https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
       />
     </section>
