@@ -15,7 +15,7 @@ interface TooltipProps {
 
 const Tooltip: FC<TooltipProps> = function ({
   className = '',
-  iconStyle = 'stroke-black',
+  iconStyle = 'stroke-black dark:stroke-white',
   children,
   TooltipIcon,
   onOpen = () => {},
