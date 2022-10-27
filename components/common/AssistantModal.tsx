@@ -50,7 +50,7 @@ const AssistantModal: FC<AssitantModalProps> = function ({
   
     {showAssistantModal && (
         <Modal showModal={showAssistantModal} setShowModal={setShowAssistantModal}>
-        <h3 className="my-8">{contentHeader}</h3>
+        <h3 className="my-2">{contentHeader}</h3>
   
         <section className="mb-16 flex flex-col gap-3">
           <p className="text-gray-500">{contentText}</p>
@@ -61,7 +61,8 @@ const AssistantModal: FC<AssitantModalProps> = function ({
           <img
             src={contentImgSrc}
             alt="overlay"
-            className="rounded-md w-full h-1/2 mb-8 max-w-xs"
+            className="rounded-md w-full h-1/2 mb-8"
+            onClick={() => window.open(contentImgSrc, "_blank")}
           />
         </picture>
       </Modal>

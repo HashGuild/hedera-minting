@@ -48,7 +48,7 @@ const BasicCollectionSection = function ({
         className="w-full text-black placeholder:text-sm placeholder:text-gray-400 py-1.5"
         helpModalHeader='What is the Token Name?'
         helpModalText='The Token Name is connected to the Token ID that&apos;s being created. Whenever somebody searches for the token ID, this name will show (similar to collection name).'
-        helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+        helpModalImgSrc='https://s3.amazonaws.com/appforest_uf/f1666865583815x623599300014247400/Token%20Name_assistant_hashguild_minting.png'
       />
 
       <Input
@@ -66,7 +66,7 @@ const BasicCollectionSection = function ({
         value={formData.creatorName}
         helpModalHeader='What is the Creator Name?'
         helpModalText='The Creator Name is how your NFT will be identified by other users on secondary marketplaces.'
-        helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+        helpModalImgSrc='https://s3.amazonaws.com/appforest_uf/f1666865602967x321530980968776100/Creator%20Name_assistant_hashguild_minting.png'
       />
 
       <Input
