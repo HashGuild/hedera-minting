@@ -84,7 +84,7 @@ const BasicCollectionSection = function ({
         value={formData.tokenSymbol}
         helpModalHeader='What is the Token Symbol?'
         helpModalText='The Token Symbol varies - either is an collection image or it is an abbreviation of the token name.'
-        helpModalImgSrc='https://images.unsplash.com/photo-1665149368357-864968813478?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+        helpModalImgSrc='https://s3.amazonaws.com/appforest_uf/f1666865598053x543240945645589300/Token%20Symbol_assistant_hashguild_minting.png'
       />
     </section>
   );

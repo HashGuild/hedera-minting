@@ -59,10 +59,11 @@ const AssistantModal: FC<AssitantModalProps> = function ({
         <picture>
           <source src={contentImgSrc} />
           <img
+            role="presentation"
             src={contentImgSrc}
             alt="overlay"
             className="rounded-md w-full h-1/2 mb-8"
-            onClick={() => window.open(contentImgSrc, "_blank")}
+            onClick={() => window.open(contentImgSrc, '_blank')}
           />
         </picture>
       </Modal>
