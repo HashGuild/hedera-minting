@@ -20,7 +20,7 @@ const Modal: FC<ModalProps> = function ({
   };
   if (showModal) {
     return (
-      <div className="inset-0 fixed flex-col items-center bg-gray-900/50 z-20 min-w-full px-[5%] md:px-[15%] pt-10 md:pt-20">
+      <div className="inset-0 fixed flex-col items-center bg-gray-900/50 z-30 min-w-full px-[5%] md:px-[15%] pt-10 md:pt-20">
         <div className='max-w-xl mx-auto'>
         <div>
           <CrossIcon

@@ -17,97 +17,49 @@ type AllEvents = never;
 export interface IHederaTokenServiceInstance extends Truffle.ContractInstance {
   cryptoTransfer: {
     (
-      transferList: {
-        transfers: {
-          accountID: string;
-          amount: number | BN | string;
-          isApproval: boolean;
-        }[];
-      },
       tokenTransfers: {
         token: string;
-        transfers: {
-          accountID: string;
-          amount: number | BN | string;
-          isApproval: boolean;
-        }[];
+        transfers: { accountID: string; amount: number | BN | string }[];
         nftTransfers: {
           senderAccountID: string;
           receiverAccountID: string;
           serialNumber: number | BN | string;
-          isApproval: boolean;
         }[];
       }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
-      transferList: {
-        transfers: {
-          accountID: string;
-          amount: number | BN | string;
-          isApproval: boolean;
-        }[];
-      },
       tokenTransfers: {
         token: string;
-        transfers: {
-          accountID: string;
-          amount: number | BN | string;
-          isApproval: boolean;
-        }[];
+        transfers: { accountID: string; amount: number | BN | string }[];
         nftTransfers: {
           senderAccountID: string;
           receiverAccountID: string;
           serialNumber: number | BN | string;
-          isApproval: boolean;
         }[];
       }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<BN>;
     sendTransaction(
-      transferList: {
-        transfers: {
-          accountID: string;
-          amount: number | BN | string;
-          isApproval: boolean;
-        }[];
-      },
       tokenTransfers: {
         token: string;
-        transfers: {
-          accountID: string;
-          amount: number | BN | string;
-          isApproval: boolean;
-        }[];
+        transfers: { accountID: string; amount: number | BN | string }[];
         nftTransfers: {
           senderAccountID: string;
           receiverAccountID: string;
           serialNumber: number | BN | string;
-          isApproval: boolean;
         }[];
       }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
-      transferList: {
-        transfers: {
-          accountID: string;
-          amount: number | BN | string;
-          isApproval: boolean;
-        }[];
-      },
       tokenTransfers: {
         token: string;
-        transfers: {
-          accountID: string;
-          amount: number | BN | string;
-          isApproval: boolean;
-        }[];
+        transfers: { accountID: string; amount: number | BN | string }[];
         nftTransfers: {
           senderAccountID: string;
           receiverAccountID: string;
           serialNumber: number | BN | string;
-          isApproval: boolean;
         }[];
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -2238,97 +2190,49 @@ export interface IHederaTokenServiceInstance extends Truffle.ContractInstance {
   methods: {
     cryptoTransfer: {
       (
-        transferList: {
-          transfers: {
-            accountID: string;
-            amount: number | BN | string;
-            isApproval: boolean;
-          }[];
-        },
         tokenTransfers: {
           token: string;
-          transfers: {
-            accountID: string;
-            amount: number | BN | string;
-            isApproval: boolean;
-          }[];
+          transfers: { accountID: string; amount: number | BN | string }[];
           nftTransfers: {
             senderAccountID: string;
             receiverAccountID: string;
             serialNumber: number | BN | string;
-            isApproval: boolean;
           }[];
         }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
-        transferList: {
-          transfers: {
-            accountID: string;
-            amount: number | BN | string;
-            isApproval: boolean;
-          }[];
-        },
         tokenTransfers: {
           token: string;
-          transfers: {
-            accountID: string;
-            amount: number | BN | string;
-            isApproval: boolean;
-          }[];
+          transfers: { accountID: string; amount: number | BN | string }[];
           nftTransfers: {
             senderAccountID: string;
             receiverAccountID: string;
             serialNumber: number | BN | string;
-            isApproval: boolean;
           }[];
         }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<BN>;
       sendTransaction(
-        transferList: {
-          transfers: {
-            accountID: string;
-            amount: number | BN | string;
-            isApproval: boolean;
-          }[];
-        },
         tokenTransfers: {
           token: string;
-          transfers: {
-            accountID: string;
-            amount: number | BN | string;
-            isApproval: boolean;
-          }[];
+          transfers: { accountID: string; amount: number | BN | string }[];
           nftTransfers: {
             senderAccountID: string;
             receiverAccountID: string;
             serialNumber: number | BN | string;
-            isApproval: boolean;
           }[];
         }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
-        transferList: {
-          transfers: {
-            accountID: string;
-            amount: number | BN | string;
-            isApproval: boolean;
-          }[];
-        },
         tokenTransfers: {
           token: string;
-          transfers: {
-            accountID: string;
-            amount: number | BN | string;
-            isApproval: boolean;
-          }[];
+          transfers: { accountID: string; amount: number | BN | string }[];
           nftTransfers: {
             senderAccountID: string;
             receiverAccountID: string;
             serialNumber: number | BN | string;
-            isApproval: boolean;
           }[];
         }[],
         txDetails?: Truffle.TransactionDetails
