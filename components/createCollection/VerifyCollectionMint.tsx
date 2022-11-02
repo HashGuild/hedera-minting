@@ -90,7 +90,7 @@ const VerifyCollectionMint = function ({
       <h4 className="text-lg font-bold mt-8 ">Your Collection Details</h4>
       <div className="my-3 grid grid-cols-3 gap-2">
         {formData.nfts.slice(0, 6).map((nft) => (
-          <picture key={nft.tokenName}>
+          <picture key={nft.serial}>
             <source src={URL.createObjectURL(nft.nftThumbnail as Blob)} />
             <img
               className="max-h-[9rem] min-h-[9rem] md:max-h-[11rem] md:min-h-[11rem] border rounded-md overflow-hidden w-full object-cover"
@@ -141,7 +141,7 @@ const VerifyCollectionMint = function ({
       <div className="mt-6">
         <Button
           onClick={() => {
-          setAttachWallet(true)
+            setAttachWallet(true);
           }}
           title={success ? 'Mint More' : 'Mint Now'}
           className="w-full bg-black text-white   mb-4 rounded-md disabled:bg-black/40"
@@ -157,8 +157,7 @@ const VerifyCollectionMint = function ({
         )}
       </div>
       <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
-        <AttachWalletSection
-         onPairingEvent={createCollectionHandler} />
+        <AttachWalletSection onPairingEvent={createCollectionHandler} />
       </Modal>
       <Modal
         setShowModal={setOpenConfirmMintModal}

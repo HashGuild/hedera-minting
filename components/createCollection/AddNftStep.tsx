@@ -19,11 +19,12 @@ type AddNftStepProps = {
   formData: CollectionForm;
 };
 const initialState = {
-  tokenName: '',
+  serial: 0,
   creatorName: '',
   description: '',
   nftFiles: [],
   nftThumbnail: null,
+  displayName: '',
   nftPropertiesEnabled: false,
   nftProperties: [{ key: '', value: '' }],
   sellingOption: 'Mint Only',
@@ -31,13 +32,24 @@ const initialState = {
 };
 
 const initialErrors = {
-  tokenNameError: true,
   creatorNameError: true,
   descriptionError: true,
   nftFilesError: false,
   nftThumbnailError: true,
   nftPropertiesError: false,
   sellingOptionError: false,
+  displayNameError: true,
+  listingPriceError: false,
+};
+
+const errorsOnEdit = {
+  creatorNameError: false,
+  descriptionError: false,
+  nftFilesError: false,
+  nftThumbnailError: false,
+  nftPropertiesError: false,
+  sellingOptionError: false,
+  displayNameError: false,
   listingPriceError: false,
 };
 const AddNftStep = function ({
@@ -48,18 +60,29 @@ const AddNftStep = function ({
   const [addNft, setAddNft] = useState(false);
   const [editNft, setEditNft] = useState(false);
 
-  const [nftFormData, setNftFormData] = useState<NftInCollection | NftForm>(
-    initialState,
-  );
+  const [nftFormData, setNftFormData] = useState<NftInCollection | NftForm>({
+    serial: formData.nfts.length === 0 ? 0 : formData.nfts.length,
+    creatorName: '',
+    description: '',
+    nftFiles: [],
+    nftThumbnail: null,
+    displayName: '',
+    nftPropertiesEnabled: false,
+    nftProperties: [{ key: '', value: '' }],
+    sellingOption: 'Mint Only',
+    listingPrice: 0,
+  });
   const [formDataErrors, setFormDataErrors] = useState<
     StepTwoErrors | NftFormErrors
-  >(initialErrors);
-
-  const handleFormChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  >(formData.nfts.length === 0 ? initialErrors : errorsOnEdit);
+  const handleFormChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     if (event.currentTarget.type === 'checkbox') {
       setNftFormData({
         ...nftFormData,
-        [event.currentTarget.name]: (event.currentTarget as HTMLInputElement).checked,
+        [event.currentTarget.name]: (event.currentTarget as HTMLInputElement)
+          .checked,
       });
     } else {
       // form Validation for events.
@@ -82,14 +105,12 @@ const AddNftStep = function ({
   };
   const checkFormValidated = () => {
     const validated = Object.values(formDataErrors).every(
-      (item) => item === false,
+      (item) => item === false
     );
     return validated;
   };
-  const deleteNft = (tokenName: string) => {
-    const updatedArray = formData.nfts.filter(
-      (item) => item.tokenName !== tokenName,
-    );
+  const deleteNft = (index: number) => {
+    const updatedArray = formData.nfts.filter((item) => item.serial !== index);
     setFormData({
       ...formData,
       nfts: updatedArray,
@@ -100,7 +121,7 @@ const AddNftStep = function ({
     setNftFormData(nft);
     setAddNft(true);
     const updatedArray = formData.nfts.filter(
-      (item) => item.tokenName !== nft.tokenName,
+      (item) => item.serial !== nft.serial
     );
     setFormData({
       ...formData,
@@ -124,7 +145,10 @@ const AddNftStep = function ({
   };
 
   const addNftInCollection = () => {
-    setNftFormData(initialState);
+    setNftFormData({
+      ...initialState,
+      serial: formData.nfts.length === 0 ? 0 : formData.nfts.length,
+    });
     setFormDataErrors(initialErrors);
     setAddNft(true);
   };
@@ -132,19 +156,20 @@ const AddNftStep = function ({
   if (!addNft) {
     return (
       <>
-        <h1 className="text-3xl font-bold mt-11">Create your NFTs</h1>
-        <h4 className="text mt-2">Create your NFTs which shall be minted under this collection. <br /> When you&apos;re ready, hit &apos;Mint Collection&apos;.</h4>
+        <h1 className="text-3xl font-bold mt-11">Add your NFTs for {formData.tokenName}</h1>
+
+        <h4 className="text mt-2">Add your NFTs which shall be minted under the collection <strong>{formData.tokenName}</strong>. <br /> When you&apos;re ready, click &quot;Mint Collection&quot;;.</h4>
 
         <div className="py-7 border-b grid grid-cols-2 md:grid-cols-3 gap-2">
           <div role="presentation" onClick={addNftInCollection}>
             <NFTCard emptyCard />
           </div>
-          {formData?.nfts?.map((nft) => (
+          {formData?.nfts?.map((nft, index) => (
             <NFTCard
-              deleteNft={() => deleteNft(nft.tokenName)}
+              deleteNft={() => deleteNft(index)}
               editNft={() => editNftItem(nft)}
               image={URL.createObjectURL(nft.nftThumbnail!)}
-              nftName={nft.tokenName}
+              nftName={nft.displayName}
               collectionName={nft.creatorName}
             />
           ))}
@@ -153,8 +178,8 @@ const AddNftStep = function ({
           onClick={() => {
             setStep((prev) => prev + 1);
           }}
-          title="Mint Collection"
-          className="w-full bg-black mt-6 text-white rounded-md disabled:bg-black/40"
+          title={formData?.nfts.length > 0? 'Mint Collection' : 'Add at least one NFT to proceed with minting'}
+          className="w-full bg-black mt-6 text-white rounded-md disabled:bg-black/40 dark:bg-white dark:hover:bg-white/30 dark:disabled:bg-white/50"
           disabled={formData?.nfts.length < 1}
         />
         <Button
@@ -208,7 +233,6 @@ const AddNftStep = function ({
         title="Continue"
         className="w-full bg-black text-white dark:bg-white dark:text-black mt-5 rounded-md  disabled:bg-black/50 dark:disabled:bg-white/50 hover:bg-black/80 dark:hover:bg-white/80 "
       />
-
     </>
   );
 };

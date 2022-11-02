@@ -33,12 +33,14 @@ export type NftForm = {
   nftProperties: NftProperty[];
   sellingOption: string;
   listingPrice: number;
+  tokenSymbol: string;
 };
 export type NftFormErrors = {
   tokenNameError: boolean;
   creatorNameError: boolean;
   displayNameError: boolean;
   descriptionError: boolean;
+  tokenSymbolError: boolean;
   nftThumbnailError: boolean;
   nftFilesError: boolean;
   splitPercentError: boolean;
@@ -54,15 +56,18 @@ export type StepOneErrors = Omit<
   | 'nftPropertiesError'
   | 'sellingOptionError'
   | 'listingPriceError'
+  | 'descriptionError'
+  | 'displayNameError'
 >;
 export type StepTwoErrors = Omit<
   NftFormErrors,
-  'splitPercentError' | 'displayNameError'
+  'splitPercentError' | 'tokenNameError' | 'tokenSymbolError'
 > & {
   descriptionError: boolean;
 };
 export type NftInCollection = {
-  tokenName: string;
+  serial: number;
+  displayName: string;
   creatorName: string;
   description: string;
   nftThumbnail: File | null;
@@ -70,7 +75,6 @@ export type NftInCollection = {
   nftPropertiesEnabled: boolean;
   nftProperties: NftProperty[];
   sellingOption: string;
-  listingPrice: number;
 };
 export type CollectionForm = Omit<
   NftForm,
@@ -85,10 +89,10 @@ export type CollectionForm = Omit<
 };
 
 export const nftFormType = (props: unknown): props is NftForm =>
-  Object.prototype.hasOwnProperty.call(props, 'displayName');
+  Object.prototype.hasOwnProperty.call(props, 'tokenName');
 
 export const nftErrorType = (props: unknown): props is NftFormErrors =>
-  Object.prototype.hasOwnProperty.call(props, 'displayNameError');
+  Object.prototype.hasOwnProperty.call(props, 'tokenNameError');
 export type HelpButtons = {
   name: string;
   href: string;
