@@ -166,7 +166,7 @@ const FileUploadSection = function ({
       {/* in modal */}
       <h4 className="text-lg mb-3 mt-8 font-bold">Upload Files</h4>
       <p className="text-sm mb-8">
-      The files will be minted as part of your NFT. The order of the files uploaded will be reflected as part of the NFT’s metadata. You can upload a maximum of 6 files (primary image included).
+      The files will be minted as part of your NFT. The order of the files uploaded will be reflected as part of the NFT&apos;s metadata. You can upload a maximum of 6 files (primary image included).
       </p>
 
       <section className="flex flex-col space-y-3 text-sm mb-14 max-w-full ">
@@ -244,7 +244,7 @@ const FileUploadSection = function ({
   <span className="flex items-center justify-between text-sm font-bold py-6">
         <h5>Add additional files</h5>
 <Switch
-          labelFor="splitRoyaltiesEnabled"
+          labelFor="addAdditionalFiles"
           checked={addAdditionalFiles}
           name="addAdditionalFiles"
           onChange={() => {
