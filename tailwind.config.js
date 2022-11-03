@@ -6,6 +6,7 @@ module.exports = {
     join(__dirname, './pages/**/*.{js,ts,jsx,tsx}'),
     join(__dirname, './components/**/*.{js,ts,jsx,tsx}'),
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -25,5 +26,5 @@ module.exports = {
     sans:  ["Inter", "ui-sans-serif", "system-ui"],
     inter: ["Inter", "ui-sans-serif", "system-ui"]
   },
-  plugins: [],
+  plugins: [require("nightwind")],
 };

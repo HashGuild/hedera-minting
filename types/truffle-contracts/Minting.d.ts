@@ -319,6 +319,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
       symbol: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
+      royaltyFeesData: {
+        numerator: number | BN | string;
+        denominator: number | BN | string;
+        feeCollector: string;
+      }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
@@ -326,6 +331,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
       symbol: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
+      royaltyFeesData: {
+        numerator: number | BN | string;
+        denominator: number | BN | string;
+        feeCollector: string;
+      }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     sendTransaction(
@@ -333,6 +343,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
       symbol: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
+      royaltyFeesData: {
+        numerator: number | BN | string;
+        denominator: number | BN | string;
+        feeCollector: string;
+      }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
@@ -340,6 +355,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
       symbol: string,
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
+      royaltyFeesData: {
+        numerator: number | BN | string;
+        denominator: number | BN | string;
+        feeCollector: string;
+      }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -397,6 +417,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       metadataList: string[],
+      royaltyFees: {
+        numerator: number | BN | string;
+        denominator: number | BN | string;
+        feeCollector: string;
+      }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
@@ -405,6 +430,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       metadataList: string[],
+      royaltyFees: {
+        numerator: number | BN | string;
+        denominator: number | BN | string;
+        feeCollector: string;
+      }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     sendTransaction(
@@ -413,6 +443,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       metadataList: string[],
+      royaltyFees: {
+        numerator: number | BN | string;
+        denominator: number | BN | string;
+        feeCollector: string;
+      }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
@@ -421,6 +456,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
       maxSupply: number | BN | string,
       autoRenewPeriod: number | BN | string,
       metadataList: string[],
+      royaltyFees: {
+        numerator: number | BN | string;
+        denominator: number | BN | string;
+        feeCollector: string;
+      }[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -733,6 +773,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
         symbol: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
+        royaltyFeesData: {
+          numerator: number | BN | string;
+          denominator: number | BN | string;
+          feeCollector: string;
+        }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
@@ -740,6 +785,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
         symbol: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
+        royaltyFeesData: {
+          numerator: number | BN | string;
+          denominator: number | BN | string;
+          feeCollector: string;
+        }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       sendTransaction(
@@ -747,6 +797,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
         symbol: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
+        royaltyFeesData: {
+          numerator: number | BN | string;
+          denominator: number | BN | string;
+          feeCollector: string;
+        }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
@@ -754,6 +809,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
         symbol: string,
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
+        royaltyFeesData: {
+          numerator: number | BN | string;
+          denominator: number | BN | string;
+          feeCollector: string;
+        }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -811,6 +871,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         metadataList: string[],
+        royaltyFees: {
+          numerator: number | BN | string;
+          denominator: number | BN | string;
+          feeCollector: string;
+        }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
@@ -819,6 +884,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         metadataList: string[],
+        royaltyFees: {
+          numerator: number | BN | string;
+          denominator: number | BN | string;
+          feeCollector: string;
+        }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       sendTransaction(
@@ -827,6 +897,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         metadataList: string[],
+        royaltyFees: {
+          numerator: number | BN | string;
+          denominator: number | BN | string;
+          feeCollector: string;
+        }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
@@ -835,6 +910,11 @@ export interface MintingInstance extends Truffle.ContractInstance {
         maxSupply: number | BN | string,
         autoRenewPeriod: number | BN | string,
         metadataList: string[],
+        royaltyFees: {
+          numerator: number | BN | string;
+          denominator: number | BN | string;
+          feeCollector: string;
+        }[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

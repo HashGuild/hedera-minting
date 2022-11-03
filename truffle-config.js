@@ -83,6 +83,7 @@ module.exports = {
       gas: 8500000,
       // gasPrice: 200_000_000_000,
       gasPrice: 200_000_000_0000,
+      // production: true,
     },
     //
     // An additional network, but with some advanced options…

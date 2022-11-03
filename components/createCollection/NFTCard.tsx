@@ -42,10 +42,11 @@ const NFTCard = function ({
             <Tooltip
               onOpen={() => setShowContent(true)}
               onClose={() => setShowContent(false)}
+              className="p-1 "
               showContent={showContent}
               right={false}
               TooltipIcon={
-                <DeleteIcon className="cursor-pointer z-10 stroke-transparent " />
+                <DeleteIcon className="cursor-pointer z-10 stroke-transparent dark:stroke-white" />
               }
             >
               <section className="text-xs whitespace-nowrap bg-white">
@@ -86,7 +87,9 @@ const NFTCard = function ({
               className="cursor-pointer hover:opacity-80"
             />
           </div>
-          <p className="truncate text-sm px-2 pb-5 text-gray-500">{collectionName}</p>
+          <p className="truncate text-sm px-2 pb-5 text-gray-500">
+            {collectionName}
+          </p>
         </div>
       )}
     </div>

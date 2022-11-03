@@ -22,6 +22,7 @@ import FileInformation from '../common/FileInformation';
 import Modal from '../common/Modal';
 import Tooltip from '../common/Tooltip';
 import Button from '../global/Button';
+import Switch from '../common/Switch';
 
 interface FileUploadSectionProps {
   formData: NftForm | NftInCollection;
@@ -44,6 +45,7 @@ const FileUploadSection = function ({
   const [addThumbnail, setAddThumbnail] = useState(false);
   const [addNormalFiles, setAddNormalFiles] = useState(false);
   const [focus, setFocus] = useState(false);
+  const [addAdditionalFiles, setAddAdditionalFiles] = useState(false);
 
   const handleDrag = function (e: DragEvent<HTMLLabelElement>) {
     e.preventDefault();
@@ -164,19 +166,14 @@ const FileUploadSection = function ({
       {/* in modal */}
       <h4 className="text-lg mb-3 mt-8 font-bold">Upload Files</h4>
       <p className="text-sm mb-8">
-        The files will be minted in your NFT. The order in which the files are
-        displayed represents the order of the files on the NFT. The NFT can
-        include up to 6 files including the thumbnail.
+      The files will be minted as part of your NFT. The order of the files uploaded will be reflected as part of the NFT’s metadata. You can upload a maximum of 6 files (primary image included).
       </p>
 
-      <section className=" space-y-3 text-sm mb-14 max-w-full ">
-        <p className="font-bold text-sm">Thumbnail</p>
-        <p>The thumbnail needs to be an image.</p>
-        {formDataErrors.nftThumbnailError && focus && (
-          <ErrorMessage errorText="Thumbnail is required." />
-        )}
+      <section className="flex flex-col space-y-3 text-sm mb-14 max-w-full ">
+        <p className="font-bold text-sm">Primary image</p>
+        <p className='pb-4'>The primary image needs to be an image. If you would like to create an NFT, which is no image, consider adding a thumbnail here and moving your file(s) to the additional files.</p>
         <Modal setShowModal={setAddThumbnail} showModal={addThumbnail}>
-          <h4 className="text-lg mb-5 font-bold">Upload Thumbnail</h4>
+          <h4 className="text-lg mb-5 font-bold">Upload Primary Image</h4>
 
           <label
             onDragEnter={handleDrag}
@@ -201,7 +198,8 @@ const FileUploadSection = function ({
               onChange={handleChange}
             />
 
-            <UploadFile />
+            <UploadFile 
+            className='stroke-black dark:stroke-white'/>
             <p className="my-5 text-sm text-center text-gray-400 whitespace-nowrap">
               Click to browse or
               <br />
@@ -209,11 +207,11 @@ const FileUploadSection = function ({
             </p>
             <Button
               title="Add Files"
-              className="bg-black text-white w-full rounded-md hover:bg-black/80 z-10"
+              className="bg-black text-white w-full rounded-md hover:bg-black/80 dark:hover:bg-white/80 z-10"
               onClick={onButtonClickThumbnail}
             />
           </label>
-          <ul className="text-sm mt-6 list-disc px-[5%] ">
+          <ul className="text-sm mt-6 list-disc px-[5%]">
             <li>1 Image File, max. 20 mb filesize</li>
           </ul>
         </Modal>
@@ -229,121 +227,144 @@ const FileUploadSection = function ({
               viewIconClick={() => viewFile(formData.nftThumbnail!)}
             />
 
-            <p>Delete the image above to add a new thumbnail.</p>
+            <p>Delete the image above to add a new primary image.</p>
           </>
         )}
         {!formData.nftThumbnail && (
           <Button
             onClick={() => setAddThumbnail(true)}
-            className="bg-black text-white rounded-md w-1/2"
-            title="Add Thumbnail"
+            className="bg-black text-white dark:text-black dark:bg-white rounded-md w-3/4 md:w-1/2"
+            title="Add Primary Image"
             buttonHeight={10}
           />
         )}
-        <p className="font-bold text-sm mt-10">Other Files</p>
-        <p>
-          Other files can a maximum of five files. Images, videos and 3D files
-          are supported.
-        </p>
-        <div>
-          {formDataErrors.nftFilesError && (
-            <ErrorMessage errorText="Invalid number of files." />
-          )}
-        </div>
+        {formDataErrors.nftThumbnailError && focus && (
+        <ErrorMessage errorText="Thumbnail is required." />
+        )}
+  <span className="flex items-center justify-between text-sm font-bold py-6">
+        <h5>Add additional files</h5>
+<Switch
+          labelFor="splitRoyaltiesEnabled"
+          checked={addAdditionalFiles}
+          name="addAdditionalFiles"
+          onChange={() => {
+            setAddAdditionalFiles(!addAdditionalFiles);
+          }}
+        />
+         </span>
+
+         { addAdditionalFiles &&
+         
+         (
+          <><p className="text-sm mt-10">
+            Additional files can be a maximum of five files. Images, videos and 3D files
+            are supported.
+          </p><div>
+              {formDataErrors.nftFilesError && (
+                <ErrorMessage errorText="Invalid number of files." />
+              )}
+            </div>
         {formData?.nftFiles?.map((file: File, index: number) => (
-          <FileInformation
-            key={file.size}
-            number={index + 1}
-            fileName={getFileName(file)}
-            fileSize={formatBytes(file.size)}
-            fileType={getFileType(file)}
-            crossIconClick={() => deleteFile(file)}
-            viewIconClick={() => viewFile(file)}
-          />
-        ))}
-
-        {formData?.nftFiles?.length < 5 && (
-          <Button
-            onClick={() => setAddNormalFiles(true)}
-            className="bg-black text-white rounded-md w-1/2"
-            title="Add normal files(s)"
-            buttonHeight={10}
-          />
-        )}
-
-        <Modal setShowModal={setAddNormalFiles} showModal={addNormalFiles}>
-          <h4 className="text-lg mb-5 font-bold">Upload Files</h4>
-
-          <label
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-            htmlFor="input-file-upload"
-            className={classNames(
-              'h-72 px-20 border-black border-dashed w-full rounded-xl border-2 flex flex-col cursor-pointer items-center justify-center',
-              dragActive ? 'bg-black/20' : '',
-            )}
-          >
-            <input
-              ref={inputFileRef}
-              accept="image/jpeg, image/png, image/gif, video/mp4, video/quicktime, model/gltf-binary            "
-              type="file"
-              id="input-file-upload"
-              multiple
-              name="nftFiles"
-              className="hidden"
-              onChange={handleChange}
+            <FileInformation
+              key={file.size}
+              number={index + 1}
+              fileName={getFileName(file)}
+              fileSize={formatBytes(file.size)}
+              fileType={getFileType(file)}
+              crossIconClick={() => deleteFile(file)}
+              viewIconClick={() => viewFile(file)}
             />
-
-            <UploadFile />
-            <p className="my-5 text-sm text-center text-gray-400 whitespace-nowrap">
-              Click to browse or
-              <br />
-              drag and drop your files.
-            </p>
+          ))}
+  
+          {formData?.nftFiles?.length < 5 && (
             <Button
-              title="Add Files"
-              className="bg-black text-white w-full rounded-md hover:bg-black/80 z-10"
-              onClick={onButtonClick}
+              onClick={() => setAddNormalFiles(true)}
+              className="bg-black text-white dark:text-black dark:bg-white rounded-md w-3/4 md:w-1/2"
+              title="Add additional files(s)"
+              buttonHeight={10}
             />
-          </label>
-          <ul className="text-sm mt-6 list-disc px-[5%] ">
-            <li>Up to 5 files and 100mb in total size</li>
-            <li>
-              <div className="whitespace-nowrap flex items-center">
-                <span>Support of image, video and 3D files</span>
-                <Tooltip className="ml-1">
-                  <section className="text-xs whitespace-nowrap bg-white">
-                    <p className="pb-1 border-b p-3 border-black font-semibold">
-                      File Types
-                    </p>
-                    <ul className="p-3 space-y-3">
-                      <li>
-                        <div>
-                          <p className="font-semibold">Images</p>
-                          <p className="text-gray-400">JPEG / PNG / GIF</p>
-                        </div>
-                      </li>
-                      <li>
-                        <div>
-                          <p className="font-semibold">Videos</p>
-                          <p className="text-gray-400">MP4 / MOV</p>
-                        </div>
-                      </li>
-                      <li>
-                        <div>
-                          <p className="font-semibold">3D</p>
-                          <p className="text-gray-400">GLB</p>
-                        </div>
-                      </li>
-                    </ul>
-                  </section>
-                </Tooltip>
-              </div>
-            </li>
-          </ul>
-        </Modal>
+          )}
+  
+          <Modal setShowModal={setAddNormalFiles} showModal={addNormalFiles}>
+            <h4 className="text-lg mb-5 font-bold">Upload Files</h4>
+  
+            <label
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+              htmlFor="input-file-upload"
+              className={classNames(
+                'h-72 px-20 border-black border-dashed w-full rounded-xl border-2 flex flex-col cursor-pointer items-center justify-center',
+                dragActive ? 'bg-black/20' : '',
+              )}
+            >
+              <input
+                ref={inputFileRef}
+                accept="image/jpeg, image/png, image/gif, video/mp4, video/quicktime, model/gltf-binary            "
+                type="file"
+                id="input-file-upload"
+                multiple
+                name="nftFiles"
+                className="hidden"
+                onChange={handleChange}
+              />
+  
+              <UploadFile
+               className='stroke-black dark:stroke-white'
+                />
+              <p className="my-5 text-sm text-center text-gray-400 whitespace-nowrap">
+                Click to browse or
+                <br />
+                drag and drop your files.
+              </p>
+              <Button
+                title="Add Files"
+                className="bg-black text-white w-full rounded-md hover:bg-black/80 dark:hover:bg-white/80 z-10"
+                onClick={onButtonClick}
+              />
+            </label>
+            <ul className="text-sm mt-6 list-disc px-[5%] ">
+              <li>Up to 5 files and 100mb in total size</li>
+              <li>
+                <div className="whitespace-nowrap flex items-center">
+                  <span>Support of image, video and 3D files</span>
+                  <Tooltip className="ml-1">
+                    <section className="text-xs whitespace-nowrap bg-white">
+                      <p className="pb-1 border-b p-3 border-black font-semibold">
+                        File Types
+                      </p>
+                      <ul className="p-3 space-y-3">
+                        <li>
+                          <div>
+                            <p className="font-semibold">Images</p>
+                            <p className="text-gray-400">JPEG / PNG / GIF</p>
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <p className="font-semibold">Videos</p>
+                            <p className="text-gray-400">MP4 / MOV</p>
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <p className="font-semibold">3D</p>
+                            <p className="text-gray-400">GLB</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </section>
+                  </Tooltip>
+                </div>
+              </li>
+            </ul>
+          </Modal>
+          </>
+         )
+         
+         }
+       
       </section>
       <hr />
     </>
