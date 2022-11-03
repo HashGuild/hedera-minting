@@ -154,7 +154,7 @@ const RoyaltiesSection = function ({
               errorMessage=""
               error={formDataErrors.feeError}
               placeholder="Fee in %"
-              className=" w-full text-black placeholder:text-xs placeholder:text-gray-400 py-1.5 ac "
+              className=" w-full  text-black placeholder:text-sm placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
                 handleChange(index, e);
               }}
