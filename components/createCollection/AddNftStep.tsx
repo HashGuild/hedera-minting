@@ -52,6 +52,7 @@ const errorsOnEdit = {
   displayNameError: false,
   listingPriceError: false,
 };
+
 const AddNftStep = function ({
   setStep,
   setFormData,
@@ -75,6 +76,22 @@ const AddNftStep = function ({
   const [formDataErrors, setFormDataErrors] = useState<
     StepTwoErrors | NftFormErrors
   >(formData.nfts.length === 0 ? initialErrors : errorsOnEdit);
+
+  const validateStep = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (event.target.value.length === 0) {
+      setFormDataErrors({
+        ...formDataErrors,
+        [`${event.target.name}Error`]: true,
+      });
+    } else {
+      setFormDataErrors({
+        ...formDataErrors,
+        [`${event.target.name}Error`]: false,
+      });
+    }
+  };
   const handleFormChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -86,22 +103,12 @@ const AddNftStep = function ({
       });
     } else {
       // form Validation for events.
-      if (event.target.value.length === 0) {
-        setFormDataErrors({
-          ...formDataErrors,
-          [`${event.target.name}Error`]: true,
-        });
-      } else {
-        setFormDataErrors({
-          ...formDataErrors,
-          [`${event.target.name}Error`]: false,
-        });
-      }
       setNftFormData({
         ...nftFormData,
         [event.currentTarget.name]: event.currentTarget.value,
       });
     }
+    validateStep(event);
   };
   const checkFormValidated = () => {
     const validated = Object.values(formDataErrors).every(
@@ -152,13 +159,18 @@ const AddNftStep = function ({
     setFormDataErrors(initialErrors);
     setAddNft(true);
   };
-
   if (!addNft) {
     return (
       <>
-        <h1 className="text-3xl font-bold mt-11">Add your NFTs for {formData.tokenName}</h1>
+        <h1 className="text-3xl font-bold mt-11">
+          Add your NFTs for {formData.tokenName}
+        </h1>
 
-        <h4 className="text mt-2">Add your NFTs which shall be minted under the collection <strong>{formData.tokenName}</strong>. <br /> When you&apos;re ready, click &quot;Mint Collection&quot;;.</h4>
+        <h4 className="text mt-2">
+          Add your NFTs which shall be minted under the collection{' '}
+          <strong>{formData.tokenName}</strong>. <br /> When you&apos;re ready,
+          click &quot;Mint Collection&quot;;.
+        </h4>
 
         <div className="py-7 border-b grid grid-cols-2 md:grid-cols-3 gap-2">
           <div role="presentation" onClick={addNftInCollection}>
@@ -178,7 +190,11 @@ const AddNftStep = function ({
           onClick={() => {
             setStep((prev) => prev + 1);
           }}
-          title={formData?.nfts.length > 0? 'Mint Collection' : 'Add at least one NFT to proceed with minting'}
+          title={
+            formData?.nfts.length > 0
+              ? 'Mint Collection'
+              : 'Add at least one NFT to proceed with minting'
+          }
           className="w-full bg-black mt-6 text-white rounded-md disabled:bg-black/40 dark:bg-white dark:hover:bg-white/30 dark:disabled:bg-white/50"
           disabled={formData?.nfts.length < 1}
         />
@@ -230,7 +246,7 @@ const AddNftStep = function ({
       <Button
         onClick={editNft ? editNftConfirm : addNftConfirm}
         disabled={!checkFormValidated()}
-        title="Continue"
+        title="Add NFT To Collection"
         className="w-full bg-black text-white dark:bg-white dark:text-black mt-5 rounded-md  disabled:bg-black/50 dark:disabled:bg-white/50 hover:bg-black/80 dark:hover:bg-white/80 "
       />
     </>
