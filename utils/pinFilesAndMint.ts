@@ -1,7 +1,4 @@
-import {
-  AccountId,
-  ContractExecuteTransaction,
-} from '@hashgraph/sdk';
+import { AccountId, ContractExecuteTransaction } from '@hashgraph/sdk';
 import axios, { AxiosResponse } from 'axios';
 import { HashConnect, HashConnectTypes } from 'hashconnect';
 import Web3 from 'web3';
@@ -9,8 +6,8 @@ import getTransactionReceipt from './getTransactionReceipt';
 import MintingContractAbiWrapper from '../build/contracts/Minting.json';
 
 const { abi: MintingContractAbi } = MintingContractAbiWrapper;
-const HEDERA_NETWORK = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'mainnet' : 'testnet'
-
+const HEDERA_NETWORK =
+  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'mainnet' : 'testnet';
 
 function encodeFunctionCall(
   functionName: string,
@@ -116,10 +113,17 @@ export default async function pinFilesAndMint(
       MintingContractAbi
     );
 
+    // Approximate fees
+    const approxCustomNftCreateFee = 42;
+    const approxNftMintFee = 0.021;
+    const feeToSend =
+      (approxCustomNftCreateFee + approxNftMintFee * (royalties?.length || 0)) *
+      1.2;
+
     const mintNftRequest = new ContractExecuteTransaction()
-      .setContractId('0.0.1377616')
+      .setContractId('0.0.48995506')
       .setGas(2500000)
-      .setPayableAmount(20)
+      .setPayableAmount(feeToSend)
       .setFunctionParameters(encodedFunctionCall);
 
     hc!.connectToLocalWallet();
