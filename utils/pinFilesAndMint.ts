@@ -117,11 +117,11 @@ export default async function pinFilesAndMint(
     const approxCustomNftCreateFee = 42;
     const approxNftMintFee = 0.021;
     const feeToSend =
-      (approxCustomNftCreateFee + approxNftMintFee * (royalties?.length || 0)) *
+      (approxCustomNftCreateFee + approxNftMintFee * (nfts?.length || 0)) *
       1.2;
 
     const mintNftRequest = new ContractExecuteTransaction()
-      .setContractId('0.0.48995506')
+      .setContractId('0.0.1377616')
       .setGas(2500000)
       .setPayableAmount(feeToSend)
       .setFunctionParameters(encodedFunctionCall);
