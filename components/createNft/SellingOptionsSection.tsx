@@ -7,14 +7,14 @@ import {
   NftForm,
   NftFormErrors,
   StepTwoErrors,
-  CollectionForm,
+  NftInCollection,
 } from '../../utils/Interfaces';
 
 import ErrorMessage from '../common/ErrorMessage';
 import Input from '../common/Input';
 
 interface SellingOptionsSectionProps {
-  formData?: NftForm | CollectionForm;
+  formData?: NftForm | NftInCollection;
   handleFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
   formDataErrors?: NftFormErrors | StepTwoErrors;
 }

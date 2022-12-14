@@ -81,6 +81,7 @@ export type NftInCollection = {
   nftPropertiesEnabled: boolean;
   nftProperties: NftProperty[];
   sellingOption: string;
+  listingPrice: string | number;
 };
 export type CollectionForm = Omit<
   NftForm,
