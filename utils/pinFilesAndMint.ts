@@ -1,9 +1,10 @@
 import { AccountId, ContractExecuteTransaction } from '@hashgraph/sdk';
 import axios, { AxiosResponse } from 'axios';
-import { HashConnect, HashConnectTypes } from 'hashconnect';
+import { HashConnect, HashConnectTypes, MessageTypes } from 'hashconnect';
 import Web3 from 'web3';
 import getTransactionReceipt from './getTransactionReceipt';
 import MintingContractAbiWrapper from '../build/contracts/Minting.json';
+import getTransactionRecord from './getTransactionRecord';
 
 const { abi: MintingContractAbi } = MintingContractAbiWrapper;
 const HEDERA_NETWORK =
@@ -56,6 +57,7 @@ export default async function pinFilesAndMint(
       [hc] = await initHashConnect();
     }
 
+    let hasDirectListingRequests = false;
     const operations: Promise<AxiosResponse<any, any>>[] = [];
     for (const nft of nfts) {
       const data = new FormData();
@@ -68,6 +70,10 @@ export default async function pinFilesAndMint(
       }
       for (const file of nft.nftFiles) {
         data.append('files', file);
+      }
+
+      if (nft.listingPrice) {
+        hasDirectListingRequests = true;
       }
       operations.push(
         axios.post('/api/uploadMetadataToIPFS', data, {
@@ -117,11 +123,11 @@ export default async function pinFilesAndMint(
     const approxCustomNftCreateFee = 42;
     const approxNftMintFee = 0.021;
     const feeToSend =
-      (approxCustomNftCreateFee + approxNftMintFee * (nfts?.length || 0)) *
-      1.2;
+      (approxCustomNftCreateFee + approxNftMintFee * (nfts?.length || 0)) * 1.2;
 
     const mintNftRequest = new ContractExecuteTransaction()
-      .setContractId('0.0.1377616')
+      .setContractId('0.0.48679240')
+      // .setContractId('0.0.1377616')
       .setGas(2500000)
       .setPayableAmount(feeToSend)
       .setFunctionParameters(encodedFunctionCall);
@@ -155,8 +161,68 @@ export default async function pinFilesAndMint(
             transExec.transactionId,
             provider.client
           );
+          if (!hasDirectListingRequests) {
+            resolve(receipt?.status.valueOf());
+          }
+          setTimeout(async () => {
+            const record = await getTransactionRecord(transExec.transactionId);
+            console.log('My Record:', record);
 
-          resolve(receipt?.status.valueOf());
+            const nftTransfers: any[] = record.transactions
+              .filter((transaction: any) => transaction.name === 'TOKENMINT')
+              .map((transaction: any) => transaction.nft_transfers);
+
+            const listingOperations = nftTransfers
+              .filter((transfer: any) => {
+                const index = transfer[0].serial_number - 1;
+                console.log(index);
+                console.log(nfts[index]);
+
+                return !!nfts[index].listingPrice;
+              })
+              .map((transfer: any) =>
+                fetch('http://localhost:8080/api/listing/list', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    tokenId: transfer[0].token_id,
+                    serialNo: transfer[0].serial_number,
+                    accountId: pairingData.accountIds[0],
+                    listingPrice:
+                      nfts[transfer[0].serial_number - 1].listingPrice,
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                })
+              );
+
+            const results = await Promise.all(listingOperations);
+            for (const result of results) {
+              const signingData = await result.json();
+              const transactionsByteBuffer = Buffer.from(
+                signingData.byteArray,
+                'base64'
+              );
+              const transactionInByteArray = new Uint8Array(
+                transactionsByteBuffer
+              );
+              const transaction: MessageTypes.Transaction = {
+                topic: pairingData.topic,
+                byteArray: transactionInByteArray,
+                metadata: {
+                  accountToSign: pairingData.accountIds[0],
+                  returnTransaction: false,
+                },
+              };
+              const res = await hc!.sendTransaction(
+                pairingData.topic,
+                transaction
+              );
+              console.log('TRANSACTION RESULT:', res);
+            }
+
+            resolve(receipt?.status.valueOf());
+          }, 10000);
         } catch (err) {
           if (filesUploadedCallback) {
             filesUploadedCallback(false);
