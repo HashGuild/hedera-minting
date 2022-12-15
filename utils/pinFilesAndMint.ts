@@ -126,8 +126,8 @@ export default async function pinFilesAndMint(
       (approxCustomNftCreateFee + approxNftMintFee * (nfts?.length || 0)) * 1.2;
 
     const mintNftRequest = new ContractExecuteTransaction()
-      .setContractId('0.0.48679240')
-      // .setContractId('0.0.1377616')
+      // .setContractId('0.0.48679240') // - Testnet Contract Id
+      .setContractId('0.0.1377616') // - Mainnet Contract Id
       .setGas(2500000)
       .setPayableAmount(feeToSend)
       .setFunctionParameters(encodedFunctionCall);
@@ -181,7 +181,7 @@ export default async function pinFilesAndMint(
                 return !!nfts[index].listingPrice;
               })
               .map((transfer: any) =>
-                fetch('http://localhost:8080/api/listing/list', {
+                fetch('http://hashguild.xyz/api/listing/list', {
                   method: 'POST',
                   body: JSON.stringify({
                     tokenId: transfer[0].token_id,
