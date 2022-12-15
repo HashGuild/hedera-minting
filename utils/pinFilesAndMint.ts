@@ -221,6 +221,9 @@ export default async function pinFilesAndMint(
               console.log('TRANSACTION RESULT:', res);
             }
 
+            if (filesUploadedCallback) {
+              filesUploadedCallback(true);
+            }
             resolve(receipt?.status.valueOf());
           }, 10000);
         } catch (err) {
