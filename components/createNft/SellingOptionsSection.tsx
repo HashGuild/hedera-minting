@@ -27,6 +27,7 @@ const SellingOptionsSection = function ({
   const [currentOption, setCurrentOption] = useState<SellingOption>(
     sellingOptions[0]
   );
+
   return (
     <section className="my-10 flex flex-col">
       <h4 className="text-lg font-bold">Choose Selling Option</h4>
@@ -40,11 +41,23 @@ const SellingOptionsSection = function ({
             aria-hidden="true"
             key={option.index}
             className={classNames(
-              'border-black flex flex-col items-center justify-center gap-y-1 basis-1/2 py-6 md:py-20 border shadow-xl'
+              'p-10  shadow-xl select-none rounded-lg border-black flex flex-col items-center justify-center gap-y-1 basis-1/2 py-6 md:py-20 ',
+               currentOption?.index === option.index
+                ? 'bg-slate-900 dark:bg-white'
+                : 'border-2',
             )}
           >
-            <option.icon className="stroke-black dark:stroke-white" />
-            <p>{option.name}</p>
+
+            <option.icon className={`${ currentOption?.index === option.index
+                  ? 'stroke-white dark:stroke-black'
+                  : 'stroke-black dark:stroke-white'}`} />
+            <span
+              className={`${
+                currentOption?.index === option.index
+                  ? 'text-white dark:text-black'
+                  : 'text-black dark:text-white'
+              }  font-semibold`}
+           >{option.name}</span>
           </div>
         ))}
       </div>
