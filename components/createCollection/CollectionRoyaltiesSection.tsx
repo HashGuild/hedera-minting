@@ -9,7 +9,7 @@ import ErrorMessage from '../common/ErrorMessage';
 import Input from '../common/Input';
 import Switch from '../common/Switch';
 import Button from '../global/Button';
-import getAccountInfo from '../../utils/getAccountInfo';
+import isAccountIdValid from '../../utils/isAccountIdValid';
 
 interface CollectionRoyaltiesSectionProps {
   formData: CollectionForm;
@@ -108,22 +108,9 @@ const CollectionRoyaltiesSection = function ({
   };
 
   async function checkAccountIdAndHandleChange (e: ChangeEvent<HTMLInputElement>) {
-   if (e.target.name === 'accountId' && e.target.value.length > 5) {
-    const result = await getAccountInfo(e.target.value)
-
-    if (!result) {
-      setFormDataErrors({
-        ...formDataErrors,
-        accountIdError: true,
-      });
-    } else {
-      setFormDataErrors({
-        ...formDataErrors,
-        accountIdError: false,
-      });
-    }
-    }
+    isAccountIdValid(e, formDataErrors, setFormDataErrors);
   }
+
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const newArr = formData.royaltyWallets;
     if (e.target.name === 'fee') {

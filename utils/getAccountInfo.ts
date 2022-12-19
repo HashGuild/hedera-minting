@@ -21,3 +21,4 @@ export default async function getAccountInfo(
     return false;
   }
 }
+
