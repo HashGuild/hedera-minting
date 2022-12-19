@@ -5,7 +5,7 @@ import classNames from '../../utils/classNames';
 import Button from '../global/Button';
 
 interface AttachWalletSectionProps {
-  onPairingEvent: () => void; 
+  onPairingEvent: () => void;
 }
 
 const AttachWalletSection = function ({onPairingEvent}: AttachWalletSectionProps) {
@@ -71,7 +71,7 @@ const AttachWalletSection = function ({onPairingEvent}: AttachWalletSectionProps
       <p className="mt-2 text-sm text-center">
         Please connect your HashPack Wallet to finish your mint.
       </p>
-      <div className="flex mt-8 mb-8 gap-x-7 text-base whitespace-nowrap">
+      <div className="flex flex-col sm:flex-row mt-8 mb-8 gap-x-2 sm:gap-x-7 text-base whitespace-nowrap">
         <Button
           title="Connect via Click"
           onClick={() => setCurrentOption(1)}
