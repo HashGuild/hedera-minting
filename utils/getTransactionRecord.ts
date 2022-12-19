@@ -4,8 +4,11 @@ export default async function getTransactionRecord(transactionId: string) {
     splitTransactionId[1] = splitTransactionId[1].replace('.', '-');
     const parsedTransactionId = splitTransactionId.join('-');
 
+    const BASE_URI =
+  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'https://mainnet-public.mirrornode.hedera.com/api/v1/' : 'https://testnet.mirrornode.hedera.com/api/v1/';
+
     const res = await fetch(
-      `https://testnet.mirrornode.hedera.com/api/v1/transactions/${parsedTransactionId}`
+      `${BASE_URI}transactions/${parsedTransactionId}`
     );
     if (!res.ok) {
       throw new Error(

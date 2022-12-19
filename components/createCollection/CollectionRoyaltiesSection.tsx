@@ -9,6 +9,7 @@ import ErrorMessage from '../common/ErrorMessage';
 import Input from '../common/Input';
 import Switch from '../common/Switch';
 import Button from '../global/Button';
+import isAccountIdValid from '../../utils/isAccountIdValid';
 
 interface CollectionRoyaltiesSectionProps {
   formData: CollectionForm;
@@ -105,6 +106,11 @@ const CollectionRoyaltiesSection = function ({
       });
     }
   };
+
+  async function checkAccountIdAndHandleChange (e: ChangeEvent<HTMLInputElement>) {
+    isAccountIdValid(e, formDataErrors, setFormDataErrors);
+  }
+
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const newArr = formData.royaltyWallets;
     if (e.target.name === 'fee') {
@@ -170,13 +176,13 @@ const CollectionRoyaltiesSection = function ({
                 formDataErrors.accountIdError ? 'border-red-400' : ''
               }
               name="accountId"
-              errorMessage=""
+              errorMessage="Account Id needs to be valid"
               value={wallet.accountId}
               error={formDataErrors.accountIdError}
               placeholder="Account Id"
               className=" w-full  text-black placeholder:text-sm placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
-                handleChange(index, e);
+                checkAccountIdAndHandleChange(e); handleChange(index, e); 
               }}
               iconRight={
                 index > 0 && (

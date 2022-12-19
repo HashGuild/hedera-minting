@@ -165,9 +165,11 @@ const VerifyAndMintSection = function ({
         onClick={() => setAttachWallet(true)}
         className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80 dark:hover:bg-white/80"
       />
-      <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
-        <AttachWalletSection onPairingEvent={createNftHandler} />
-      </Modal>
+      {!success &&
+         <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
+         <AttachWalletSection onPairingEvent={createNftHandler} />
+       </Modal>}
+   
       <Button
         title={
           success ? 'List your NFT on HashGuild' : 'Go Back and Change Data'
