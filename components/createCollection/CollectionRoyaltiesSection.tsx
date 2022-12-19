@@ -107,7 +107,7 @@ const CollectionRoyaltiesSection = function ({
     }
   };
 
-  async function checkAccountIdAndHandleChange (index: number, e: ChangeEvent<HTMLInputElement>) {
+  async function checkAccountIdAndHandleChange (e: ChangeEvent<HTMLInputElement>) {
    if (e.target.name === 'accountId' && e.target.value.length > 5) {
     const result = await getAccountInfo(e.target.value)
 
@@ -195,8 +195,7 @@ const CollectionRoyaltiesSection = function ({
               placeholder="Account Id"
               className=" w-full  text-black placeholder:text-sm placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
-                checkAccountIdAndHandleChange(index, e); handleChange(index, e);
-                
+                checkAccountIdAndHandleChange(e); handleChange(index, e); 
               }}
               iconRight={
                 index > 0 && (

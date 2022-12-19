@@ -9,6 +9,7 @@ import ErrorMessage from '../common/ErrorMessage';
 import Input from '../common/Input';
 import Switch from '../common/Switch';
 import Button from '../global/Button';
+import getAccountInfo from '../../utils/getAccountInfo';
 
 interface RoyaltiesSectionProps {
   formData: NftForm;
@@ -106,6 +107,25 @@ const RoyaltiesSection = function ({
       });
     }
   };
+
+  async function checkAccountIdAndHandleChange (e: ChangeEvent<HTMLInputElement>) {
+    if (e.target.name === 'accountId' && e.target.value.length > 5) {
+     const result = await getAccountInfo(e.target.value)
+ 
+     if (!result) {
+       setFormDataErrors({
+         ...formDataErrors,
+         accountIdError: true,
+       });
+     } else {
+       setFormDataErrors({
+         ...formDataErrors,
+         accountIdError: false,
+       });
+     }
+     }
+   }
+
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const newArr = formData.royaltyWallets;
     if (e.target.name === 'fee') {
@@ -170,12 +190,12 @@ const RoyaltiesSection = function ({
               }
               value={wallet?.accountId}
               name="accountId"
-              errorMessage=""
-              error={false}
+              errorMessage="Account Id needs to be valid"
+              error={formDataErrors.accountIdError}
               placeholder="Account Id"
               className=" w-full  text-black placeholder:text-sm placeholder:text-gray-400 py-1.5   "
               onChange={(e) => {
-                handleChange(index, e);
+                checkAccountIdAndHandleChange(e); handleChange(index, e);
               }}
               iconRight={
                 index > 0 && (
