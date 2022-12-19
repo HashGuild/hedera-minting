@@ -176,7 +176,7 @@ export default async function pinFilesAndMint(
 
             
               const HG_BASEURI =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'http://hashguild.xyz/api/' : 'http://localhost:8080/api/';
+  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'https://hashguild.xyz/api/' : 'http://localhost:8080/api/';
 
             const listingOperations = nftTransfers
               .filter((transfer: any) => {
