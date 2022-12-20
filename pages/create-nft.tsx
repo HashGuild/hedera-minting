@@ -132,7 +132,11 @@ const CreateNft: NextPage = function () {
             handleFormChange={handleFormChange}
           />
           <hr />
-          <SellingOptionsSection />
+          <SellingOptionsSection
+            formDataErrors={formDataErrors}
+            formData={formData}
+            handleFormChange={handleFormChange}
+          />
 
           <hr />
 

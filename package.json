@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "generate-types": "npx typechain --target=truffle-v5 'build/contracts/*.json'",
-    "prepare": "npx truffle compile && yarn run generate-types",
     "test:smart-contract": "npx tsc -p ./test/tsconfig.json && npx truffle test ./test/dist/test/**.js",
     "deploy:smart-contract-mainnet": "npx truffle compile && ./scripts/deploySmartContract.js"
   },

@@ -234,11 +234,9 @@ const AddNftStep = function ({
       />
       <hr />
       <SellingOptionsSection
-      // formDataErrors={formDataErrors}
-      // setFormDataErrors={setFormDataErrors}
-      // formData={nftFormData}
-      // setFormData={setNftFormData}
-      // handleFormChange={handleFormChange}
+        formDataErrors={formDataErrors}
+        formData={nftFormData}
+        handleFormChange={handleFormChange}
       />
 
       <hr />
