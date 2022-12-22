@@ -91,27 +91,6 @@ const VerifyAndMintSection = function ({
           setOpenHelp={setTroubleshooting}
         />
       )}
-      {waiting || error ? (
-        <div className="py-6 px-2 my-5 text-xs  rounded-lg bg-black text-white">
-          {waiting && <p>{waitingMessage}</p>}
-
-          {error && (
-            <p>
-              Something went wrong while minting your collection. <br />
-              Please try again.{' '}
-              <span
-                className="cursor-pointer hover:underline"
-                onClick={() => setTroubleshooting(true)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={() => setTroubleshooting(true)}
-              >
-                Troubleshooting -&gt;
-              </span>
-            </p>
-          )}
-        </div>
-      ) : null}
       <h1 className="font-bold text-3xl mt-8">
         {' '}
         {success ? 'Success!' : 'Verify and Mint'}
@@ -165,11 +144,15 @@ const VerifyAndMintSection = function ({
         onClick={() => setAttachWallet(true)}
         className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80 dark:hover:bg-white/80"
       />
-      {!success &&
-         <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
-         <AttachWalletSection onPairingEvent={createNftHandler} />
-       </Modal>}
-   
+      {!success && (
+        <Modal showModal={attachWallet} setShowModal={setAttachWallet}>
+          <AttachWalletSection
+            waitingMessage={waitingMessage}
+            onPairingEvent={createNftHandler}
+          />
+        </Modal>
+      )}
+
       <Button
         title={
           success ? 'List your NFT on HashGuild' : 'Go Back and Change Data'
