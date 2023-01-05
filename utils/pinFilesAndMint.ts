@@ -120,7 +120,8 @@ export default async function pinFilesAndMint(
     );
 
     // Approximate fees
-    const approxCustomNftCreateFee = 42;
+    // const approxCustomNftCreateFee = 42; // with HBAR at 0.05
+     const approxCustomNftCreateFee = 59;
     const approxNftMintFee = 0.021;
     const feeToSend =
       (approxCustomNftCreateFee + approxNftMintFee * (nfts?.length || 0)) * 1.2;
