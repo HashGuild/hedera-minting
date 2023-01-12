@@ -23,7 +23,7 @@ async function initHashConnect(): Promise<
 
   initializingHashconnect = true;
   const hashconnect = new HashConnect(process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production');
-  const initData = await hashconnect.init(appMetadata, HEDERA_NETWORK, true);
+  const initData = await hashconnect.init(appMetadata, 'mainnet', true);
   hashconnectInstance = hashconnect;
   hcInitData = initData;
   initializingHashconnect = false;

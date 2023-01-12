@@ -1,0 +1,13 @@
+{"colorize.languages": [
+    "javascript",
+    "typescript"
+  ],
+  "eslint.workingDirectories": [
+    "./frontend",
+    "./hashguild-backend"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript", "typescript"]
+}
