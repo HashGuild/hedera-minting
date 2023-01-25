@@ -104,3 +104,10 @@ yarn run test:smart-contract
 We made the project open source to contribute to the growing Hedera community.
 If you find a bug, have an idea for an enhancement or simply found a typo in our documentation, new contributions are always welcome!
 Please see our [Contributing Guide](https://github.com/HashGuild/hedera-minting/blob/main/CONTRIBUTING.md) before submitting a new PR or issue.
+
+
+## API Access & Mint Guide
+
+The repository exposes APIs for getting started easily. You can find the API documentation [here](https://dev.hashguild.xyz/mint).
+
+For getting started quickly, see the official mint guide [here](https://hashguild.xyz/mint-nfts/).
