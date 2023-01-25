@@ -84,6 +84,7 @@ export default async function pinFilesAndMint(
       );
     }
     const responses = await Promise.all(operations);
+
     if (filesUploadedCallback) {
       filesUploadedCallback(true);
     }
@@ -169,7 +170,6 @@ export default async function pinFilesAndMint(
           }
           setTimeout(async () => {
             const record = await getTransactionRecord(transExec.transactionId);
-            console.log('My Record:', record);
 
             const nftTransfers: any[] = record.transactions
               .filter((transaction: any) => transaction.name === 'TOKENMINT')
@@ -182,9 +182,6 @@ export default async function pinFilesAndMint(
             const listingOperations = nftTransfers
               .filter((transfer: any) => {
                 const index = transfer[0].serial_number - 1;
-                console.log(index);
-                console.log(nfts[index]);
-
                 return !!nfts[index].listingPrice;
               })
               .map((transfer: any) =>

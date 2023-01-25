@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { useRouter } from 'next/router';
 import { HashConnectContext } from '../../context/HashConnectWrapper';
 import { NftForm, nftFormType, NftInCollection } from '../../utils/Interfaces';
 import pinFilesAndMint from '../../utils/pinFilesAndMint';
@@ -18,10 +19,12 @@ interface VerifyAndMintSectionProps {
   setRenderConfirmMint: Dispatch<SetStateAction<boolean>>;
 }
 
+
 const VerifyAndMintSection = function ({
   formData,
   setRenderConfirmMint,
 }: VerifyAndMintSectionProps) {
+  const router = useRouter();
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [waiting, setWaiting] = useState(false);
@@ -30,6 +33,8 @@ const VerifyAndMintSection = function ({
   const [troubleshooting, setTroubleshooting] = useState(false);
   const [hashconnect, initHashConnect] = useContext(HashConnectContext);
 
+  console.log(formData)
+  
   const isNftForm = nftFormType(formData);
 
   useEffect(() => {
@@ -47,6 +52,9 @@ const VerifyAndMintSection = function ({
     resetWaitingState();
   };
 
+  const navigateToEntry = () => {
+    router.push('/')
+  }
   const createNftHandler = async () => {
     try {
       resetTransactionState();
@@ -162,7 +170,7 @@ const VerifyAndMintSection = function ({
 
       <Button
         title={success ? 'Mint More' : 'Mint Now'}
-        onClick={() => setAttachWallet(true)}
+        onClick={success ? () => navigateToEntry() : () => setAttachWallet(true)}
         className="w-full rounded-md mb-3 bg-black text-white hover:bg-black/80 dark:hover:bg-white/80"
       />
       {!success &&

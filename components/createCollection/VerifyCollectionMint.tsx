@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useRouter } from 'next/router';
 import { HashConnectContext } from '../../context/HashConnectWrapper';
 import { CollectionForm } from '../../utils/Interfaces';
 import pinFilesAndMint from '../../utils/pinFilesAndMint';
@@ -14,6 +15,7 @@ type VerifyCollectionMintProps = {
 const VerifyCollectionMint = function ({
   formData,
 }: VerifyCollectionMintProps) {
+  const router = useRouter();
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [attachWallet, setAttachWallet] = useState(false);
@@ -22,6 +24,10 @@ const VerifyCollectionMint = function ({
   const [confirmMint, setConfirmMint] = useState(false);
   const [openConfirmMintModal, setOpenConfirmMintModal] = useState(false);
   const [hashconnect, initHashConnect] = useContext(HashConnectContext);
+
+  const navigateToEntry = () => {
+    router.push('/')
+  }
 
   const resetWaitingState = () => {
     setWaiting(false);
@@ -140,9 +146,7 @@ const VerifyCollectionMint = function ({
       )}
       <div className="mt-6">
         <Button
-          onClick={() => {
-            setAttachWallet(true);
-          }}
+          onClick={success ? () => navigateToEntry() : () => setAttachWallet(true)}
           title={success ? 'Mint More' : 'Mint Now'}
           className="w-full bg-black text-white   mb-4 rounded-md disabled:bg-black/40"
         />
